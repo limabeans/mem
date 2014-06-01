@@ -46,7 +46,7 @@ public class CheckSpecialCases
 		+scramble+"\n"
 		+"Flipped edges: "+checkFlippedEdges()+"\n"
 		//+"Twisted corners: "+checkTwistedCorners()+"\n"
-		+"Parity: "+checkParity(scramble)+"\n");
+		+"Parity: "+hasParity(scramble)+"\n");
     }
 
     //1. FLIPPED EDGES
@@ -58,7 +58,7 @@ public class CheckSpecialCases
     //2. TWISTED CORNERS
  
     //3. PARITY
-    public static boolean checkParity(String scramble)
+    public static boolean hasParity(String scramble)
     {
         scramble = scramble.trim();
         scramble = scramble + " ";
