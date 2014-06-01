@@ -33,6 +33,10 @@ public class Tracer
 	genFreshCube();
 	scrambleToTurns(inputtedScramble);
     }
+    public String getScramble()
+    {
+	return scramble;
+    }
 
     //methods used to get the Edge and Corner maps
     public LinkedHashMap<String,String> getEdgeMap()
@@ -44,14 +48,7 @@ public class Tracer
         return (LinkedHashMap<String,String>)cornerMap;
     }
     
-    /*
-     * Takes a String scramble and then converts this to moves. So something like L2 would be converted to turnL2(), etc.
-     * I'm not that good at manipulate String input so I do this in sort of roundabout way.
-     * 
-     * Originally I was considering generating scrambles randomly with my methods (like turnU turnF turnRp etc) but then I realized that
-     * my string Scrambler as it is is pretty inefficient. If in the future I can just use someone else's who provides truly random
-     * String scrambles, I could just plug their class into my program without everything breaking.
-     */
+    //takes a String scramble and modifies the Maps
     public void scrambleToTurns(String scramble)
     {
         scramble=scramble.trim();
@@ -896,7 +893,7 @@ public class Tracer
 	return UNSOLVED;
     }
 
-    public static boolean hasParity(String scramble)
+    public boolean hasParity()
     {
         scramble = scramble.trim();
         scramble = scramble + " ";

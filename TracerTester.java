@@ -2,21 +2,24 @@ public class TracerTester
 {
     public static void main(String[] args)
     {
-	boolean desire = true;
 	Scrambler scrambler = new Scrambler();
-	String testscramble = scrambler.genScramble();
-	Tracer tracer = new Tracer(testscramble);
-	tracer.printEverything();
-	while(!(tracer.hasFlippedEdges()&&tracer.hasTwistedCorners()))
+	String testScramble = scrambler.genScramble();
+	Tracer tracer = new EdgeCommSolver(testScramble);
+	//will only generate easy scrambles
+	while(tracer.hasParity() || tracer.hasFlippedEdges() || tracer.hasTwistedCorners())
 	{
-	    System.out.println("fail");
-	    testscramble = scrambler.genScramble();
-	    tracer = new Tracer(testscramble);
-
-
+	    testScramble = scrambler.genScramble();
+	    tracer = new EdgeCommSolver(testScramble);
 	}
+	System.out.println(tracer.getScramble());
 
-	System.out.println(testscramble);
+	tracer.printEverything();
+
+	((EdgeCommSolver)tracer).solveEdges();
+	
+
+
+
 	/*
 	System.out.println("maps BEFORE scramble is applied-");
 	System.out.println("(everything should be matching up)");
