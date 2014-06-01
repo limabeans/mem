@@ -6,11 +6,12 @@ import java.util.*;
 public class Mem extends JFrame
 {
 
-    LinkedList<String> linkedList = new LinkedList<String>();
+    LinkedList<String> textLinkedList = new LinkedList<String>();
     private JLabel label1;
     private JPanel panel1, panel2;
     private FlashText flashTextPanel;
     private JTextField field1;
+    private JTextArea area1;
     private JRadioButton inOrderRadio, inRandomRadio;
 
     private javax.swing.Timer timer;
@@ -80,34 +81,38 @@ public class Mem extends JFrame
     {
 	public void actionPerformed (ActionEvent event)
 	{
-	    if (event.getSource() == field1)
+	    if(inOrderRadio.isSelected())
 	    {
+		if (event.getSource() == field1)
+		{
 
-		for(int x=0;x<field1.getText().length();x++)
-		{
-		    linkedList.add(field1.getText().substring(x,x+1));
+		    for(int x=0;x<field1.getText().length();x++)
+		    {
+			textLinkedList.add(field1.getText().substring(x,x+1));
+		    }
+		    timer.start();
 		}
-		timer.start();
-	    }
-	    if(event.getSource() == timer)
-	    {
-		if(linkedList.size()==0)
+		if(event.getSource() == timer)
 		{
-		    flashTextPanel.setText("done");
-		    flashTextPanel.repaint();
-		}
-		else
-		{
-		    flashTextPanel.setText(linkedList.get(0));
-		    flashTextPanel.repaint();
-		    linkedList.remove(0);
+		    flashGivenText(textLinkedList);
 		}
 	    }
 	}
     }
-
-    
-
+    public void flashGivenText(LinkedList<String> linkedList)
+    {
+	if(linkedList.size()==0)
+	{
+	    flashTextPanel.setText("done");
+	    flashTextPanel.repaint();
+	}
+	else
+	{
+	    flashTextPanel.setText(linkedList.get(0));
+	    flashTextPanel.repaint();
+	    linkedList.remove(0);
+	}
+    }
 }
     
 
