@@ -229,7 +229,7 @@ public class ScrambleTracer
      * After changes are reflected in newedges/newcorners, these changes must be reflected in edges/corners.
      * This method does just that.
      * 
-     * NOTE-I don't really fully understand this bit of code.
+     * 
      */
     public void updateEdgesCorners()
     {
