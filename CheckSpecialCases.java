@@ -7,7 +7,7 @@
 import java.util.*;
 public class CheckSpecialCases
 {
-    protected static final int ORIENTED = 0;
+    protected static final int PERMED = 0;
     protected static final int UNORIENTED = 2;
 
     protected ScrambleTracer tracer;

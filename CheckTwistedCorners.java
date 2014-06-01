@@ -1,7 +1,5 @@
 public class CheckTwistedCorners extends CheckSpecialCases
 {
-
-
     protected static final int CW = 1;
     protected static final int CCW = -1;
 
@@ -34,7 +32,7 @@ public class CheckTwistedCorners extends CheckSpecialCases
 	   && cornerMap.get("F").equals("F")
 	   && cornerMap.get("K").equals("K"))
 	{
-	    return ORIENTED;
+	    return PERMED;
 	}
 	if(cornerMap.get("A").equals("F")
 	   && cornerMap.get("F").equals("K")
@@ -57,7 +55,7 @@ public class CheckTwistedCorners extends CheckSpecialCases
 	   && cornerMap.get("J").equals("J")
 	   && cornerMap.get("N").equals("N"))
 	{
-	    return ORIENTED;
+	    return PERMED;
 	}
 	if(cornerMap.get("B").equals("J")
 	   && cornerMap.get("J").equals("N")
@@ -80,7 +78,7 @@ public class CheckTwistedCorners extends CheckSpecialCases
 	   && cornerMap.get("O").equals("O")
 	   && cornerMap.get("S").equals("S"))
 	{
-	    return ORIENTED;
+	    return PERMED;
 	}
 	if(cornerMap.get("C").equals("O")
 	   && cornerMap.get("O").equals("S")
@@ -103,7 +101,7 @@ public class CheckTwistedCorners extends CheckSpecialCases
 	   && cornerMap.get("G").equals("G")
 	   && cornerMap.get("R").equals("R"))
 	{
-	    return ORIENTED;
+	    return PERMED;
 	}
 	if(cornerMap.get("D").equals("R")
 	   && cornerMap.get("G").equals("D")
@@ -126,7 +124,7 @@ public class CheckTwistedCorners extends CheckSpecialCases
 	   && cornerMap.get("L").equals("L")
 	   && cornerMap.get("U").equals("U"))
 	{
-	    return ORIENTED;
+	    return PERMED;
 	}
 	if(cornerMap.get("E").equals("U")
 	   && cornerMap.get("L").equals("E")
@@ -149,7 +147,7 @@ public class CheckTwistedCorners extends CheckSpecialCases
 	   && cornerMap.get("M").equals("M")
 	   && cornerMap.get("V").equals("V"))
 	{
-	    return ORIENTED;
+	    return PERMED;
 	}
 	if(cornerMap.get("I").equals("V")
 	   && cornerMap.get("M").equals("I")
@@ -172,7 +170,7 @@ public class CheckTwistedCorners extends CheckSpecialCases
 	   && cornerMap.get("T").equals("T")
 	   && cornerMap.get("W").equals("W"))
 	{
-	    return ORIENTED;
+	    return PERMED;
 	}
 	if(cornerMap.get("P").equals("W")
 	   && cornerMap.get("T").equals("Q")
@@ -195,7 +193,7 @@ public class CheckTwistedCorners extends CheckSpecialCases
 	   && cornerMap.get("Q").equals("Q")
 	   && cornerMap.get("Y").equals("Y"))
 	{
-	    return ORIENTED;
+	    return PERMED;
 	}
 	if(cornerMap.get("H").equals("Q")
 	   && cornerMap.get("Q").equals("Y")
