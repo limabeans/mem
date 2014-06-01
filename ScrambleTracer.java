@@ -35,6 +35,11 @@ public class ScrambleTracer
         genFreshCube();
        
     }
+    public ScrambleTracer(String inputtedScramble)
+    {
+	genFreshCube();
+	scrambleToTurns(inputtedScramble);
+    }
     /*
      * printEverything and checkTurns are mainly used by me for debugging.
      */
@@ -59,11 +64,11 @@ public class ScrambleTracer
         
     }
     //methods used to get the Edge and Corner maps
-    public LinkedHashMap<String,String> getEdgesMap()
+    public LinkedHashMap<String,String> getEdgeMap()
     {
         return (LinkedHashMap<String,String>)edges;
     }
-    public LinkedHashMap<String,String> getCornersMap()
+    public LinkedHashMap<String,String> getCornerMap()
     {
         return (LinkedHashMap<String,String>)corners;
     }
@@ -84,7 +89,6 @@ public class ScrambleTracer
         for(int x=0;x<scramble.length();x++)
         {
             String move = "";
-            
             while(!(Character.toString(scramble.charAt(x)).equals(" ")))
             {
                 
