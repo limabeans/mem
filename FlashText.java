@@ -6,11 +6,11 @@ import java.util.*;
 public class FlashText extends JPanel
 {
     private Random rand = new Random();
-    private String letter = "default";
+    private String text = "default";
 
-    public void setLetter(String newLetter)
+    public void setText(String newText)
     {
-	letter = newLetter;
+	text = newText;
     }
     public void paintComponent(Graphics g)
     {
@@ -18,7 +18,7 @@ public class FlashText extends JPanel
 	g.setColor(Color.BLACK);
 	Font font = new Font("Arial",Font.BOLD,100);
 	g.setFont(font);
-	g.drawString(letter,100,100);
+	g.drawString(text,100,100);
 
     }
 }
