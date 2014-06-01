@@ -2,14 +2,10 @@ import java.util.*;
 public class EdgeCommSolver extends Tracer 
 {
     private String givenScramble;
-    private LinkedHashMap<String,String> edgeMap;
+
 
     public EdgeCommSolver(String scramble)
     {
-	super(scramble);
-	givenScramble = scramble;
-	tracer = new Tracer(scramble);
-	edgeMap = tracer.getEdgeMap();
     }
     public String idNextComm()
     {
@@ -24,18 +20,18 @@ public class EdgeCommSolver extends Tracer
     }
     public boolean isEdgesSolved()
     {
-	if(checkAG()==PERMED
-	   && checkBK()==PERMED
-	   && checkCO()==PERMED
-	   && checkDS()==PERMED
-	   && checkEU()==PERMED
-	   && checkIV()==PERMED
-	   && checkMW()==PERMED
-	   && checkQY()==PERMED
-	   && checkFL()==PERMED
-	   && checkJN()==PERMED
-	   && checkPT()==PERMED
-	   && checkHR()==PERMED)
+	if(checkAG()==SOLVED
+	   && checkBK()==SOLVED
+	   && checkCO()==SOLVED
+	   && checkDS()==SOLVED
+	   && checkEU()==SOLVED
+	   && checkIV()==SOLVED
+	   && checkMW()==SOLVED
+	   && checkQY()==SOLVED
+	   && checkFL()==SOLVED
+	   && checkJN()==SOLVED
+	   && checkPT()==SOLVED
+	   && checkHR()==SOLVED)
 	    return true;
 	return false;
     }
@@ -43,18 +39,18 @@ public class EdgeCommSolver extends Tracer
     {
 	if(!isEdgesSolved())
 	{
-	    if(checkAG()!=UNORIENTED
-	       && checkBK()!=UNORIENTED
-	       && checkCO()!=UNORIENTED
-	       && checkDS()!=UNORIENTED
-	       && checkEU()!=UNORIENTED
-	       && checkIV()!=UNORIENTED
-	       && checkMW()!=UNORIENTED
-	       && checkQY()!=UNORIENTED
-	       && checkFL()!=UNORIENTED
-	       && checkJN()!=UNORIENTED
-	       && checkPT()!=UNORIENTED
-	       && checkHR()!=UNORIENTED)
+	    if(checkAG()!=UNSOLVED
+	       && checkBK()!=UNSOLVED
+	       && checkCO()!=UNSOLVED
+	       && checkDS()!=UNSOLVED
+	       && checkEU()!=UNSOLVED
+	       && checkIV()!=UNSOLVED
+	       && checkMW()!=UNSOLVED
+	       && checkQY()!=UNSOLVED
+	       && checkFL()!=UNSOLVED
+	       && checkJN()!=UNSOLVED
+	       && checkPT()!=UNSOLVED
+	       && checkHR()!=UNSOLVED)
 	    {
 		//not solved, in the right place--> flipped!
 		return true;
