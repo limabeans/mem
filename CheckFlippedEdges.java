@@ -1,6 +1,7 @@
 public class CheckFlippedEdges extends CheckSpecialCases
 {
     protected static final int FLIPPED = 1;
+    
     public CheckFlippedEdges(String inputtedScramble)
     {
 	super(inputtedScramble);
@@ -28,7 +29,7 @@ public class CheckFlippedEdges extends CheckSpecialCases
 	if(edgeMap.get("A").equals("A")
 	   && edgeMap.get("G").equals("G"))
 	{
-	    return ORIENTED;
+	    return PERMED;
 	}
 	if(edgeMap.get("A").equals("G")
 	   && edgeMap.get("G").equals("A"))
@@ -42,7 +43,7 @@ public class CheckFlippedEdges extends CheckSpecialCases
 	if(edgeMap.get("B").equals("B")
 	   && edgeMap.get("K").equals("K"))
 	{
-	    return ORIENTED;
+	    return PERMED;
 	}
 	if(edgeMap.get("B").equals("K")
 	   && edgeMap.get("K").equals("B"))
@@ -56,7 +57,7 @@ public class CheckFlippedEdges extends CheckSpecialCases
 	if(edgeMap.get("C").equals("C")
 	   && edgeMap.get("O").equals("O"))
 	{
-	    return ORIENTED;
+	    return PERMED;
 	}
 	if(edgeMap.get("C").equals("O")
 	   && edgeMap.get("O").equals("C"))
@@ -70,7 +71,7 @@ public class CheckFlippedEdges extends CheckSpecialCases
 	if(edgeMap.get("D").equals("D")
 	   && edgeMap.get("S").equals("S"))
 	{
-	    return ORIENTED;
+	    return PERMED;
 	}
 	if(edgeMap.get("D").equals("S")
 	   && edgeMap.get("S").equals("D"))
@@ -84,7 +85,7 @@ public class CheckFlippedEdges extends CheckSpecialCases
 	if(edgeMap.get("E").equals("E")
 	   && edgeMap.get("U").equals("U"))
 	{
-	    return ORIENTED;
+	    return PERMED;
 	}
 	if(edgeMap.get("E").equals("U")
 	   && edgeMap.get("U").equals("E"))
@@ -98,7 +99,7 @@ public class CheckFlippedEdges extends CheckSpecialCases
 	if(edgeMap.get("I").equals("I")
 	   && edgeMap.get("V").equals("V"))
 	{
-	    return ORIENTED;
+	    return PERMED;
 	}
 	if(edgeMap.get("I").equals("V")
 	   && edgeMap.get("V").equals("I"))
@@ -112,7 +113,7 @@ public class CheckFlippedEdges extends CheckSpecialCases
 	if(edgeMap.get("M").equals("M")
 	   && edgeMap.get("W").equals("W"))
 	{
-	    return ORIENTED;
+	    return PERMED;
 	}
 	if(edgeMap.get("M").equals("W")
 	   && edgeMap.get("W").equals("M"))
@@ -126,7 +127,7 @@ public class CheckFlippedEdges extends CheckSpecialCases
 	if(edgeMap.get("Q").equals("Q")
 	   && edgeMap.get("Y").equals("Y"))
 	{
-	    return ORIENTED;
+	    return PERMED;
 	}
 	if(edgeMap.get("Q").equals("Y")
 	   && edgeMap.get("Y").equals("Q"))
@@ -140,7 +141,7 @@ public class CheckFlippedEdges extends CheckSpecialCases
 	if(edgeMap.get("F").equals("F")
 	   && edgeMap.get("L").equals("L"))
 	{
-	    return ORIENTED;
+	    return PERMED;
 	}
 	if(edgeMap.get("F").equals("L")
 	   && edgeMap.get("L").equals("F"))
@@ -154,7 +155,7 @@ public class CheckFlippedEdges extends CheckSpecialCases
 	if(edgeMap.get("J").equals("J")
 	   && edgeMap.get("N").equals("N"))
 	{
-	    return ORIENTED;
+	    return PERMED;
 	}
 	if(edgeMap.get("J").equals("N")
 	   && edgeMap.get("N").equals("J"))
@@ -168,7 +169,7 @@ public class CheckFlippedEdges extends CheckSpecialCases
 	if(edgeMap.get("P").equals("P")
 	   && edgeMap.get("T").equals("T"))
 	{
-	    return ORIENTED;
+	    return PERMED;
 	}
 	if(edgeMap.get("P").equals("T")
 	   && edgeMap.get("T").equals("P"))
@@ -182,7 +183,7 @@ public class CheckFlippedEdges extends CheckSpecialCases
 	if(edgeMap.get("H").equals("H")
 	   && edgeMap.get("R").equals("R"))
 	{
-	    return ORIENTED;
+	    return PERMED;
 	}
 	if(edgeMap.get("H").equals("R")
 	   && edgeMap.get("R").equals("H"))

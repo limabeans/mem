@@ -10,7 +10,7 @@ public class CheckSpecialCases
     protected static final int PERMED = 0;
     protected static final int UNORIENTED = 2;
 
-    protected ScrambleTracer tracer;
+    protected Tracer tracer;
     protected String scramble;
     protected LinkedHashMap<String,String> edgeMap;
     protected LinkedHashMap<String,String> cornerMap;
@@ -25,14 +25,14 @@ public class CheckSpecialCases
     public CheckSpecialCases(String inputtedScramble)
     {
 	scramble = inputtedScramble;
-	tracer = new ScrambleTracer(inputtedScramble);
+	tracer = new Tracer(inputtedScramble);
 	edgeMap = tracer.getEdgeMap();
 	cornerMap = tracer.getCornerMap();
     }
     public void setScramble(String newScramble)
     {
 	scramble=newScramble;
-	tracer = new ScrambleTracer(scramble);
+	tracer = new Tracer(scramble);
 	edgeMap = tracer.getEdgeMap();
 	cornerMap = tracer.getCornerMap();
     }
@@ -42,20 +42,9 @@ public class CheckSpecialCases
     }
     public String toString()
     {
-	return ("Given scramble: " 
-		+scramble+"\n"
-		+"Flipped edges: "+checkFlippedEdges()+"\n"
-		//+"Twisted corners: "+checkTwistedCorners()+"\n"
-		+"Parity: "+hasParity(scramble)+"\n");
+	return "broken";
     }
 
-    //1. FLIPPED EDGES
-    public static boolean checkFlippedEdges()
-    {
-	return false;
-    }
-
-    //2. TWISTED CORNERS
  
     //3. PARITY
     public static boolean hasParity(String scramble)

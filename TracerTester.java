@@ -5,31 +5,28 @@ public class TracerTester
 	boolean desire = true;
 	Scrambler scrambler = new Scrambler();
 	String testscramble = scrambler.genScramble();
-	CheckTwistedCorners ctc = new CheckTwistedCorners(testscramble);
-	CheckFlippedEdges cfe = new CheckFlippedEdges(testscramble);
-	while(desire)
+	Tracer tracer = new Tracer(testscramble);
+	tracer.printEverything();
+	while(!(tracer.hasFlippedEdges()&&tracer.hasTwistedCorners()))
 	{
-	    testscramble=scrambler.genScramble();
-	    ctc.setScramble(testscramble);
-	    cfe.setScramble(testscramble);
-	    if(cfe.hasFlippedEdges()&&ctc.hasTwistedCorners())
-	    {
-		desire = false;
-	    }
+	    System.out.println("fail");
+	    testscramble = scrambler.genScramble();
+	    tracer = new Tracer(testscramble);
+
+
 	}
-	ScrambleTracer scrambleTracer = new ScrambleTracer(testscramble);
 
 	System.out.println(testscramble);
-
+	/*
 	System.out.println("maps BEFORE scramble is applied-");
 	System.out.println("(everything should be matching up)");
-	scrambleTracer.printEverything();
+	tracer.printEverything();
 	System.out.println("-------------------------");
 
-      	scrambleTracer.scrambleToTurns(testscramble);
+      	tracer.scrambleToTurns(testscramble);
 
 	System.out.println("maps AFTER the scramble is appied-");
-	scrambleTracer.printEverything();
+	tracer.printEverything();*/
 
     }
 }

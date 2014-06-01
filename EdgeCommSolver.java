@@ -1,23 +1,14 @@
 import java.util.*;
-public class EdgeCommSolver extends CheckFlippedEdges implements CubeCommSolver
+public class EdgeCommSolver extends Tracer 
 {
-    private ScrambleTracer tracer;
     private String givenScramble;
     private LinkedHashMap<String,String> edgeMap;
-    public static void main(String[] args)
-    {
-	Scrambler scrambler = new Scrambler();
-	String tempScramble = scrambler.genScramble();
-	System.out.println(tempScramble);
-	EdgeCommSolver edgeSolver = new EdgeCommSolver(tempScramble);
-	CheckSpecialCases csc = new CheckSpecialCases(tempScramble);
 
-	System.out.println(edgeSolver.idNextComm());
-    }
     public EdgeCommSolver(String scramble)
     {
+	super(scramble);
 	givenScramble = scramble;
-	tracer = new ScrambleTracer(scramble);
+	tracer = new Tracer(scramble);
 	edgeMap = tracer.getEdgeMap();
     }
     public String idNextComm()
@@ -50,7 +41,7 @@ public class EdgeCommSolver extends CheckFlippedEdges implements CubeCommSolver
     }
     public boolean flippedEdgesLeft()
     {
-	if(!isEdgesSolved)
+	if(!isEdgesSolved())
 	{
 	    if(checkAG()!=UNORIENTED
 	       && checkBK()!=UNORIENTED
@@ -74,7 +65,8 @@ public class EdgeCommSolver extends CheckFlippedEdges implements CubeCommSolver
 	//they're actually all solved
 	return false;
 
-    }
-    
-    
+	}
+
 }
+    
+
