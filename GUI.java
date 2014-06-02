@@ -21,16 +21,19 @@ public class GUI extends JFrame implements KeyListener
     private CommSolver solver;
 
     //GUI instances
-    private JTextField timerTextField, generatedScramble;
-    private JLabel scrambleLabel;
-    private JTextArea scrambleInfo, scrambleTimes;
-    private JPanel panel1,panel2,panel3,panel4,panel5,panel6,panel7,panel8;
+    private JTextField timerTextField, generatedScramble, forceEdgeTextField, forceCornerTextField;
+    private JLabel scrambleLabel, scrambleAnalysisLabel, forceEdgeLabel, forceCornerLabel;
+    private JTextArea scrambleAnalysisTextArea, solveTimesTextArea;
+    private JPanel panel1,panel2,panel3,panel4,panel5,panel6;
+    private JToggleButton timingMemoToggle;
+    private JRadioButton randomRadioButton, parityRadioButton, noParityRadioButton;
+    private JCheckBox edgeFlipsCheckBox, cornerTwistsCheckBox;
+    
     private javax.swing.Timer timer;
 
     //actual data
-    private String currentTime;
-    private String previousTime;
-    private String scrambleInfoString;
+    private String solveTime;
+    private String scrambleAnalysisString;
 
     //variables that are constantly changing
     private long startTime;
@@ -51,19 +54,26 @@ public class GUI extends JFrame implements KeyListener
 	solver = new CommSolver(scramble);
 
 	panel1 = new JPanel();
+	panel1.setLayout(new GridLayout(2,1));
 	scrambleLabel = new JLabel("Scramble: ");
+	scrambleLabel.setHorizontalAlignment(JLabel.CENTER);
 	scrambleLabel.setFont(SCRAMBLE_FONT);
-	panel1.add(scrambleLabel);
+	//	panel1.add(scrambleLabel);
 	generatedScramble = new JTextField(scramble);
 	generatedScramble.setEditable(false);
+	generatedScramble.setHorizontalAlignment(JLabel.CENTER);
 	generatedScramble.setFont(SCRAMBLE_FONT);
 	panel1.add(generatedScramble);
 	this.add(panel1);
 
 	panel2 = new JPanel();
-        scrambleInfoString = solver.toString();
-	scrambleInfo = new JTextArea(scrambleInfoString);
-	panel2.add(scrambleInfo);
+	panel2.setLayout(new GridLayout(2,1));
+	scrambleAnalysisLabel = new JLabel("Scramble Analysis");
+	scrambleAnalysisLabel.setHorizontalAlignment(JLabel.CENTER);
+	//	panel2.add(scrambleAnalysisLabel);
+        scrambleAnalysisString = ""; //initialize to nothing
+	scrambleAnalysisTextArea = new JTextArea(scrambleAnalysisString);
+	panel2.add(scrambleAnalysisTextArea);
 	this.add(panel2);
 
 	panel3 = new JPanel();	
@@ -77,21 +87,49 @@ public class GUI extends JFrame implements KeyListener
 	
 
 	panel4 = new JPanel();
-	JLabel temp4 = new JLabel("this is where the options will go");
-	panel4.add(temp4);
+	panel4.setLayout(new GridLayout(5,1));
+	timingMemoToggle = new JToggleButton("Timing memo: OFF");
+	JPanel panel4_2 = new JPanel();
+	randomRadioButton = new JRadioButton("random");
+	parityRadioButton = new JRadioButton("with parity");
+	noParityRadioButton = new JRadioButton("without parity",true);
+	panel4_2.add(randomRadioButton);
+	panel4_2.add(parityRadioButton);
+	panel4_2.add(noParityRadioButton);
+	JPanel panel4_3 = new JPanel();
+	edgeFlipsCheckBox = new JCheckBox("edge flips");
+	cornerTwistsCheckBox = new JCheckBox("corner twists");
+	panel4_3.add(edgeFlipsCheckBox);
+	panel4_3.add(cornerTwistsCheckBox);
+	JPanel panel4_4 = new JPanel();
+	forceEdgeLabel = new JLabel("force edge: ");
+	forceEdgeTextField = new JTextField(5);
+	panel4_4.add(forceEdgeLabel);
+	panel4_4.add(forceEdgeTextField);
+	JPanel panel4_5 = new JPanel();
+	forceCornerLabel = new JLabel("force corner: ");
+	forceCornerTextField = new JTextField(5);
+	panel4_5.add(forceCornerLabel);
+	panel4_5.add(forceCornerTextField);
+
+	panel4.add(timingMemoToggle);
+	panel4.add(panel4_2);	
+	panel4.add(panel4_3);
+	panel4.add(panel4_4);
+	panel4.add(panel4_5);
 	this.add(panel4);
 
 	panel5 = new JPanel();
-	scrambleTimes = new JTextArea("SCRAMBLE STATS");
-	scrambleTimes.setEditable(false);
-	scrambleTimes.setLineWrap(true);
-	scrambleTimes.setRows(10);
-	scrambleTimes.setColumns(20);
-	panel5.add(scrambleTimes);
-	JScrollPane scrambleTimesScroll = new JScrollPane(scrambleTimes);
-	scrambleTimesScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+	solveTimesTextArea = new JTextArea("SCRAMBLE STATS");
+	solveTimesTextArea.setEditable(false);
+	solveTimesTextArea.setLineWrap(true);
+	solveTimesTextArea.setRows(10);
+	solveTimesTextArea.setColumns(20);
+	panel5.add(solveTimesTextArea);
+	JScrollPane solveTimesTextAreaScroll = new JScrollPane(solveTimesTextArea);
+	solveTimesTextAreaScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-	panel5.add(scrambleTimesScroll);
+	panel5.add(solveTimesTextAreaScroll);
 	this.add(panel5);
 
 	panel6 = new JPanel();
@@ -123,16 +161,20 @@ public class GUI extends JFrame implements KeyListener
 	    {
 		started=false;
 		updateTimer();
-		updateScrambleTimes(); //write to bottom
-		scrambleInfo.setText(scrambleInfoString); //write to write
-		
+		startTime = 0;
+		timer.stop();
+		updateSolveTimesTextArea(); //write to bottom
+		scrambleAnalysisString = solver.toString();
+		scrambleAnalysisTextArea.setText(scrambleAnalysisString); //write to right
+
+		//generating and prepping new for new scramble
 		scramble = scrambler.genEasyScramble();
 		generatedScramble.setText(scramble);
 		solver.refresh(scramble);
-		scrambleInfoString = solver.toString();
-		scrambleInfo.setText(scrambleInfoString);
-		startTime = 0;
-		timer.stop();
+		scrambleAnalysisString = solver.toString();
+		scrambleAnalysisTextArea.setText(scrambleAnalysisString);
+
+
 	    }
 	}
     }
@@ -150,16 +192,16 @@ public class GUI extends JFrame implements KeyListener
 	}
     }
 
-    public void updateScrambleTimes()
+    public void updateSolveTimesTextArea()
     {
-	scrambleSBuilder.append(currentTime + " ,");
-	scrambleTimes.setText(scrambleSBuilder.toString());
+	scrambleSBuilder.append(solveTime + " ,");
+	solveTimesTextArea.setText(scrambleSBuilder.toString());
     }
-    public void updateTimer()
+    public void updateTimer() //calcuates the solve time, sets it to solveTime, and edits timerTextField
     {
 	Date elapsed = new Date(System.currentTimeMillis() - startTime);
-	currentTime = SIMPLE_DATE_FORMAT.format(elapsed);
-	timerTextField.setText(currentTime);
+	solveTime = SIMPLE_DATE_FORMAT.format(elapsed);
+	timerTextField.setText(solveTime);
     }
 
 

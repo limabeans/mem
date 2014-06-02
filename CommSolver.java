@@ -43,6 +43,7 @@ public class CommSolver
 	String reported = "scramble: " + scramble + "\n"
 	    + "parity: " + hasParity + "\n"
 	    + "edge cycle: " + edgeCycles + "\n"
+	    + "corner cycle: " + cornerCycles + "\n"
 	    + "edge flips: " + hasEdgeFlips + " / edge cycle breaks: " + hasEdgeCycleBreaks + "\n"
  	    + "corner flips: " + hasCornerTwists + " / corner cycle breaks: " + hasCornerCycleBreaks + "\n";
 	
