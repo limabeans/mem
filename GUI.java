@@ -8,10 +8,10 @@ import java.io.*;
 public class GUI extends JFrame implements KeyListener
 {
     //constants
-    private final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("mm:ss.SSS");
+    private final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("m:ss.SSS");
     private final int TIMER_DELAY = 53;
     private final int TIMER_FIELD_SIZE = 6;
-    private final Font TIMER_FONT = new Font("Arial",Font.BOLD,70);
+    private final Font TIMER_FONT = new Font("Arial",Font.BOLD,85);
     private final Font SCRAMBLE_FONT = new Font("Serif",Font.BOLD,15);
 
     private Scrambler scrambler = new Scrambler();
@@ -22,7 +22,7 @@ public class GUI extends JFrame implements KeyListener
 
     //GUI instances
     private JTextField timerTextField, generatedScramble, forceEdgeTextField, forceCornerTextField;
-    private JLabel scrambleLabel, scrambleAnalysisLabel, forceEdgeLabel, forceCornerLabel;
+    private JLabel forceEdgeLabel, forceCornerLabel;
     private JTextArea scrambleAnalysisTextArea, solveTimesTextArea;
     private JPanel panel1,panel2,panel3,panel4,panel5,panel6;
     private JToggleButton timingMemoToggle;
@@ -40,7 +40,7 @@ public class GUI extends JFrame implements KeyListener
     private boolean started;
 
     public static void main(String[] args)
-	    {
+    {
 	GUI exe = new GUI();
     }
 
@@ -50,39 +50,37 @@ public class GUI extends JFrame implements KeyListener
 	started = false;
 	this.setLayout(new GridLayout(3,2));
 
-	appendLog(); //debuggin purposes
+	appendLog(); //debugging purposes
 	solver = new CommSolver(scramble);
 
 	panel1 = new JPanel();
-	panel1.setLayout(new GridLayout(2,1));
-	scrambleLabel = new JLabel("Scramble: ");
-	scrambleLabel.setHorizontalAlignment(JLabel.CENTER);
-	scrambleLabel.setFont(SCRAMBLE_FONT);
-	//	panel1.add(scrambleLabel);
+	panel1.setLayout(new BorderLayout());
+
 	generatedScramble = new JTextField(scramble);
 	generatedScramble.setEditable(false);
 	generatedScramble.setHorizontalAlignment(JLabel.CENTER);
+
 	generatedScramble.setFont(SCRAMBLE_FONT);
-	panel1.add(generatedScramble);
+	panel1.add(generatedScramble,BorderLayout.CENTER);
 	this.add(panel1);
 
 	panel2 = new JPanel();
-	panel2.setLayout(new GridLayout(2,1));
-	scrambleAnalysisLabel = new JLabel("Scramble Analysis");
-	scrambleAnalysisLabel.setHorizontalAlignment(JLabel.CENTER);
-	//	panel2.add(scrambleAnalysisLabel);
-        scrambleAnalysisString = ""; //initialize to nothing
+	panel2.setLayout(new BorderLayout());
+        scrambleAnalysisString = "Welcome to Angel Lim's BLD timer!";
 	scrambleAnalysisTextArea = new JTextArea(scrambleAnalysisString);
-	panel2.add(scrambleAnalysisTextArea);
+	scrambleAnalysisTextArea.setEditable(false);
+	scrambleAnalysisTextArea.setFont(SCRAMBLE_FONT);
+	panel2.add(scrambleAnalysisTextArea,BorderLayout.CENTER);
 	this.add(panel2);
 
 	panel3 = new JPanel();	
+	panel3.setLayout(new BorderLayout());
 	timerTextField = new JTextField("Ready",TIMER_FIELD_SIZE);
 	timerTextField.setFont(TIMER_FONT);
 	timerTextField.setHorizontalAlignment(JTextField.CENTER);
 	timerTextField.setEditable(false);
 	timer = new javax.swing.Timer(TIMER_DELAY, new ClockListener());
-	panel3.add(timerTextField);
+	panel3.add(timerTextField, BorderLayout.CENTER);
 	this.add(panel3);
 	
 
@@ -102,15 +100,16 @@ public class GUI extends JFrame implements KeyListener
 	panel4_3.add(edgeFlipsCheckBox);
 	panel4_3.add(cornerTwistsCheckBox);
 	JPanel panel4_4 = new JPanel();
-	forceEdgeLabel = new JLabel("force edge: ");
+	forceEdgeLabel = new JLabel("force edge comm: ");
 	forceEdgeTextField = new JTextField(5);
 	panel4_4.add(forceEdgeLabel);
 	panel4_4.add(forceEdgeTextField);
-	JPanel panel4_5 = new JPanel();
-	forceCornerLabel = new JLabel("force corner: ");
+	forceCornerLabel = new JLabel("force corner comm: ");
 	forceCornerTextField = new JTextField(5);
-	panel4_5.add(forceCornerLabel);
-	panel4_5.add(forceCornerTextField);
+	panel4_4.add(forceCornerLabel);
+	panel4_4.add(forceCornerTextField);
+	JPanel panel4_5 = new JPanel();
+
 
 	panel4.add(timingMemoToggle);
 	panel4.add(panel4_2);	
@@ -145,6 +144,8 @@ public class GUI extends JFrame implements KeyListener
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	setVisible(true);
     }
+
+
     public void keyTyped(KeyEvent e) {} public void keyReleased(KeyEvent e) {}
     public void keyPressed(KeyEvent e)
     {
@@ -171,10 +172,6 @@ public class GUI extends JFrame implements KeyListener
 		scramble = scrambler.genEasyScramble();
 		generatedScramble.setText(scramble);
 		solver.refresh(scramble);
-		scrambleAnalysisString = solver.toString();
-		scrambleAnalysisTextArea.setText(scrambleAnalysisString);
-
-
 	    }
 	}
     }

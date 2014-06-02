@@ -40,7 +40,7 @@ public class CommSolver
     }
     public String toString()
     {
-	String reported = "scramble: " + scramble + "\n"
+	String reported = "last scramble:\n " + scramble + "\n"
 	    + "parity: " + hasParity + "\n"
 	    + "edge cycle: " + edgeCycles + "\n"
 	    + "corner cycle: " + cornerCycles + "\n"
