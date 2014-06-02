@@ -1,3 +1,4 @@
+import java.io.*;
 public class TracerTester
 {
     public static void main(String[] args)
@@ -7,32 +8,27 @@ public class TracerTester
 	Tracer tracer = new Tracer(testScramble);
 	CornerCommSolver cornerTracer = new CornerCommSolver(testScramble);
 	EdgeCommSolver edgeTracer = new EdgeCommSolver(testScramble);
-	for (int x = 1; x<=50; x++)
+
+
+	//will only generate easy scrambles
+	while(tracer.hasParity() || tracer.hasFlippedEdges() || tracer.hasTwistedCorners())
 	{
-	    System.out.println("#"+x);
-
-	    //will only generate easy scrambles
-	    while(tracer.hasParity() || tracer.hasFlippedEdges() || tracer.hasTwistedCorners())
-	    {
-		testScramble = scrambler.genScramble();
-		tracer = new Tracer(testScramble);
-		cornerTracer = new CornerCommSolver(testScramble);
-		edgeTracer = new EdgeCommSolver(testScramble);
-	    }
-	    System.out.println("SCRAMBLE: " + tracer.getScramble());
-	    System.out.println("INITIAL STATE");
-	    tracer.printEverything();
-
-	    cornerTracer.solveCorners();
-	    System.out.println(cornerTracer.toString());
-
-	    edgeTracer.solveEdges();
-	    System.out.println(edgeTracer.toString());
-
-	    System.out.println("FINAL STATE");
-	    System.out.println(cornerTracer.getCornerMap());
-	    System.out.println(edgeTracer.getEdgeMap());
+	    testScramble = scrambler.genScramble();
+	    tracer = new Tracer(testScramble);
+	    cornerTracer = new CornerCommSolver(testScramble);
+	    edgeTracer = new EdgeCommSolver(testScramble);
 	}
+	System.out.println("SCRAMBLE: " + tracer.getScramble());
+	try(PrintWriter out = new PrintWriter(new FileWriter("log.txt",true))){
+		out.print(String.format("%s\n",tracer.getScramble()));
+	    }catch (IOException e){}
+	cornerTracer.solveCorners();
+	System.out.println(cornerTracer.toString());
+
+	
+	System.out.println(cornerTracer.getCornerMap());
+	
+
 
 	//TESTING EDGE COMM SOLVER
 	/*String testScramble = scrambler.genScramble();

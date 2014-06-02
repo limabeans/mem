@@ -856,7 +856,7 @@ public class Tracer
 	    return SOLVED;
 	}
 	if(cornerMap.get("P").equals("W")
-	   && cornerMap.get("T").equals("Q")
+	   && cornerMap.get("T").equals("P")
 	   && cornerMap.get("W").equals("T"))
 	{
 	    return CW;
