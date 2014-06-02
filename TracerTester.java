@@ -11,7 +11,7 @@ public class TracerTester
 
 
 	//will only generate easy scrambles
-	while(tracer.hasParity() || tracer.hasFlippedEdges() || tracer.hasTwistedCorners())
+	while(tracer.hasParity() || edgeTracer.hasFlippedEdges() || cornerTracer.hasTwistedCorners())
 	{
 	    testScramble = scrambler.genScramble();
 	    tracer = new Tracer(testScramble);

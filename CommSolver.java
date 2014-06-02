@@ -21,17 +21,21 @@ public class CommSolver
     }
     public CommSolver(String givenScramble)
     {
+	refresh(givenScramble);
+    }
+    public void refresh(String newScramble)
+    {
 	cornerTracer = new CornerTracer(givenScramble);
 	edgeTracer = new EdgeTracer(givenScramble);
 	scramble = givenScramble;
 	hasParity = Tracer.hasParity(givenScramble);
 
 	edgeCycles = edgeTracer.traceEdges();
-	//hasEdgeFlips =
+	hasEdgeFlips = edgeTracer.hasFlippedEdges();
 	hasEdgeCycleBreaks = edgeTracer.getIfEdgeCycleBreaks();
 
 	cornerCycles = cornerTracer.traceCorners();
-	//hasCornerTwists =
+	hasCornerTwists = cornerTracer.hasTwistedCorners();
 	hasCornerCycleBreaks = cornerTracer.getIfCornerCycleBreaks();
     }
     public String toString()

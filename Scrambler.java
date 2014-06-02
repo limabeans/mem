@@ -19,11 +19,15 @@ public class Scrambler
 	Scrambler scrambler = new Scrambler();
 	String testScramble = scrambler.genScramble();
 	Tracer tracer = new Tracer(testScramble);
+	EdgeTracer edgeTracer = new EdgeTracer(testScramble);
+	CornerTracer cornerTracer = new CornerTracer(testScramble);
 
-	while(tracer.hasParity() || tracer.hasFlippedEdges() || tracer.hasTwistedCorners())
+	while(tracer.hasParity() || edgeTracer.hasFlippedEdges() || cornerTracer.hasTwistedCorners())
 	{
 	    testScramble = scrambler.genScramble();
 	    tracer = new Tracer(testScramble);
+	    edgeTracer = new EdgeTracer(testScramble);
+	    cornerTracer = new CornerTracer(testScramble);
 
 	}
 	return testScramble;
