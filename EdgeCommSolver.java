@@ -22,6 +22,7 @@ public class EdgeCommSolver extends Tracer
     {
 	return String.format("NO FLIPPED EDGES\nNO PARITY\nNumber of edge comms used: %s\nEdge letter sequence %s\nNumber of edge cycle breaks: %d",numEdgeIterations,edgeLetterSequence,numEdgeCycleBreaks);
     }
+
     public void solveEdges()
     {
 	while(!isEdgesSolved())
