@@ -3,7 +3,22 @@ public class TracerTester
     public static void main(String[] args)
     {
 	Scrambler scrambler = new Scrambler();
-	
+	String testScramble = scrambler.genScramble();
+	Tracer tracer = new CornerCommSolver(testScramble);
+	//will only generate easy scrambles
+	while(tracer.hasParity() || tracer.hasFlippedEdges() || tracer.hasTwistedCorners())
+	{
+	    testScramble = scrambler.genScramble();
+	    tracer = new CornerCommSolver(testScramble);
+	}
+	System.out.println("SCRAMBLE: " + tracer.getScramble());
+	System.out.println("INITIAL STATE OF CORNER MAP");
+	System.out.println(tracer.getCornerMap());
+
+	((CornerCommSolver)tracer).solveNextCornerComm();
+	System.out.println(tracer.toString());
+	System.out.println("FINAL STATE OF CORNER MAP");
+	System.out.println(tracer.getCornerMap());	
 
 	//TESTING EDGE COMM SOLVER
 	/*String testScramble = scrambler.genScramble();

@@ -14,26 +14,87 @@ public class CornerCommSolver extends Tracer
 	requiredCornerCycleBreak = false;
 	numCornerCycleBreaks = 0;
     }
+    public String toString()
+    {
+	return cornerLetterSequence;
+    }
     public void solveCorners()
     {
+	while(!isCornersSolved())
+	{
+	    solveNextCornerComm();
+	}
     }
-    private void solveNextCornerComm()
+    public void solveNextCornerComm()
     {
+	String[][] afterBuffer = determineNextTarget("C","O","S");
+	String[][] afterFirstTarget = determineNextTarget(afterBuffer[0][0],afterBuffer[1][0],afterBuffer[2][0]);
+	//insert into firstTarget
+	cornerMap.put(afterBuffer[0][0], cornerMap.get("C")); cornerMap.put(afterBuffer[1][0], cornerMap.get("O")); cornerMap.put(afterBuffer[2][0], cornerMap.get("S"));
+	//insert into lastTarget
+	cornerMap.put(afterFirstTarget[0][0],afterBuffer[0][1]); cornerMap.put(afterFirstTarget[1][0],afterBuffer[1][1]); cornerMap.put(afterFirstTarget[2][0],afterBuffer[2][1]);
+	//insert into buffer
+	cornerMap.put("C",afterFirstTarget[0][1]); cornerMap.put("O",afterFirstTarget[1][1]); cornerMap.put("S",afterFirstTarget[2][1]);
+
+	cornerLetterSequence = cornerLetterSequence + afterBuffer[0][0]+afterFirstTarget[0][0]+ " ";
+	numCornerIterations++;
     }
-    private String[][][] determineNextTarget(String loc1, String loc2, String loc3)
+    private String[][] determineNextTarget(String loc1, String loc2, String loc3)
     {
-	return null;
+	//loc1,loc2,loc3 labeled in a CCW fashion around the corner
+	String[][] nextTarget = new String[3][2];
+	if (cornerMap.get(loc1).equals("C")||cornerMap.get(loc1).equals("O")||cornerMap.get(loc1).equals("S")) //requires cycle break
+	{
+	}
+	else
+	{
+	    nextTarget[0][0] = cornerMap.get(loc1);
+	    nextTarget[0][1] = cornerMap.get(nextTarget[0][0]);
+	    nextTarget[1][0] = cornerMap.get(loc2);
+	    nextTarget[1][1] = cornerMap.get(nextTarget[1][0]);
+	    nextTarget[2][0] = cornerMap.get(loc3);
+	    nextTarget[2][1] = cornerMap.get(nextTarget[2][0]);
+	}
+	return nextTarget;
     }
     private String findCornerCycleBreak(String blacklist)
     {
+	for(Map.Entry<String,String> entry : cornerMap.entrySet())
+	{
+	    String currentKey = entry.getKey();
+	    String currentValue = entry.getValue();
+	    if((currentKey.equals("C") || currentKey.equals("O") || currentKey.equals("S")))
+	       {
+		   //don't put it at the buffer spot!
+	       }
+	       else if (currentKey.equals(blacklist) || currentKey.equals(returnOtherCornerStickerCW(blacklist)) || currentKey.equals(returnOtherCornerStickerCCW(blacklist)))
+	       {
+		   //don't pick your own sticker to cycle break into!
+	       }
+	}
+	return "FAILED TO FIND CYCLE BREAK";
+    }
+    private String returnOtherCornerStickerCW(String givenSticker)
+    {
 	return null;
     }
-    private String[] returnOtherCornerStickers(String firstSticker)
+    private String returnOtherCornerStickerCCW(String givenSticker)
     {
 	return null;
     }
     private boolean isCornersSolved()
     {
+	if(checkAFK()==SOLVED
+	   ||checkBJN()==SOLVED 
+	   ||checkCOS()==SOLVED 
+	   ||checkDGR()==SOLVED 
+	   ||checkELU()==SOLVED 
+	   ||checkIMV()==SOLVED 
+	   ||checkPTW()==SOLVED 
+	   ||checkHQY()==SOLVED)         
+	{
+	    return true;
+	}
 	return false;
     }
 
