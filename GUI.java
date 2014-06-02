@@ -18,8 +18,7 @@ public class GUI extends JFrame implements KeyListener
     private String scramble = scrambler.genEasyScramble();
     private StringBuilder scrambleSBuilder = new StringBuilder();
 
-    private CornerTracer cornerTracer;
-    private EdgeTracer edgeTracer;
+    private CommSolver solver;
 
     //GUI instances
     private JTextField timerTextField, generatedScramble;
@@ -41,20 +40,15 @@ public class GUI extends JFrame implements KeyListener
 	    {
 	GUI exe = new GUI();
     }
+
     public GUI()
     {
 	super("Angel Lim's mem");
 	started = false;
 	this.setLayout(new GridLayout(3,2));
-	
-	try(PrintWriter out = new PrintWriter(new FileWriter("log.txt",true))){
-		out.print(String.format("%s\n",scramble));
-	    } catch (IOException e){}
 
-	cornerTracer = new CornerTracer(scramble);
-	edgeTracer = new EdgeTracer(scramble);
-	cornerTracer.traceCorners(); edgeTracer.traceEdges();
-
+	appendLog(); //debuggin purposes
+	solver = new CommSolver(scramble);
 
 	panel1 = new JPanel();
 	scrambleLabel = new JLabel("Scramble: ");
@@ -67,7 +61,7 @@ public class GUI extends JFrame implements KeyListener
 	this.add(panel1);
 
 	panel2 = new JPanel();
-        scrambleInfoString = String.format(cornerTracer.toString()+"\n"+edgeTracer.toString());
+        scrambleInfoString = solver.toString();
 	scrambleInfo = new JTextArea(scrambleInfoString);
 	panel2.add(scrambleInfo);
 	this.add(panel2);
@@ -129,19 +123,25 @@ public class GUI extends JFrame implements KeyListener
 	    {
 		started=false;
 		updateTimer();
-		updateScrambleTimes();
-		scrambleInfo.setText(scrambleInfoString);
+		updateScrambleTimes(); //write to bottom
+		scrambleInfo.setText(scrambleInfoString); //write to write
 		
 		scramble = scrambler.genEasyScramble();
 		generatedScramble.setText(scramble);
-		updateTracers(scramble);
+		solver.refresh(scramble);
+		scrambleInfoString = solver.toString();
 		scrambleInfo.setText(scrambleInfoString);
 		startTime = 0;
 		timer.stop();
 	    }
 	}
     }
-
+    public void appendLog()
+    {
+	try(PrintWriter out = new PrintWriter(new FileWriter("log.txt",true))){
+		out.print(String.format("%s\n",scramble));
+	    } catch (IOException e){}
+    }
     class ClockListener implements ActionListener
     {
 	public void actionPerformed(ActionEvent e)
@@ -149,14 +149,7 @@ public class GUI extends JFrame implements KeyListener
 	    updateTimer();
 	}
     }
-    public void updateTracers(String newScramble)
-    {
-	cornerTracer = new CornerTracer(newScramble);
-	edgeTracer = new EdgeTracer(newScramble);
-	cornerTracer.traceCorners(); edgeTracer.traceEdges();
-	scrambleInfoString = String.format(cornerTracer.toString()+"\n"+edgeTracer.toString());
 
-    }
     public void updateScrambleTimes()
     {
 	scrambleSBuilder.append(currentTime + " ,");

@@ -25,10 +25,10 @@ public class CommSolver
     }
     public void refresh(String newScramble)
     {
-	cornerTracer = new CornerTracer(givenScramble);
-	edgeTracer = new EdgeTracer(givenScramble);
-	scramble = givenScramble;
-	hasParity = Tracer.hasParity(givenScramble);
+	cornerTracer = new CornerTracer(newScramble);
+	edgeTracer = new EdgeTracer(newScramble);
+	scramble = newScramble;
+	hasParity = Tracer.hasParity(newScramble);
 
 	edgeCycles = edgeTracer.traceEdges();
 	hasEdgeFlips = edgeTracer.hasFlippedEdges();
