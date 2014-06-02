@@ -1,4 +1,4 @@
-mem
+limatimer
 ===
 
 Memory training application for those who do BLD competitively. 
