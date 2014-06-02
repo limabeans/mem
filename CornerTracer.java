@@ -1,12 +1,12 @@
 import java.util.*;
 
-public class CornerCommSolver extends Tracer
+public class CornerTracer extends Tracer
 {
     private int numCornerIterations;
     private String cornerLetterSequence;
     private boolean requiredCornerCycleBreak;
     private int numCornerCycleBreaks;
-    public CornerCommSolver(String scramble)
+    public CornerTracer(String scramble)
     {
 	super(scramble);
 	numCornerIterations = 0;

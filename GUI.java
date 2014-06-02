@@ -18,8 +18,8 @@ public class GUI extends JFrame implements KeyListener
     private String scramble = genSafeScramble();
     private StringBuilder scrambleSBuilder = new StringBuilder();
 
-    private CornerCommSolver cornerTracer;
-    private EdgeCommSolver edgeTracer;
+    private CornerTracer cornerTracer;
+    private EdgeTracer edgeTracer;
 
     //GUI instances
     private JTextField timerTextField, generatedScramble;
@@ -38,7 +38,7 @@ public class GUI extends JFrame implements KeyListener
     private boolean started;
 
     public static void main(String[] args)
-    {
+	    {
 	GUI exe = new GUI();
     }
     public GUI()
@@ -51,8 +51,8 @@ public class GUI extends JFrame implements KeyListener
 		out.print(String.format("%s\n",scramble));
 	    } catch (IOException e){}
 
-	cornerTracer = new CornerCommSolver(scramble);
-	edgeTracer = new EdgeCommSolver(scramble);
+	cornerTracer = new CornerTracer(scramble);
+	edgeTracer = new EdgeTracer(scramble);
 	cornerTracer.solveCorners(); edgeTracer.solveEdges();
 
 
@@ -151,8 +151,8 @@ public class GUI extends JFrame implements KeyListener
     }
     public void updateTracers(String newScramble)
     {
-	cornerTracer = new CornerCommSolver(newScramble);
-	edgeTracer = new EdgeCommSolver(newScramble);
+	cornerTracer = new CornerTracer(newScramble);
+	edgeTracer = new EdgeTracer(newScramble);
 	cornerTracer.solveCorners(); edgeTracer.solveEdges();
 	scrambleInfoString = String.format(cornerTracer.toString()+"\n"+edgeTracer.toString());
 
@@ -178,8 +178,8 @@ public class GUI extends JFrame implements KeyListener
 	{
 	    testScramble = scrambler.genScramble();
 	    tracer = new Tracer(testScramble);
-	    cornerTracer = new CornerCommSolver(testScramble);
-	    edgeTracer = new EdgeCommSolver(testScramble);
+	    cornerTracer = new CornerTracer(testScramble);
+	    edgeTracer = new EdgeTracer(testScramble);
 	}
 	return testScramble;
     }

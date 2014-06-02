@@ -6,8 +6,8 @@ public class TracerTester
 	Scrambler scrambler = new Scrambler();
 	String testScramble = scrambler.genScramble();
 	Tracer tracer = new Tracer(testScramble);
-	CornerCommSolver cornerTracer = new CornerCommSolver(testScramble);
-	EdgeCommSolver edgeTracer = new EdgeCommSolver(testScramble);
+	CornerTracer cornerTracer = new CornerTracer(testScramble);
+	EdgeTracer edgeTracer = new EdgeTracer(testScramble);
 
 
 	//will only generate easy scrambles
@@ -15,8 +15,8 @@ public class TracerTester
 	{
 	    testScramble = scrambler.genScramble();
 	    tracer = new Tracer(testScramble);
-	    cornerTracer = new CornerCommSolver(testScramble);
-	    edgeTracer = new EdgeCommSolver(testScramble);
+	    cornerTracer = new CornerTracer(testScramble);
+	    edgeTracer = new EdgeTracer(testScramble);
 	}
 	System.out.println("SCRAMBLE: " + tracer.getScramble());
 	try(PrintWriter out = new PrintWriter(new FileWriter("log.txt",true))){
@@ -32,19 +32,19 @@ public class TracerTester
 
 	//TESTING EDGE COMM SOLVER
 	/*String testScramble = scrambler.genScramble();
-	Tracer tracer = new EdgeCommSolver(testScramble);
+	Tracer tracer = new EdgeTracer(testScramble);
 	//will only generate easy scrambles
 	while(tracer.hasParity() || tracer.hasFlippedEdges() || tracer.hasTwistedCorners())
 	{
 	    testScramble = scrambler.genScramble();
-	    tracer = new EdgeCommSolver(testScramble);
+	    tracer = new EdgeTracer(testScramble);
 	}
 	System.out.println("#"+x);
 	System.out.println("SCRAMBLE: " + tracer.getScramble());
 	System.out.println("INITIAL STATE OF EDGE MAP");
 	System.out.println(tracer.getEdgeMap());
 
-	((EdgeCommSolver)tracer).solveEdges();
+	((EdgeTracer)tracer).solveEdges();
 	System.out.println(tracer.toString());
 	System.out.println("FINAL STATE OF EDGE MAP");
 	System.out.println(tracer.getEdgeMap());

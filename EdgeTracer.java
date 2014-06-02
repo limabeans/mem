@@ -2,13 +2,13 @@ import java.util.*;
 /*
  *solveNextEdgeComm(), determineNextTarget(), findEdgeCycleBreak() all used to find/solve next edge comm
  */
-public class EdgeCommSolver extends Tracer 
+public class EdgeTracer extends Tracer 
 {
     private int numEdgeIterations;
     private String edgeLetterSequence;
     private boolean requiredEdgeCycleBreak;
     private int numEdgeCycleBreaks;
-    public EdgeCommSolver(String scramble)
+    public EdgeTracer(String scramble)
     {
 	super(scramble);
 	numEdgeIterations = 0;
