@@ -56,7 +56,7 @@ public class EdgeCommSolver extends Tracer
 	{
 	    nextTarget[0][0] = findEdgeCycleBreak(loc1);
 	    nextTarget[0][1] = edgeMap.get(nextTarget[0][0]);
-	    nextTarget[1][0] = returnOtherSticker(nextTarget[0][0]);
+	    nextTarget[1][0] = returnOtherEdgeSticker(nextTarget[0][0]);
 	    nextTarget[1][1] = edgeMap.get(nextTarget[1][0]); 
 	}
 	else
@@ -78,7 +78,7 @@ public class EdgeCommSolver extends Tracer
 	    {
 		//don't put it at the buffer spot!
 	    }
-	    else if(currentKey.equals(blacklist) || currentKey.equals(returnOtherSticker(blacklist)) )
+	    else if(currentKey.equals(blacklist) || currentKey.equals(returnOtherEdgeSticker(blacklist)) )
 	    {
 		//don't pick your own sticker to cycle break into!
 	    }
@@ -92,7 +92,7 @@ public class EdgeCommSolver extends Tracer
 	return "FAILED TO FIND CYCLE BREAK";
     }
 
-    private String returnOtherSticker(String firstSticker)
+    private String returnOtherEdgeSticker(String firstSticker)
     {
 	switch(firstSticker){
 	case "A":
