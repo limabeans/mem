@@ -21,12 +21,6 @@ public class Tracer
     private Map<String,String> newEdgeMap;
     private Map<String,String> newCornerMap;
     
-    public Tracer()
-    {
-	scramble = "";
-        genFreshCube();
-     
-    }
     public Tracer(String inputtedScramble)
     {
 	scramble = inputtedScramble;
@@ -506,8 +500,7 @@ public class Tracer
         turnB();turnB();
     }
 
-
-    public boolean hasFlippedEdges()
+   public boolean hasFlippedEdges()
     {
 	if(checkAG()==FLIPPED
 	   ||checkBK()==FLIPPED
@@ -893,6 +886,36 @@ public class Tracer
 	return UNSOLVED;
     }
 
+    public static boolean hasParity(String testScramble)
+    {
+        testScramble = testScramble.trim();
+        testScramble = testScramble + " ";
+        String currentTwist = "";
+        int loc = 0;
+        int parityCounter = 0;
+        while (loc < testScramble.length())
+        {
+            while(testScramble.charAt(loc)!=' ')
+            {
+                currentTwist = currentTwist + testScramble.charAt(loc);
+                loc++;
+            }
+            if(parityContributor(currentTwist))
+            {
+                parityCounter++;
+            }
+            currentTwist = "";
+            if (testScramble.charAt(loc)== ' ')
+            {
+                loc++;
+            }
+        }
+        if (parityCounter%2==1)
+        {
+            return true;
+        }
+        return false;        
+    }
     public boolean hasParity()
     {
         scramble = scramble.trim();

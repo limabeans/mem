@@ -14,16 +14,21 @@ public class CornerTracer extends Tracer
 	requiredCornerCycleBreak = false;
 	numCornerCycleBreaks = 0;
     }
+    public boolean getIfCornerCycleBreaks()
+    {
+	return requiredCornerCycleBreak;
+    }
     public String toString()
     {
 	return String.format("NO TWISTED CORNERS\nNO PARITY\nNumber of corner comms used: %s\nCorner letter sequence %s\nNumber of corner cycle breaks: %d",numCornerIterations,cornerLetterSequence,numCornerCycleBreaks);
     }
-    public void solveCorners()
+    public String traceCorners()
     {
 	while(!isCornersSolved())
 	{
 	    solveNextCornerComm();
 	}
+	return cornerLetterSequence;
     }
     public void solveNextCornerComm()
     {
@@ -212,6 +217,7 @@ public class CornerTracer extends Tracer
 	}
 	return false;
     }
+
 
 }
 

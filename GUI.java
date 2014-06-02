@@ -15,7 +15,7 @@ public class GUI extends JFrame implements KeyListener
     private final Font SCRAMBLE_FONT = new Font("Serif",Font.BOLD,15);
 
     private Scrambler scrambler = new Scrambler();
-    private String scramble = genSafeScramble();
+    private String scramble = scrambler.genEasyScramble();
     private StringBuilder scrambleSBuilder = new StringBuilder();
 
     private CornerTracer cornerTracer;
@@ -53,7 +53,7 @@ public class GUI extends JFrame implements KeyListener
 
 	cornerTracer = new CornerTracer(scramble);
 	edgeTracer = new EdgeTracer(scramble);
-	cornerTracer.solveCorners(); edgeTracer.solveEdges();
+	cornerTracer.traceCorners(); edgeTracer.traceEdges();
 
 
 	panel1 = new JPanel();
@@ -132,7 +132,7 @@ public class GUI extends JFrame implements KeyListener
 		updateScrambleTimes();
 		scrambleInfo.setText(scrambleInfoString);
 		
-		scramble = genSafeScramble();
+		scramble = scrambler.genEasyScramble();
 		generatedScramble.setText(scramble);
 		updateTracers(scramble);
 		scrambleInfo.setText(scrambleInfoString);
@@ -153,7 +153,7 @@ public class GUI extends JFrame implements KeyListener
     {
 	cornerTracer = new CornerTracer(newScramble);
 	edgeTracer = new EdgeTracer(newScramble);
-	cornerTracer.solveCorners(); edgeTracer.solveEdges();
+	cornerTracer.traceCorners(); edgeTracer.traceEdges();
 	scrambleInfoString = String.format(cornerTracer.toString()+"\n"+edgeTracer.toString());
 
     }
@@ -169,20 +169,6 @@ public class GUI extends JFrame implements KeyListener
 	timerTextField.setText(currentTime);
     }
 
-    public String genSafeScramble()
-    {
-
-	String testScramble = scrambler.genScramble();
-	Tracer tracer = new Tracer(testScramble);
-	while(tracer.hasParity() || tracer.hasFlippedEdges() || tracer.hasTwistedCorners())
-	{
-	    testScramble = scrambler.genScramble();
-	    tracer = new Tracer(testScramble);
-	    cornerTracer = new CornerTracer(testScramble);
-	    edgeTracer = new EdgeTracer(testScramble);
-	}
-	return testScramble;
-    }
 
 
 }

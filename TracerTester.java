@@ -22,7 +22,7 @@ public class TracerTester
 	try(PrintWriter out = new PrintWriter(new FileWriter("log.txt",true))){
 		out.print(String.format("%s\n",tracer.getScramble()));
 	    }catch (IOException e){}
-	cornerTracer.solveCorners();
+	cornerTracer.traceCorners();
 	System.out.println(cornerTracer.toString());
 
 	
@@ -44,7 +44,7 @@ public class TracerTester
 	System.out.println("INITIAL STATE OF EDGE MAP");
 	System.out.println(tracer.getEdgeMap());
 
-	((EdgeTracer)tracer).solveEdges();
+	((EdgeTracer)tracer).traceEdges();
 	System.out.println(tracer.toString());
 	System.out.println("FINAL STATE OF EDGE MAP");
 	System.out.println(tracer.getEdgeMap());

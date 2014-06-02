@@ -5,6 +5,7 @@ public class Scrambler
 {
     static String[] moves = {"F","R","B","L","U","D" };
     static String[] note = {" ", "2 ", "' "};
+
     public static void main(String[] args)
     {
 	Scrambler tester = new Scrambler();
@@ -13,6 +14,20 @@ public class Scrambler
     /*
      *Call this method if you want a scramble in String format.
      */
+    public static String genEasyScramble()
+    {
+	Scrambler scrambler = new Scrambler();
+	String testScramble = scrambler.genScramble();
+	Tracer tracer = new Tracer(testScramble);
+
+	while(tracer.hasParity() || tracer.hasFlippedEdges() || tracer.hasTwistedCorners())
+	{
+	    testScramble = scrambler.genScramble();
+	    tracer = new Tracer(testScramble);
+
+	}
+	return testScramble;
+    }
     public static String genScramble()
     {
         String scramble = "";

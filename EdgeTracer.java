@@ -16,6 +16,10 @@ public class EdgeTracer extends Tracer
 	requiredEdgeCycleBreak = false;
 	numEdgeCycleBreaks = 0;
     }
+    public boolean getIfEdgeCycleBreaks()
+    {
+	return requiredEdgeCycleBreak;
+    }
     //currently dealing with scrambles with no flipped edges
     //and no parity
     public String toString()
@@ -23,12 +27,13 @@ public class EdgeTracer extends Tracer
 	return String.format("NO FLIPPED EDGES\nNO PARITY\nNumber of edge comms used: %s\nEdge letter sequence %s\nNumber of edge cycle breaks: %d",numEdgeIterations,edgeLetterSequence,numEdgeCycleBreaks);
     }
 
-    public void solveEdges()
+    public String traceEdges()
     {
 	while(!isEdgesSolved())
 	{
 	    solveNextEdgeComm();
 	}
+	return edgeLetterSequence;
     }
     private void solveNextEdgeComm()
     {
@@ -165,6 +170,8 @@ public class EdgeTracer extends Tracer
 	    return true;
 	return false;
     }
+
+ 
 }
     
 
