@@ -57,7 +57,7 @@ public class Mem extends JFrame
 
 	FlashListener flashListener = new FlashListener();
 	field1.addActionListener(flashListener);
-	timer = new javax.swing.Timer(1000,flashListener);
+	timer = new javax.swing.Timer(250,flashListener);
 	timer.setInitialDelay(0);
     }
 

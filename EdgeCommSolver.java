@@ -1,46 +1,39 @@
 import java.util.*;
+/*
+ *solveNextEdgeComm(), determineNextTarget(), findEdgeCycleBreak() all used to find/solve next edge comm
+ */
 public class EdgeCommSolver extends Tracer 
 {
+    private int numEdgeIterations;
+    private String edgeLetterSequence;
+    private boolean requiredEdgeCycleBreak;
+    private int numEdgeCycleBreaks;
     public EdgeCommSolver(String scramble)
     {
 	super(scramble);
+	numEdgeIterations = 0;
+	edgeLetterSequence = "";
+	requiredEdgeCycleBreak = false;
+	numEdgeCycleBreaks = 0;
     }
     //currently dealing with scrambles with no flipped edges
     //and no parity
-
+    public String toString()
+    {
+	return String.format("NO FLIPPED EDGES\nNO PARITY\nNumber of edge comms used: %s\nEdge letter sequence %s\nNumber of edge cycle breaks: %d",numEdgeIterations,edgeLetterSequence,numEdgeCycleBreaks);
+    }
     public void solveEdges()
     {
 	while(!isEdgesSolved())
 	{
-	    System.out.println("---------------------------------------------------------");
 	    solveNextEdgeComm();
-	    System.out.println("---------------------------------------------------------");
 	}
+    }
+    private void solveNextEdgeComm()
+    {
 
-    }
-        public boolean isEdgesSolved()
-    {
-	if(checkAG()==SOLVED
-	   && checkBK()==SOLVED
-	   && checkCO()==SOLVED
-	   && checkDS()==SOLVED
-	   && checkEU()==SOLVED
-	   && checkIV()==SOLVED
-	   && checkMW()==SOLVED
-	   && checkQY()==SOLVED
-	   && checkFL()==SOLVED
-	   && checkJN()==SOLVED
-	   && checkPT()==SOLVED
-	   && checkHR()==SOLVED)
-	    return true;
-	return false;
-    }
-    public void solveNextEdgeComm()
-    {
 	String[][] afterBuffer = determineNextTarget("U","E");
-	//System.out.println("afterBuffer-" + afterBuffer[0][0]+"-"+afterBuffer[0][1]+"/"+afterBuffer[1][0]+"-"+afterBuffer[1][1]);
 	String[][] afterFirstTarget = determineNextTarget(afterBuffer[0][0],afterBuffer[1][0]);
-	//System.out.println("afterFirstTarget-" + afterFirstTarget[0][0]+"-"+afterFirstTarget[0][1]+"/"+afterFirstTarget[1][0]+"-"+afterFirstTarget[1][1]);
 	//insert into firstTarget
 	edgeMap.put(afterBuffer[0][0], edgeMap.get("U")); edgeMap.put(afterBuffer[1][0], edgeMap.get("E"));
 	//insert into lastTarget
@@ -48,21 +41,20 @@ public class EdgeCommSolver extends Tracer
 	//insert into buffer
 	edgeMap.put("U",afterFirstTarget[0][1]); edgeMap.put("E",afterFirstTarget[1][1]);
 
-	printEverything();
-
+	edgeLetterSequence = edgeLetterSequence + afterBuffer[0][0]+afterFirstTarget[0][0]+ " ";
+	numEdgeIterations++;
     }
 
-    public String[][] determineNextTarget(String loc1, String loc2)
+    private String[][] determineNextTarget(String loc1, String loc2)
     {
-	String[][] nextTarget = new String[2][2];
+	String[][] nextTarget = new String[2][2];	
+	//loc1 and loc2 are the stickers of the current target
 	//[0][0]-location, [0][1]-initial value
 	//[1][0]-location of other sticker, [1][1]-initial value at other sticker
 	//based on current edgeMap
 	if(edgeMap.get(loc1).equals("U")||edgeMap.get(loc1).equals("E")) //requires cycle break
 	{
-	    System.out.println("about to call find cycle break");
 	    nextTarget[0][0] = findEdgeCycleBreak(loc1);
-	    System.out.println("just called find cycle break");
 	    nextTarget[0][1] = edgeMap.get(nextTarget[0][0]);
 	    nextTarget[1][0] = returnOtherSticker(nextTarget[0][0]);
 	    nextTarget[1][1] = edgeMap.get(nextTarget[1][0]); 
@@ -74,35 +66,33 @@ public class EdgeCommSolver extends Tracer
 	    nextTarget[1][0] = edgeMap.get(loc2);
 	    nextTarget[1][1] = edgeMap.get(nextTarget[1][0]);
 	}
-	return nextTarget;
-	
+	return nextTarget;	
     }
-    public String findEdgeCycleBreak(String blacklist)
+    private String findEdgeCycleBreak(String blacklist)
     {
-	System.out.println("blacklist: " + blacklist);
 	for(Map.Entry<String,String> entry : edgeMap.entrySet())
 	{
 	    String currentKey = entry.getKey();
 	    String currentValue = entry.getValue();
 	    if((currentKey.equals("U")) || (currentKey.equals("E")))
 	    {
-		//don't put it at its buffer spot!
+		//don't put it at the buffer spot!
 	    }
 	    else if(currentKey.equals(blacklist) || currentKey.equals(returnOtherSticker(blacklist)) )
 	    {
-		//don't pick yourself as a break!
+		//don't pick your own sticker to cycle break into!
 	    }
 	    else if(!(currentKey.equals(currentValue)))
 	    {
-		System.out.println("CURRENTKEY USED (BREAK TO) " + currentKey);
+		requiredEdgeCycleBreak = true;
+		numEdgeCycleBreaks++;
 		return currentKey;
-	    }
-	    
+	    }    
 	}
-	return "Something went wrong";
+	return "FAILED TO FIND CYCLE BREAK";
     }
 
-    public String returnOtherSticker(String firstSticker)
+    private String returnOtherSticker(String firstSticker)
     {
 	switch(firstSticker){
 	case "A":
@@ -156,6 +146,23 @@ public class EdgeCommSolver extends Tracer
 	default:
 	    return "Invalid sticker";
 	}
+    }
+    private boolean isEdgesSolved()
+    {
+	if(checkAG()==SOLVED
+	   && checkBK()==SOLVED
+	   && checkCO()==SOLVED
+	   && checkDS()==SOLVED
+	   && checkEU()==SOLVED
+	   && checkIV()==SOLVED
+	   && checkMW()==SOLVED
+	   && checkQY()==SOLVED
+	   && checkFL()==SOLVED
+	   && checkJN()==SOLVED
+	   && checkPT()==SOLVED
+	   && checkHR()==SOLVED)
+	    return true;
+	return false;
     }
 }
     

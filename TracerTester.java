@@ -3,19 +3,30 @@ public class TracerTester
     public static void main(String[] args)
     {
 	Scrambler scrambler = new Scrambler();
-	String testScramble = scrambler.genScramble();
-	Tracer tracer = new EdgeCommSolver(testScramble);
-	//will only generate easy scrambles
-	while(tracer.hasParity() || tracer.hasFlippedEdges() || tracer.hasTwistedCorners())
+
+
+
+	for (int x = 1; x<=50 ;x++)
 	{
-	    testScramble = scrambler.genScramble();
-	    tracer = new EdgeCommSolver(testScramble);
+	    String testScramble = scrambler.genScramble();
+	    Tracer tracer = new EdgeCommSolver(testScramble);
+	    //will only generate easy scrambles
+	    while(tracer.hasParity() || tracer.hasFlippedEdges() || tracer.hasTwistedCorners())
+	    {
+		testScramble = scrambler.genScramble();
+		tracer = new EdgeCommSolver(testScramble);
+	    }
+	    System.out.println("#"+x);
+	    System.out.println("SCRAMBLE: " + tracer.getScramble());
+	    System.out.println("INITIAL STATE OF EDGE MAP");
+	    System.out.println(tracer.getEdgeMap());
+
+	    ((EdgeCommSolver)tracer).solveEdges();
+	    System.out.println(tracer.toString());
+	    System.out.println("FINAL STATE OF EDGE MAP");
+	    System.out.println(tracer.getEdgeMap());
+	    System.out.println();
 	}
-	System.out.println(tracer.getScramble());
-
-	tracer.printEverything();
-
-	((EdgeCommSolver)tracer).solveEdges();
 	
 
 
