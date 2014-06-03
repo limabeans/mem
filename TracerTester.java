@@ -4,14 +4,14 @@ public class TracerTester
     public static void main(String[] args)
     {
 	int solved =0;
-	int flipped=0;
+	int breaked=0;
 	Scrambler scrambler = new Scrambler();
 	String testScramble = scrambler.genScramble();
 	Tracer tracer = new Tracer(testScramble);
 	CornerTracer cornerTracer = new CornerTracer(testScramble);
 	EdgeTracer edgeTracer = new EdgeTracer(testScramble);
 
-	for(int x=1; x<=10000;x++)
+	for(int x=1; x<=1000;x++)
 	{
 	    testScramble = scrambler.genEasyScramble();
 	    //testScramble = "U R L B' D F D' R D2 L2 R2 U B' F L2 B2 R F' D2 F R2";
@@ -19,12 +19,12 @@ public class TracerTester
 	    cornerTracer = new CornerTracer(testScramble);
 	    edgeTracer = new EdgeTracer(testScramble);
 	    System.out.println("SCRAMBLE: " + tracer.getScramble());
-	    if(edgeTracer.hasFlippedEdges())
-	    {
-		flipped++;
-	    }
+
 	    edgeTracer.traceEdges();
-	
+	    if(edgeTracer.requiredEdgeCycleBreak)
+	    {
+		breaked++;
+	    }
 	    System.out.println(edgeTracer.toString());
 	    System.out.println(edgeTracer.getEdgeMap());
 	    
@@ -38,7 +38,7 @@ public class TracerTester
 	    }catch (IOException e){}
 	}
 	System.out.println(solved);
-	System.out.println(flipped);
+	System.out.println(breaked);
 
 
 

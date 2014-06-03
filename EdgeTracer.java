@@ -6,7 +6,7 @@ public class EdgeTracer extends Tracer
 {
     private int numEdgeIterations;
     private String edgeLetterSequence;
-    private boolean requiredEdgeCycleBreak;
+    public boolean requiredEdgeCycleBreak;
     private int numEdgeCycleBreaks;
     public EdgeTracer(String scramble)
     {

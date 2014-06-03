@@ -12,7 +12,7 @@ public class GUI extends JFrame
     private final int TIMER_DELAY = 53;
     private final int TIMER_FIELD_SIZE = 6;
     private final Font TIMER_FONT = new Font("Arial",Font.BOLD,95);
-    private final Font SCRAMBLE_FONT = new Font("Serif",Font.BOLD,18);
+    private final Font SCRAMBLE_FONT = new Font("Serif",Font.BOLD,16);
     private final Font SOLVES_TIMES_STATS_FONT = new Font("Georgia",Font.BOLD,14);
 
     private Scrambler scrambler = new Scrambler();
@@ -44,6 +44,8 @@ public class GUI extends JFrame
     private boolean timeIsStarted;
     private long timeInMillis;
 
+    //variables to control DNF
+
     public static void main(String[] args)
     {
 	GUI exe = new GUI();
@@ -52,7 +54,6 @@ public class GUI extends JFrame
     public GUI()
     {
 	super("Angel Lim's mem");
-	timeIsStarted = false;
 	this.setLayout(new GridLayout(3,2));
 
 	appendLog(); //debugging purposes
@@ -82,6 +83,11 @@ public class GUI extends JFrame
 	timer = new javax.swing.Timer(TIMER_DELAY, new ClockListener());
 	panel3.add(timerTextField, BorderLayout.CENTER);
 	this.add(panel3);
+
+	//set timerTextField Key Binding to D for DNFing
+	DAction dAction = new DAction();
+	timerTextField.getInputMap().put(KeyStroke.getKeyStroke("D"), "doDAction");
+	timerTextField.getActionMap().put("doDAction", dAction);
 
 	//set timerTextField Key Binding to SPACE
 	SpaceAction spaceAction = new SpaceAction();	
@@ -129,7 +135,7 @@ public class GUI extends JFrame
 	solveTimesScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 	panel5.add(solveTimesScroll);
 
-	solveStatsTextArea = new JTextArea(timerStats.toString());
+	solveStatsTextArea = new JTextArea("NOT WORKING\n" + timerStats.toString());
 	solveStatsTextArea.setFont(SOLVES_TIMES_STATS_FONT);
 	panel5.add(solveStatsTextArea);
 	JScrollPane solveStatsScroll = new JScrollPane(solveStatsTextArea);
@@ -151,13 +157,23 @@ public class GUI extends JFrame
 	setVisible(true);
 	timerTextField.requestFocusInWindow(); //so SPACE keybinding will work immediately
     }
-
+    class DAction extends AbstractAction
+    {
+	public void actionPerformed(ActionEvent e)
+	{
+	    if(!timer.isRunning())
+	    {
+		timerTextField.setText("DNF");
+	    }
+	}
+    }
     class SpaceAction extends AbstractAction
     {
 	public void actionPerformed(ActionEvent e)
 	{
 	    if(!timeIsStarted)
 	    {
+
 		timeIsStarted = true;
 		startTime = System.currentTimeMillis();
 		timer.start();
@@ -169,9 +185,7 @@ public class GUI extends JFrame
 		startTime = 0;
 		timer.stop();
 		lastSolveTime = solveTime;
-		lastSolveTimeInMillis = timeInMillis;
-		timerStats.push(lastSolveTimeInMillis);
-		solveStatsTextArea.setText(timerStats.toString());
+		//INSERT CODE: for timeStatsTextArea
 		updateSolveTimesTextArea(); //write to bottom
 		scrambleAnalysisString = solver.toString();
 		scrambleAnalysisTextArea.setText(scrambleAnalysisString); //write to right
@@ -202,7 +216,7 @@ public class GUI extends JFrame
 
     public void updateSolveTimesTextArea()
     {
-	scrambleSBuilder.append(lastSolveTime + " ,");
+	scrambleSBuilder.append(lastSolveTime + ", ");
 	solveTimesTextArea.setText(scrambleSBuilder.toString());
     }
     public void updateTimer() //calcuates the solve time, sets it to solveTime, and edits timerTextField
