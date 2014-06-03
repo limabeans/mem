@@ -3,10 +3,10 @@ import java.text.*;
 public class TimerStats
 {
     private final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("m:ss.SSS");
-    private ArrayList<Long> longDatabase;
+    private ArrayList<SolveTime> database;
     public TimerStats()
     {
-	longDatabase = new ArrayList<Long>();
+	database = new ArrayList<SolveTime>();
     }
     public String toString()
     {
@@ -14,21 +14,46 @@ public class TimerStats
 	    "Worst Time: " + getWorstTime() + "\n";
 	return formatted;
     }
-    public void push(long newTime)
-    {
-	longDatabase.add(newTime);
-	Collections.sort(longDatabase);
-    }
     public String getBestTime()
     {
-	if(longDatabase.size()==0)
-	    return "DNS";
-	return SIMPLE_DATE_FORMAT.format(longDatabase.get(0));
+	if(database.size()==0)
+	    return null;
+	if(database.size()==1)
+	    return database.get(0).toString();
+	else
+	{
+	    SolveTime best = database.get(0);
+	    for(int x = 0; x < database.size(); x++)
+	    {
+		if(database.get(x).compareTo(best)>0)
+		    best = database.get(x);
+	    }
+	    return best.getTime();
+	}
     }
     public String getWorstTime()
     {
-	if(longDatabase.size()==0)
-	    return "DNS";
-	return SIMPLE_DATE_FORMAT.format(longDatabase.get(longDatabase.size()-1));
+	if(database.size()==0)
+	    return null;
+	if(database.size()==1)
+	    return database.get(0).toString();
+	else
+	{
+	    SolveTime worst = database.get(0);
+	    for(int x = 0; x < database.size(); x++)
+	    {
+		if(database.get(x).compareTo(worst)<0)
+		    worst = database.get(x);
+	    }
+	    if(worst.getIsDNF())
+	    {
+		return "DNF";
+	    }
+	    return worst.getTime();
+	}
+    }
+    public void update(ArrayList<SolveTime> newData)
+    {
+	database = newData;
     }
 }

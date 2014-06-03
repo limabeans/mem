@@ -203,10 +203,11 @@ public class GUI extends JFrame
 		timeIsStarted = false;
 		timer.stop();
 		updateTimer();//calcs solve time, sets it to solveTime, and edits timerTextField
-	        updateSolveStatsTextArea(); //UNIMPLEMENTED
-		updateScrambleAnalysisTextArea();//write to right
 		updateSolveTimesArrayList();
-		updateSolveTimesTextArea(); //write to bottom-left //MAKE THIS BASED OFF OF ARRAY LIST
+	        updateSolveStatsTextArea(); 
+		updateScrambleAnalysisTextArea();//write to right
+
+		updateSolveTimesTextArea(); //write to bottom-left 
 
 	        prepNewScramble();
 
@@ -234,8 +235,10 @@ public class GUI extends JFrame
 	generatedScramble.setText(scramble);
 	solver.refresh(scramble);
     }
-    public void updateSolveStatsTextArea()//UNIMPLEMENTED
+    public void updateSolveStatsTextArea()
     {
+	timerStats.update(solveTimesArrayList);
+	solveStatsTextArea.setText(timerStats.toString());
     }
     public void updateScrambleAnalysisTextArea()
     {
