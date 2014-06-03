@@ -17,8 +17,7 @@ public class GUI extends JFrame
 
     private Scrambler scrambler = new Scrambler();
     private String scramble = scrambler.genEasyScramble();
-    private StringBuilder scrambleSBuilder = new StringBuilder();
-    private ArrayList<String> solveTimesArrayList;
+    private ArrayList<SolveTime> solveTimesArrayList;
     private TimerStats timerStats = new TimerStats();
 
     private CommSolver solver;
@@ -58,7 +57,7 @@ public class GUI extends JFrame
 
 	appendLog(); //debugging purposes
 	solver = new CommSolver(scramble);
-	solveTimesArrayList = new ArrayList<String>();
+	solveTimesArrayList = new ArrayList<SolveTime>();
 
 	panel1 = new JPanel(new BorderLayout());
 	JPanel panel1_1 = new JPanel(new GridLayout(1,2));
@@ -132,26 +131,26 @@ public class GUI extends JFrame
 	this.add(panel4);
 
 	panel5 = new JPanel(new GridLayout(1,2));
-
 	JPanel panel5_1 = new JPanel(new BorderLayout());
-	solveTimesLabel = new JLabel("Solve Times");
-	panel5_1.add(solveTimesLabel, BorderLayout.NORTH);
 	JPanel panel5_1_1 = new JPanel(new GridLayout(1,2));
-	solveTimesTextArea = new JTextArea();
-	solveTimesTextArea.setFont(SOLVES_TIMES_STATS_FONT);
-	solveTimesTextArea.setEditable(false);
-	solveTimesTextArea.setLineWrap(true);
-	panel5_1_1.add(solveTimesTextArea);
-	JScrollPane solveTimesScroll = new JScrollPane(solveTimesTextArea);
-	solveTimesScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-	panel5_1_1.add(solveTimesScroll);
+	solveTimesLabel = new JLabel("Solve Times");
+	panel5_1_1.add(solveTimesLabel);
 	JPanel panel5_1_1Buttons = new JPanel(new FlowLayout());
 	importSolveTimesButton = new JButton("Import");
 	panel5_1_1Buttons.add(importSolveTimesButton);
 	exportSolveTimesButton = new JButton("Export");
 	panel5_1_1Buttons.add(exportSolveTimesButton);
 	panel5_1_1.add(panel5_1_1Buttons);
-	panel5_1.add(panel5_1_1, BorderLayout.CENTER);
+	panel5_1.add(panel5_1_1, BorderLayout.NORTH);
+
+	solveTimesTextArea = new JTextArea();
+	solveTimesTextArea.setFont(SOLVES_TIMES_STATS_FONT);
+	solveTimesTextArea.setEditable(false);
+	solveTimesTextArea.setLineWrap(true);
+	panel5_1.add(solveTimesTextArea, BorderLayout.CENTER);
+	JScrollPane solveTimesScroll = new JScrollPane(solveTimesTextArea);
+	solveTimesScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+	panel5_1.add(solveTimesScroll, BorderLayout.CENTER);
 	panel5.add(panel5_1);
 
 	solveStatsTextArea = new JTextArea("NOT WORKING\n" + timerStats.toString());
@@ -183,6 +182,9 @@ public class GUI extends JFrame
 	    if(!timer.isRunning())
 	    {
 		timerTextField.setText("DNF");
+		solveTimesArrayList.get(solveTimesArrayList.size()-1).setToDNF();
+		updateSolveTimesTextArea();
+		updateSolveStatsTextArea();
 	    }
 	}
     }
@@ -192,7 +194,6 @@ public class GUI extends JFrame
 	{
 	    if(!timeIsStarted)
 	    {
-
 		timeIsStarted = true;
 		startTime = System.currentTimeMillis();
 		timer.start();
@@ -214,7 +215,8 @@ public class GUI extends JFrame
     }
     public void updateSolveTimesArrayList()
     {
-	solveTimesArrayList.add(solveTime);
+	SolveTime newSolveTime = new SolveTime(solveTime);
+	solveTimesArrayList.add(newSolveTime);
 	System.out.println(solveTimesArrayList);
     }
     public void updateSolveTimesTextArea()
@@ -222,7 +224,7 @@ public class GUI extends JFrame
 	StringBuilder toThisTextArea = new StringBuilder();
 	for(int x = 0; x < solveTimesArrayList.size(); x++)
 	{
-	    toThisTextArea.append((x+1) + ". " + solveTimesArrayList.get(x) + "\n");
+	    toThisTextArea.append((x+1) + ". " + solveTimesArrayList.get(x).toString() + "\n");
 	}
 	solveTimesTextArea.setText(toThisTextArea.toString());
     }

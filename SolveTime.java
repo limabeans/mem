@@ -1,10 +1,10 @@
 public class SolveTime
 {
-    private long time;
+    private String time;
     private boolean isDNF;
     private String comment;
     
-    public SolveTime(long time)
+    public SolveTime(String time)
     {
 	this.time = time;
 	isDNF = false;
