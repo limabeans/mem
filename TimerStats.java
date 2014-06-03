@@ -11,8 +11,13 @@ public class TimerStats
     public String toString()
     {
 	String formatted = "Best Time: " + getBestTime() + "\n" +
-	    "Worst Time: " + getWorstTime() + "\n";
+	    "Worst Time: " + getWorstTime() + "\n" +
+	    "mo3: " + getMO3();
 	return formatted;
+    }
+    public String getMO3()
+    {
+	return null;
     }
     public String getBestTime()
     {

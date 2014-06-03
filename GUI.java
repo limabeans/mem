@@ -153,7 +153,7 @@ public class GUI extends JFrame
 	panel5_1.add(solveTimesScroll, BorderLayout.CENTER);
 	panel5.add(panel5_1);
 
-	solveStatsTextArea = new JTextArea("NOT WORKING\n" + timerStats.toString());
+	solveStatsTextArea = new JTextArea(timerStats.toString());
 	solveStatsTextArea.setFont(SOLVES_TIMES_STATS_FONT);
 	panel5.add(solveStatsTextArea);
 	JScrollPane solveStatsScroll = new JScrollPane(solveStatsTextArea);
@@ -218,7 +218,6 @@ public class GUI extends JFrame
     {
 	SolveTime newSolveTime = new SolveTime(solveTime);
 	solveTimesArrayList.add(newSolveTime);
-	System.out.println(solveTimesArrayList);
     }
     public void updateSolveTimesTextArea()
     {
