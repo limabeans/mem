@@ -44,8 +44,6 @@ public class GUI extends JFrame
     private boolean timeIsStarted;
     private long timeInMillis;
 
-    //variables to control DNF
-
     public static void main(String[] args)
     {
 	GUI exe = new GUI();
