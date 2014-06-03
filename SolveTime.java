@@ -10,6 +10,12 @@ public class SolveTime implements Comparable<SolveTime>
 	isDNF = false;
 	comment = "";
     }
+    public SolveTime(String time, boolean isDNF)
+    {
+	this.time = time;
+	this.isDNF = isDNF;
+	comment = "";
+    }
 
     public int compareTo(SolveTime s)
     {
@@ -25,7 +31,7 @@ public class SolveTime implements Comparable<SolveTime>
 	    return ((int)(convertToMillis(s.getTime())-convertToMillis(this.getTime())));
 	}
     }
-    public long convertToMillis(String time)
+    public static long convertToMillis(String time)
     {
 	String minutes = "";
 	String seconds = "";
