@@ -15,6 +15,7 @@ public class EdgeTracer extends Tracer
 	edgeLetterSequence = "";
 	requiredEdgeCycleBreak = false;
 	numEdgeCycleBreaks = 0;
+
     }
     public boolean getIfEdgeCycleBreaks()
     {
@@ -24,7 +25,7 @@ public class EdgeTracer extends Tracer
     //and no parity
     public String toString()
     {
-	return String.format("NO FLIPPED EDGES\nNO PARITY\nNumber of edge comms used: %s\nEdge letter sequence %s\nNumber of edge cycle breaks: %d",numEdgeIterations,edgeLetterSequence,numEdgeCycleBreaks);
+	return String.format("NO PARITY\nNumber of edge comms used: %s\nEdge letter sequence %s\nNumber of edge cycle breaks: %d",numEdgeIterations,edgeLetterSequence,numEdgeCycleBreaks);
     }
 
     public String traceEdges()
@@ -49,6 +50,7 @@ public class EdgeTracer extends Tracer
 
 	edgeLetterSequence = edgeLetterSequence + afterBuffer[0][0]+afterFirstTarget[0][0]+ " ";
 	numEdgeIterations++;
+	fixFlippedEdges();
     }
 
     private String[][] determineNextTarget(String loc1, String loc2)
@@ -188,7 +190,81 @@ public class EdgeTracer extends Tracer
 	    return true;
 	return false;
     }
-
+    public void fixFlippedEdges()
+    {
+	if(checkAG()==FLIPPED)
+	{
+	    edgeMap.put("A","A");
+	    edgeMap.put("G","G");
+	}
+	if(checkBK()==FLIPPED)
+	{
+	    edgeMap.put("B","B");
+	    edgeMap.put("K","K");
+	     
+	}
+	if(checkCO()==FLIPPED)
+	{
+	    edgeMap.put("C","C");
+	    edgeMap.put("O","O");
+	     
+	}
+	if(checkDS()==FLIPPED)
+	{
+	    edgeMap.put("D","D");
+	    edgeMap.put("S","S");
+	     
+	}
+	if(checkEU()==FLIPPED)
+	{
+	    edgeMap.put("E","E");
+	    edgeMap.put("U","U");
+	     
+	}
+	if(checkIV()==FLIPPED)
+	{
+	    edgeMap.put("I","I");
+	    edgeMap.put("V","V");
+	     
+	}
+	if(checkMW()==FLIPPED)
+	{
+	    edgeMap.put("M","M");
+	    edgeMap.put("W","W");
+	     
+	}
+	if(checkQY()==FLIPPED)
+	{
+	    edgeMap.put("Q","Q");
+	    edgeMap.put("Y","Y");
+	     
+	}
+	if(checkFL()==FLIPPED)
+	{
+	    edgeMap.put("F","F");
+	    edgeMap.put("L","L");
+	     
+	}
+	if(checkJN()==FLIPPED)
+	{
+	    edgeMap.put("J","J");
+	    edgeMap.put("N","N");
+	     
+	}
+	if(checkPT()==FLIPPED)
+	{
+	    edgeMap.put("P","P");
+	    edgeMap.put("T","T");
+	     
+	}
+	if(checkHR()==FLIPPED)	
+	{
+	    edgeMap.put("H","H");
+	    edgeMap.put("R","R");
+	     
+	}
+    }
+				      
     public int checkAG()
     {
 	if(edgeMap.get("A").equals("A")

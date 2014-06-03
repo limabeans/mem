@@ -29,13 +29,13 @@ public class CommSolver
 	edgeTracer = new EdgeTracer(newScramble);
 	scramble = newScramble;
 	hasParity = Tracer.hasParity(newScramble);
-
-	edgeCycles = edgeTracer.traceEdges();
+	
 	hasEdgeFlips = edgeTracer.hasFlippedEdges();
+	edgeCycles = edgeTracer.traceEdges();
 	hasEdgeCycleBreaks = edgeTracer.getIfEdgeCycleBreaks();
 
-	cornerCycles = cornerTracer.traceCorners();
 	hasCornerTwists = cornerTracer.hasTwistedCorners();
+	cornerCycles = cornerTracer.traceCorners();
 	hasCornerCycleBreaks = cornerTracer.getIfCornerCycleBreaks();
     }
     public String toString()
@@ -45,7 +45,7 @@ public class CommSolver
 	    + "edge cycle: " + edgeCycles + "\n"
 	    + "corner cycle: " + cornerCycles + "\n"
 	    + "edge flips: " + hasEdgeFlips + " / edge cycle breaks: " + hasEdgeCycleBreaks + "\n"
- 	    + "corner flips: " + hasCornerTwists + " / corner cycle breaks: " + hasCornerCycleBreaks + "\n";
+ 	    + "corner twists: " + hasCornerTwists + " / corner cycle breaks: " + hasCornerCycleBreaks + "\n";
 	
 	return reported;
     }

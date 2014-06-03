@@ -9,25 +9,29 @@ public class TracerTester
 	CornerTracer cornerTracer = new CornerTracer(testScramble);
 	EdgeTracer edgeTracer = new EdgeTracer(testScramble);
 
-
-	//will only generate easy scrambles
-	while(tracer.hasParity() || edgeTracer.hasFlippedEdges() || cornerTracer.hasTwistedCorners())
+	while(!edgeTracer.hasFlippedEdges() ||tracer.hasParity() || cornerTracer.hasTwistedCorners())
 	{
 	    testScramble = scrambler.genScramble();
 	    tracer = new Tracer(testScramble);
 	    cornerTracer = new CornerTracer(testScramble);
 	    edgeTracer = new EdgeTracer(testScramble);
 	}
+	if(edgeTracer.hasFlippedEdges())
+	{
+	    System.out.println("HAS FLIPPED EDGES");
+	}
 	System.out.println("SCRAMBLE: " + tracer.getScramble());
+
+	edgeTracer.traceEdges();
+	
+	System.out.println(edgeTracer.toString());
+	System.out.println(edgeTracer.getEdgeMap());
+	
+
+
 	try(PrintWriter out = new PrintWriter(new FileWriter("log.txt",true))){
 		out.print(String.format("%s\n",tracer.getScramble()));
 	    }catch (IOException e){}
-	cornerTracer.traceCorners();
-	System.out.println(cornerTracer.toString());
-
-	
-	System.out.println(cornerTracer.getCornerMap());
-	
 
 
 	//TESTING EDGE COMM SOLVER

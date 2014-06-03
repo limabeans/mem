@@ -12,7 +12,7 @@ public class GUI extends JFrame
     private final int TIMER_DELAY = 53;
     private final int TIMER_FIELD_SIZE = 6;
     private final Font TIMER_FONT = new Font("Arial",Font.BOLD,95);
-    private final Font SCRAMBLE_FONT = new Font("Serif",Font.BOLD,17);
+    private final Font SCRAMBLE_FONT = new Font("Serif",Font.BOLD,18);
     private final Font SOLVES_TIMES_STATS_FONT = new Font("Georgia",Font.BOLD,14);
 
     private Scrambler scrambler = new Scrambler();
@@ -59,11 +59,9 @@ public class GUI extends JFrame
 	solver = new CommSolver(scramble);
 
 	panel1 = new JPanel(new BorderLayout());
-
 	generatedScramble = new JTextField(scramble);
 	generatedScramble.setEditable(false);
 	generatedScramble.setHorizontalAlignment(JLabel.CENTER);
-
 	generatedScramble.setFont(SCRAMBLE_FONT);
 	panel1.add(generatedScramble,BorderLayout.CENTER);
 	this.add(panel1);
@@ -140,7 +138,7 @@ public class GUI extends JFrame
 	this.add(panel5);
 
 	panel6 = new JPanel(new GridLayout(1,2));
-	JTextArea temp6 = new JTextArea("this is where graph will go");
+	JTextArea temp6 = new JTextArea("for exporting text files");
 	JTextArea settingstemp = new JTextArea("Settings");
 	panel6.add(temp6);
 	panel6.add(settingstemp);

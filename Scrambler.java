@@ -14,7 +14,7 @@ public class Scrambler
     /*
      *Call this method if you want a scramble in String format.
      */
-    public static String genEasyScramble()
+    public static String genEasyScramble() //now can handle Edge Flips
     {
 	Scrambler scrambler = new Scrambler();
 	String testScramble = scrambler.genScramble();
@@ -22,14 +22,16 @@ public class Scrambler
 	EdgeTracer edgeTracer = new EdgeTracer(testScramble);
 	CornerTracer cornerTracer = new CornerTracer(testScramble);
 
-	while(tracer.hasParity() || edgeTracer.hasFlippedEdges() || cornerTracer.hasTwistedCorners())
+	while(tracer.hasParity() || !edgeTracer.hasFlippedEdges() || cornerTracer.hasTwistedCorners())
 	{
+	    
 	    testScramble = scrambler.genScramble();
 	    tracer = new Tracer(testScramble);
 	    edgeTracer = new EdgeTracer(testScramble);
 	    cornerTracer = new CornerTracer(testScramble);
 
 	}
+
 	return testScramble;
     }
     public static String genScramble()
