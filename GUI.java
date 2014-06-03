@@ -18,25 +18,27 @@ public class GUI extends JFrame
     private Scrambler scrambler = new Scrambler();
     private String scramble = scrambler.genEasyScramble();
     private StringBuilder scrambleSBuilder = new StringBuilder();
+    private ArrayList<String> solveTimesArrayList;
     private TimerStats timerStats = new TimerStats();
 
     private CommSolver solver;
 
     //GUI instances
+    private JButton importSolveTimesButton, exportSolveTimesButton;
     private JTextField timerTextField, generatedScramble, forceEdgeTextField, forceCornerTextField;
-    private JLabel forceEdgeLabel, forceCornerLabel;
+    private JLabel forceEdgeLabel, forceCornerLabel, solveTimesLabel;
     private JTextArea scrambleAnalysisTextArea, solveTimesTextArea, solveStatsTextArea;
     private JPanel panel1,panel2,panel3,panel4,panel5,panel6;
     private JToggleButton timingMemoToggle;
     private JRadioButton randomRadioButton, parityRadioButton, noParityRadioButton;
     private JCheckBox edgeFlipsCheckBox, cornerTwistsCheckBox;
+    private JComboBox<String> selectPuzzleComboBox, selectAnalysisOrNotComboBox;
+    private String[] selectPuzzleArray = { "3x3 blindfolded", "3x3 speedsolve" };
+    private String[] selectAnalysisOrNotArray = { "analysis" , "no analysis" };
     
     private javax.swing.Timer timer;
 
     //actual data
-    private String lastSolveTime;
-    private long lastSolveTimeInMillis;
-    private String scrambleAnalysisString;
 
     //variables that are constantly changing
     private long startTime;
@@ -56,8 +58,15 @@ public class GUI extends JFrame
 
 	appendLog(); //debugging purposes
 	solver = new CommSolver(scramble);
+	solveTimesArrayList = new ArrayList<String>();
 
 	panel1 = new JPanel(new BorderLayout());
+	JPanel panel1_1 = new JPanel(new GridLayout(1,2));
+	selectPuzzleComboBox = new JComboBox<String>(selectPuzzleArray);
+	selectAnalysisOrNotComboBox = new JComboBox<String>(selectAnalysisOrNotArray);
+	panel1_1.add(selectPuzzleComboBox);
+	panel1_1.add(selectAnalysisOrNotComboBox);
+	panel1.add(panel1_1,BorderLayout.NORTH);
 	generatedScramble = new JTextField(scramble);
 	generatedScramble.setEditable(false);
 	generatedScramble.setHorizontalAlignment(JLabel.CENTER);
@@ -66,8 +75,7 @@ public class GUI extends JFrame
 	this.add(panel1);
 
 	panel2 = new JPanel(new BorderLayout());
-        scrambleAnalysisString = "Welcome to Angel Lim's BLD timer!";
-	scrambleAnalysisTextArea = new JTextArea(scrambleAnalysisString);
+	scrambleAnalysisTextArea = new JTextArea("welcome to Angel Lim's bld timer!");
 	scrambleAnalysisTextArea.setEditable(false);
 	scrambleAnalysisTextArea.setFont(SCRAMBLE_FONT);
 	panel2.add(scrambleAnalysisTextArea,BorderLayout.CENTER);
@@ -124,14 +132,27 @@ public class GUI extends JFrame
 	this.add(panel4);
 
 	panel5 = new JPanel(new GridLayout(1,2));
-	solveTimesTextArea = new JTextArea("SOLVE TIMES");
+
+	JPanel panel5_1 = new JPanel(new BorderLayout());
+	solveTimesLabel = new JLabel("Solve Times");
+	panel5_1.add(solveTimesLabel, BorderLayout.NORTH);
+	JPanel panel5_1_1 = new JPanel(new GridLayout(1,2));
+	solveTimesTextArea = new JTextArea();
 	solveTimesTextArea.setFont(SOLVES_TIMES_STATS_FONT);
 	solveTimesTextArea.setEditable(false);
 	solveTimesTextArea.setLineWrap(true);
-	panel5.add(solveTimesTextArea);
+	panel5_1_1.add(solveTimesTextArea);
 	JScrollPane solveTimesScroll = new JScrollPane(solveTimesTextArea);
 	solveTimesScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-	panel5.add(solveTimesScroll);
+	panel5_1_1.add(solveTimesScroll);
+	JPanel panel5_1_1Buttons = new JPanel(new FlowLayout());
+	importSolveTimesButton = new JButton("Import");
+	panel5_1_1Buttons.add(importSolveTimesButton);
+	exportSolveTimesButton = new JButton("Export");
+	panel5_1_1Buttons.add(exportSolveTimesButton);
+	panel5_1_1.add(panel5_1_1Buttons);
+	panel5_1.add(panel5_1_1, BorderLayout.CENTER);
+	panel5.add(panel5_1);
 
 	solveStatsTextArea = new JTextArea("NOT WORKING\n" + timerStats.toString());
 	solveStatsTextArea.setFont(SOLVES_TIMES_STATS_FONT);
@@ -179,21 +200,44 @@ public class GUI extends JFrame
 	    else if(timeIsStarted)
 	    {
 		timeIsStarted = false;
-		updateTimer();
-		startTime = 0;
 		timer.stop();
-		lastSolveTime = solveTime;
-		//INSERT CODE: for timeStatsTextArea
-		updateSolveTimesTextArea(); //write to bottom
-		scrambleAnalysisString = solver.toString();
-		scrambleAnalysisTextArea.setText(scrambleAnalysisString); //write to right
+		updateTimer();//calcs solve time, sets it to solveTime, and edits timerTextField
+	        updateSolveStatsTextArea(); //UNIMPLEMENTED
+		updateScrambleAnalysisTextArea();//write to right
+		updateSolveTimesArrayList();
+		updateSolveTimesTextArea(); //write to bottom-left //MAKE THIS BASED OFF OF ARRAY LIST
 
-		//generating and prepping new for new scramble
-		scramble = scrambler.genEasyScramble();
-		generatedScramble.setText(scramble);
-		solver.refresh(scramble);
+	        prepNewScramble();
+
 	    }
 	}
+    }
+    public void updateSolveTimesArrayList()
+    {
+	solveTimesArrayList.add(solveTime);
+	System.out.println(solveTimesArrayList);
+    }
+    public void updateSolveTimesTextArea()
+    {
+	StringBuilder toThisTextArea = new StringBuilder();
+	for(int x = 0; x < solveTimesArrayList.size(); x++)
+	{
+	    toThisTextArea.append((x+1) + ". " + solveTimesArrayList.get(x) + "\n");
+	}
+	solveTimesTextArea.setText(toThisTextArea.toString());
+    }
+    public void prepNewScramble()
+    {
+	scramble = scrambler.genEasyScramble();
+	generatedScramble.setText(scramble);
+	solver.refresh(scramble);
+    }
+    public void updateSolveStatsTextArea()//UNIMPLEMENTED
+    {
+    }
+    public void updateScrambleAnalysisTextArea()
+    {
+	scrambleAnalysisTextArea.setText(solver.toString());
     }
     //temp method for debugging purposes.
     public void appendLog()
@@ -212,11 +256,7 @@ public class GUI extends JFrame
 	}
     }
 
-    public void updateSolveTimesTextArea()
-    {
-	scrambleSBuilder.append(lastSolveTime + ", ");
-	solveTimesTextArea.setText(scrambleSBuilder.toString());
-    }
+
     public void updateTimer() //calcuates the solve time, sets it to solveTime, and edits timerTextField
     {
 	timeInMillis = System.currentTimeMillis() - startTime;
