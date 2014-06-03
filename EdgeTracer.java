@@ -38,19 +38,25 @@ public class EdgeTracer extends Tracer
     }
     private void solveNextEdgeComm()
     {
-
-	String[][] afterBuffer = determineNextTarget("U","E");
-	String[][] afterFirstTarget = determineNextTarget(afterBuffer[0][0],afterBuffer[1][0]);
-	//insert into firstTarget
-	edgeMap.put(afterBuffer[0][0], edgeMap.get("U")); edgeMap.put(afterBuffer[1][0], edgeMap.get("E"));
-	//insert into lastTarget
-	edgeMap.put(afterFirstTarget[0][0],afterBuffer[0][1]); edgeMap.put(afterFirstTarget[1][0],afterBuffer[1][1]);
-	//insert into buffer
-	edgeMap.put("U",afterFirstTarget[0][1]); edgeMap.put("E",afterFirstTarget[1][1]);
-
-	edgeLetterSequence = edgeLetterSequence + afterBuffer[0][0]+afterFirstTarget[0][0]+ " ";
-	numEdgeIterations++;
 	fixFlippedEdges();
+	if(!isEdgesSolved())
+	{
+	    String[][] afterBuffer = determineNextTarget("U","E");
+	    String[][] afterFirstTarget = determineNextTarget(afterBuffer[0][0],afterBuffer[1][0]);
+	    //insert into firstTarget
+	    edgeMap.put(afterBuffer[0][0], edgeMap.get("U")); edgeMap.put(afterBuffer[1][0], edgeMap.get("E"));
+	    //insert into lastTarget
+	    edgeMap.put(afterFirstTarget[0][0],afterBuffer[0][1]); edgeMap.put(afterFirstTarget[1][0],afterBuffer[1][1]);
+	    //insert into buffer
+	    edgeMap.put("U",afterFirstTarget[0][1]); edgeMap.put("E",afterFirstTarget[1][1]);
+
+	    edgeLetterSequence = edgeLetterSequence + afterBuffer[0][0]+afterFirstTarget[0][0]+ " ";
+	    numEdgeIterations++;
+
+	}
+	//	System.out.println(getEdgeMap());
+	//System.out.println(edgeLetterSequence);
+
     }
 
     private String[][] determineNextTarget(String loc1, String loc2)

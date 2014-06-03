@@ -22,7 +22,7 @@ public class Scrambler
 	EdgeTracer edgeTracer = new EdgeTracer(testScramble);
 	CornerTracer cornerTracer = new CornerTracer(testScramble);
 
-	while(tracer.hasParity() || !edgeTracer.hasFlippedEdges() || cornerTracer.hasTwistedCorners())
+	while(tracer.hasParity() ||  cornerTracer.hasTwistedCorners())
 	{
 	    
 	    testScramble = scrambler.genScramble();

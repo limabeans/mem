@@ -3,35 +3,43 @@ public class TracerTester
 {
     public static void main(String[] args)
     {
+	int solved =0;
+	int flipped=0;
 	Scrambler scrambler = new Scrambler();
 	String testScramble = scrambler.genScramble();
 	Tracer tracer = new Tracer(testScramble);
 	CornerTracer cornerTracer = new CornerTracer(testScramble);
 	EdgeTracer edgeTracer = new EdgeTracer(testScramble);
 
-	while(!edgeTracer.hasFlippedEdges() ||tracer.hasParity() || cornerTracer.hasTwistedCorners())
+	for(int x=1; x<=10000;x++)
 	{
-	    testScramble = scrambler.genScramble();
+	    testScramble = scrambler.genEasyScramble();
+	    //testScramble = "U R L B' D F D' R D2 L2 R2 U B' F L2 B2 R F' D2 F R2";
 	    tracer = new Tracer(testScramble);
 	    cornerTracer = new CornerTracer(testScramble);
 	    edgeTracer = new EdgeTracer(testScramble);
-	}
-	if(edgeTracer.hasFlippedEdges())
-	{
-	    System.out.println("HAS FLIPPED EDGES");
-	}
-	System.out.println("SCRAMBLE: " + tracer.getScramble());
-
-	edgeTracer.traceEdges();
+	    System.out.println("SCRAMBLE: " + tracer.getScramble());
+	    if(edgeTracer.hasFlippedEdges())
+	    {
+		flipped++;
+	    }
+	    edgeTracer.traceEdges();
 	
-	System.out.println(edgeTracer.toString());
-	System.out.println(edgeTracer.getEdgeMap());
-	
-
-
+	    System.out.println(edgeTracer.toString());
+	    System.out.println(edgeTracer.getEdgeMap());
+	    
+	    if(edgeTracer.getEdgeMap().get("E").equals("E") && edgeTracer.getEdgeMap().get("U").equals("U"))
+	    {
+		solved++;
+	    }
+	    
 	try(PrintWriter out = new PrintWriter(new FileWriter("log.txt",true))){
-		out.print(String.format("%s\n",tracer.getScramble()));
+		out.print(String.format("%s\n",testScramble));
 	    }catch (IOException e){}
+	}
+	System.out.println(solved);
+	System.out.println(flipped);
+
 
 
 	//TESTING EDGE COMM SOLVER
