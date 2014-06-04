@@ -9,15 +9,15 @@ public class Scrambler
     public static void main(String[] args)
     {
 	Scrambler tester = new Scrambler();
-	System.out.println(tester.genScramble());
+	System.out.println(tester.genDangerousScramble());
     }
     /*
      *Call this method if you want a scramble in String format.
      */
-    public static String genEasyScramble() //now can handle Edge Flips
+    public static String genFriendlyScramble() //now can handle Edge Flips
     {
 	Scrambler scrambler = new Scrambler();
-	String testScramble = scrambler.genScramble();
+	String testScramble = scrambler.genDangerousScramble();
 	Tracer tracer = new Tracer(testScramble);
 	EdgeTracer edgeTracer = new EdgeTracer(testScramble);
 	CornerTracer cornerTracer = new CornerTracer(testScramble);
@@ -25,7 +25,7 @@ public class Scrambler
 	while(tracer.hasParity() ||  cornerTracer.hasTwistedCorners())
 	{
 	    
-	    testScramble = scrambler.genScramble();
+	    testScramble = scrambler.genDangerousScramble();
 	    tracer = new Tracer(testScramble);
 	    edgeTracer = new EdgeTracer(testScramble);
 	    cornerTracer = new CornerTracer(testScramble);
@@ -34,7 +34,7 @@ public class Scrambler
 
 	return testScramble;
     }
-    public static String genScramble()
+    public static String genDangerousScramble()
     {
         String scramble = "";
         scramble = scramble + moves[(int)(Math.random()*moves.length)] + note[(int)(Math.random()*note.length)];

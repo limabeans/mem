@@ -16,7 +16,7 @@ public class GUI extends JFrame
     private final Font SOLVES_TIMES_STATS_FONT = new Font("Georgia",Font.BOLD,14);
 
     private Scrambler scrambler = new Scrambler();
-    private String scramble = scrambler.genEasyScramble();
+    private String scramble = scrambler.genFriendlyScramble();
     private CubeSolveStats cubeSolveStats = new CubeSolveStats();
 
     protected ArrayList<SolveTime> database1;
@@ -32,9 +32,9 @@ public class GUI extends JFrame
     private JToggleButton timingMemoToggleButton;
     //    private JRadioButton 
     //    private JCheckBox
-    private JComboBox<String> selectPuzzleComboBox, cornerTwistsComboBox, edgeFlipsComboBox;
+    private JComboBox<String> selectPuzzleComboBox, cornerTwistsComboBox, edgeFlipsComboBox, parityComboBox;
     private String[] selectPuzzleArray = { "3x3 blindfolded", "3x3 speedsolve" };
-    private String[] selectYesNoRandomArray = { "Yes", "No", "Random" };
+    private String[] selectYesNoRandomArray = { "No", "Yes", "Random" };
 
     File exportSolveTimesFile;
     
@@ -113,7 +113,8 @@ public class GUI extends JFrame
 	paritySelectLabel = new JLabel("Parity:");
 	paritySelectLabel.setHorizontalAlignment(JLabel.RIGHT);
 	panel4_2.add(paritySelectLabel);
-	JComboBox<String> parityComboBox = new JComboBox<String>(selectYesNoRandomArray);
+	parityComboBox = new JComboBox<String>(selectYesNoRandomArray);
+	parityComboBox.addActionListener(new CustomScrambleListener());
 	panel4_2.add(parityComboBox);
 	panel4LeftSide.add(panel4_2);
 	JPanel panel4_3 = new JPanel(new GridLayout(1,2));
@@ -121,6 +122,7 @@ public class GUI extends JFrame
 	edgeFlipsSelectLabel.setHorizontalAlignment(JLabel.RIGHT);
 	panel4_3.add(edgeFlipsSelectLabel);
         edgeFlipsComboBox = new JComboBox<String>(selectYesNoRandomArray);
+	edgeFlipsComboBox.addActionListener(new CustomScrambleListener());
 	panel4_3.add(edgeFlipsComboBox);
 	panel4LeftSide.add(panel4_3);
 	JPanel panel4_4 = new JPanel(new GridLayout(1,2));
@@ -135,6 +137,7 @@ public class GUI extends JFrame
 	cornerTwistsSelectLabel.setHorizontalAlignment(JLabel.RIGHT);
 	panel4_5.add(cornerTwistsSelectLabel);
 	cornerTwistsComboBox = new JComboBox<String>(selectYesNoRandomArray);
+	cornerTwistsComboBox.addActionListener(new CustomScrambleListener());
 	panel4_5.add(cornerTwistsComboBox);
 	panel4LeftSide.add(panel4_5);
 	JPanel panel4_6 = new JPanel(new GridLayout(1,2));
@@ -213,7 +216,7 @@ public class GUI extends JFrame
 
 	panel6 = new JPanel(new GridLayout(1,2));
 	JTextArea temp6 = new JTextArea("Key Bindings:\n SPACE: start/stop timer\n D: DNF\n");
-	JTextArea settingstemp = new JTextArea("TODO\nParity,yes[],no[],random[]\nflips,yes[],no[],random[],\ntwists,yes[],no[],random[]\nedgeforce[], cornerforce[]");
+	JTextArea settingstemp = new JTextArea("TODO\nParity,yes[],no[],random[]\nflips,yes[x],no[x],random[x],\ntwists,yes[],no[],random[]\nedgeforce[], cornerforce[]");
 	panel6.add(temp6);
 	panel6.add(settingstemp);
 	this.add(panel6);
@@ -224,6 +227,7 @@ public class GUI extends JFrame
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	setVisible(true);
 	
+	prepNewScramble();
 	exportSolveTimesFile = new File(exportSolveTimesTextField.getText());
 	timerTextField.requestFocusInWindow(); //so SPACE keybinding will work immediately
 
@@ -239,7 +243,21 @@ public class GUI extends JFrame
 
     class CustomScrambleListener implements ActionListener
     {
+	public void actionPerformed(ActionEvent e)
+	{
+	    prepNewScramble();
+	    System.out.println("CUSTOM STUFF CHANGED");
+	    timerTextField.requestFocusInWindow();
+
+	}
 	//if(((String)selectPuzzleComboBox.getSelectedItem()) ----- format
+	/*public void prepNewScramble()
+    {
+	scramble = scrambler.genFriendlyScramble();
+	generatedScramble.setText(scramble);
+	solver.refresh(scramble);
+	}*/
+	
     }
     class ClockListener implements ActionListener 
     {
@@ -372,9 +390,50 @@ public class GUI extends JFrame
     }
     public void prepNewScramble()
     {
-	scramble = scrambler.genEasyScramble();
+	    if(((String)parityComboBox.getSelectedItem()).equals("No"))
+	    {
+		if(((String)cornerTwistsComboBox.getSelectedItem()).equals("No"))
+		{
+		    if(((String)edgeFlipsComboBox.getSelectedItem()).equals("No"))
+		    {
+			System.out.println("ALL NO");
+			while(solver.hasFlippedEdges())
+			{
+			    scramble = scrambler.genFriendlyScramble();
+			    solver.refresh(scramble);
+			}
+		    }
+		    if(((String)edgeFlipsComboBox.getSelectedItem()).equals("Yes"))
+		    {
+			System.out.println("NO, BUT YES FLIPPED EDGES");
+			while(!solver.hasFlippedEdges())
+			{
+			    scramble = scrambler.genFriendlyScramble();
+			    solver.refresh(scramble);
+			}
+		    }
+		    if(((String)edgeFlipsComboBox.getSelectedItem()).equals("Random"))
+		    {
+			System.out.println("NO, RANDOM FLIPPED EDGES");
+			scramble = scrambler.genFriendlyScramble();
+			solver.refresh(scramble);
+		    }
+		}
+	    }
+	    if(((String)parityComboBox.getSelectedItem()).equals("Yes"))
+	    {
+		scrambleAnalysisTextArea.setText("PARITY SCRAMBLE! DANGER!!");
+		System.out.println("YES PARITY");
+		scramble = scrambler.genDangerousScramble();
+		while(!Tracer.hasParity(scramble))
+		{
+		    scramble = scrambler.genDangerousScramble();
+		}
+	    }
+	    if(((String)parityComboBox.getSelectedItem()).equals("Random"))
+	    {
+	    }
 	generatedScramble.setText(scramble);
-	solver.refresh(scramble);
     }
     //UPDATE METHODS
     public void updateSolveTimesArrayList()

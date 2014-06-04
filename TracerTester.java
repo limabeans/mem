@@ -6,14 +6,14 @@ public class TracerTester
 	int solved =0;
 	int breaked=0;
 	Scrambler scrambler = new Scrambler();
-	String testScramble = scrambler.genScramble();
+	String testScramble = scrambler.genDangerousScramble();
 	Tracer tracer = new Tracer(testScramble);
 	CornerTracer cornerTracer = new CornerTracer(testScramble);
 	EdgeTracer edgeTracer = new EdgeTracer(testScramble);
 
 	for(int x=1; x<=1000;x++)
 	{
-	    testScramble = scrambler.genEasyScramble();
+	    testScramble = scrambler.genFriendlyScramble();
 	    //testScramble = "U R L B' D F D' R D2 L2 R2 U B' F L2 B2 R F' D2 F R2";
 	    tracer = new Tracer(testScramble);
 	    cornerTracer = new CornerTracer(testScramble);
@@ -43,12 +43,12 @@ public class TracerTester
 
 
 	//TESTING EDGE COMM SOLVER
-	/*String testScramble = scrambler.genScramble();
+	/*String testScramble = scrambler.genDangerousScramble();
 	Tracer tracer = new EdgeTracer(testScramble);
 	//will only generate easy scrambles
 	while(tracer.hasParity() || tracer.hasFlippedEdges() || tracer.hasTwistedCorners())
 	{
-	    testScramble = scrambler.genScramble();
+	    testScramble = scrambler.genDangerousScramble();
 	    tracer = new EdgeTracer(testScramble);
 	}
 	System.out.println("#"+x);

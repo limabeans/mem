@@ -17,13 +17,13 @@ public class CommSolver
     private boolean hasCornerCycleBreaks;
     public static void main (String[] args)
     {
-	System.out.println(new CommSolver(Scrambler.genEasyScramble()).toString());
+	System.out.println(new CommSolver(Scrambler.genFriendlyScramble()).toString());
     }
     public CommSolver(String givenScramble)
     {
 	refresh(givenScramble);
     }
-    public boolean hasEdgeFlips()
+    public boolean hasFlippedEdges()
     {
 	return hasEdgeFlips;
     }
