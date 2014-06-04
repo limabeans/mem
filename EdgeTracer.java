@@ -193,7 +193,11 @@ public class EdgeTracer extends Tracer
 	   ||checkJN()==FLIPPED
 	   ||checkPT()==FLIPPED
 	   ||checkHR()==FLIPPED)
+	{
+	 
 	    return true;
+	}
+	 
 	return false;
     }
     public void fixFlippedEdges()

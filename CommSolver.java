@@ -13,7 +13,7 @@ public class CommSolver
     private boolean hasEdgeCycleBreaks;
 
     private String cornerCycles;
-    private boolean hasCornerTwists;
+    private boolean hasTwistedCorners;
     private boolean hasCornerCycleBreaks;
     public static void main (String[] args)
     {
@@ -27,18 +27,22 @@ public class CommSolver
     {
 	return hasEdgeFlips;
     }
+    public boolean hasTwistedCorners()
+    {
+	return hasTwistedCorners;
+    }
     public void refresh(String newScramble)
     {
 	cornerTracer = new CornerTracer(newScramble);
 	edgeTracer = new EdgeTracer(newScramble);
 	scramble = newScramble;
 	hasParity = Tracer.hasParity(newScramble);
-	
+
 	hasEdgeFlips = edgeTracer.hasFlippedEdges();
-	edgeCycles = edgeTracer.traceEdges();
+	edgeCycles = edgeTracer.traceEdges();	
 	hasEdgeCycleBreaks = edgeTracer.getIfEdgeCycleBreaks();
 
-	hasCornerTwists = cornerTracer.hasTwistedCorners();
+	hasTwistedCorners = cornerTracer.hasTwistedCorners();	
 	cornerCycles = cornerTracer.traceCorners();
 	hasCornerCycleBreaks = cornerTracer.getIfCornerCycleBreaks();
     }
@@ -49,7 +53,7 @@ public class CommSolver
 	    + "edge cycle: " + edgeCycles + "\n"
 	    + "corner cycle: " + cornerCycles + "\n"
 	    + "edge flips: " + hasEdgeFlips + " / edge cycle breaks: " + hasEdgeCycleBreaks + "\n"
- 	    + "corner twists: " + hasCornerTwists + " / corner cycle breaks: " + hasCornerCycleBreaks + "\n";
+ 	    + "corner twists: " + hasTwistedCorners + " / corner cycle breaks: " + hasCornerCycleBreaks + "\n";
 	
 	return reported;
     }

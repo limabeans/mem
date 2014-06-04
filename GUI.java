@@ -277,7 +277,7 @@ public class GUI extends JFrame
 	}
 	public void focusLost(FocusEvent e)
 	{
-	    //	    timerTextField.setForeground(new Color(204,204,204));
+	    timerTextField.setForeground(new Color(204,204,204));
 	}
     }
     class deleteAllSolveTimesButtonListener implements ActionListener
@@ -390,54 +390,80 @@ public class GUI extends JFrame
 	    }
 	}
     }
-    //CUSTOM SCRAMBLES MASSIVE IF
+    //findScramble-parity/flips/twists 4/2/1/0 no,yes,random,blank
+    
+    //FIND A CUSTOM SCRAMBLE
     public void prepNewScramble()
     {
-	    if(((String)parityComboBox.getSelectedItem()).equals("No"))
+	scramble = scrambler.genFriendlyScramble();
+	solver.refresh(scramble);
+	System.out.println("prep newscramble ran");
+	switch((String)parityComboBox.getSelectedItem()) 
+	{
+	case "No": //4 0 0
+	    switch((String)edgeFlipsComboBox.getSelectedItem()) 
 	    {
-		if(((String)cornerTwistsComboBox.getSelectedItem()).equals("No"))
+	    case "No": //4 4 0
+		switch((String)cornerTwistsComboBox.getSelectedItem()) 
 		{
-		    if(((String)edgeFlipsComboBox.getSelectedItem()).equals("No"))
+		case "No": //4 4 4
+		    while(solver.hasFlippedEdges() || solver.hasTwistedCorners())
 		    {
-			System.out.println("ALL NO");
-			while(solver.hasFlippedEdges())
-			{
-			    scramble = scrambler.genFriendlyScramble();
-			    solver.refresh(scramble);
-			}
-		    }
-		    if(((String)edgeFlipsComboBox.getSelectedItem()).equals("Yes"))
-		    {
-			System.out.println("NO, BUT YES FLIPPED EDGES");
-			while(!solver.hasFlippedEdges())
-			{
-			    scramble = scrambler.genFriendlyScramble();
-			    solver.refresh(scramble);
-			}
-		    }
-		    if(((String)edgeFlipsComboBox.getSelectedItem()).equals("Random"))
-		    {
-			System.out.println("NO, RANDOM FLIPPED EDGES");
+			System.out.println("4 4 4");
 			scramble = scrambler.genFriendlyScramble();
 			solver.refresh(scramble);
 		    }
+		    break;
+		case "Yes": //4 4 2
+		    while(solver.hasFlippedEdges() || !solver.hasTwistedCorners())
+		    {
+			System.out.println("4 4 2");
+			scramble = scrambler.genFriendlyScramble();
+			solver.refresh(scramble);
+		    }
+		    break;
+		case "Random": //4 4 1
+		    while(solver.hasFlippedEdges())
+		    {
+			System.out.println("4 4 1");
+			scramble = scrambler.genFriendlyScramble();
+			solver.refresh(scramble);
+		    }
+		    break;
 		}
+		break;
+	    
+	    case "Yes": //4 2 0
+		break;
+	    case "Random": // 4 1 0
+		break;
 	    }
-	    if(((String)parityComboBox.getSelectedItem()).equals("Yes"))
-	    {
-		scrambleAnalysisTextArea.setText("PARITY SCRAMBLE! DANGER!!");
-		System.out.println("YES PARITY");
-		scramble = scrambler.genDangerousScramble();
-		while(!Tracer.hasParity(scramble))
-		{
-		    scramble = scrambler.genDangerousScramble();
-		}
-	    }
-	    if(((String)parityComboBox.getSelectedItem()).equals("Random"))
-	    {
-	    }
+
+
+
+
+
+
+	case "Yes": //2 0 0
+	    break;
+	case "Random": //1 0 0 
+	    break;
+	default:
+	    System.out.println("You really messed up");
+	}
+
+
+
+
+
 	generatedScramble.setText(scramble);
     }
+
+
+    //27 TROLL METHODS
+    
+
+
     //UPDATE METHODS
     public void updateSolveTimesArrayList()
     {
