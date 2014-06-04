@@ -25,15 +25,16 @@ public class GUI extends JFrame
 
     //GUI instances
     private JButton deleteLastTimeButton, exportSolveTimesButton, clearAllSolveTimesButton;
-    private JTextField timerTextField, generatedScramble, forceEdgeTextField, forceCornerTextField, exportSolveTimesTextField;
-    private JLabel forceEdgeLabel, forceCornerLabel, solveTimesLabel;
+    private JTextField timerTextField, generatedScramble, exportSolveTimesTextField, forceEdgeCommTextField;
+    private JLabel solveTimesLabel, solveStatsLabel, scrambleOptionsLabel, paritySelectLabel, edgeFlipsSelectLabel, forceEdgeCommLabel, cornerTwistsSelectLabel, forceCornerCommLabel, forceCornerCommTetField;
     private JTextArea scrambleAnalysisTextArea, solveTimesTextArea, solveStatsTextArea;
     private JPanel panel1,panel2,panel3,panel4,panel5,panel6;
-    private JToggleButton timingMemoToggle;
-    private JRadioButton randomRadioButton, parityRadioButton, noParityRadioButton;
-    private JCheckBox edgeFlipsCheckBox, cornerTwistsCheckBox;
-    private JComboBox<String> selectPuzzleComboBox;
+    private JToggleButton timingMemoToggleButton;
+    //    private JRadioButton 
+    //    private JCheckBox
+    private JComboBox<String> selectPuzzleComboBox, cornerTwistsComboBox, edgeFlipsComboBox;
     private String[] selectPuzzleArray = { "3x3 blindfolded", "3x3 speedsolve" };
+    private String[] selectYesNoRandomArray = { "Yes", "No", "Random" };
 
     File exportSolveTimesFile;
     
@@ -54,7 +55,7 @@ public class GUI extends JFrame
 
     public GUI()
     {
-	super("Angel Lim's mem");
+	super("MEM -- Angel Lim's personal java prototype of limatime.");
 	this.setLayout(new GridLayout(3,2));
 
 	appendLog(); //debugging purposes
@@ -102,36 +103,58 @@ public class GUI extends JFrame
 	timerTextField.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "doSpaceAction");
 	timerTextField.getActionMap().put("doSpaceAction", spaceAction);
 
-	panel4 = new JPanel(new GridLayout(5,1));
-	timingMemoToggle = new JToggleButton("Timing memo: OFF");
-	timingMemoToggle.setEnabled(false);
-	JPanel panel4_2 = new JPanel();
-	randomRadioButton = new JRadioButton("random");
-	parityRadioButton = new JRadioButton("with parity");
-	noParityRadioButton = new JRadioButton("without parity",true);
-	panel4_2.add(randomRadioButton);
-	panel4_2.add(parityRadioButton);
-	panel4_2.add(noParityRadioButton);
-	JPanel panel4_3 = new JPanel();
-	edgeFlipsCheckBox = new JCheckBox("edge flips");
-	cornerTwistsCheckBox = new JCheckBox("corner twists");
-	panel4_3.add(edgeFlipsCheckBox);
-	panel4_3.add(cornerTwistsCheckBox);
-	JPanel panel4_4 = new JPanel();
-	forceEdgeLabel = new JLabel("force edge comm: ");
-	forceEdgeTextField = new JTextField(5);
-	panel4_4.add(forceEdgeLabel);
-	panel4_4.add(forceEdgeTextField);
-	forceCornerLabel = new JLabel("force corner comm: ");
-	forceCornerTextField = new JTextField(5);
-	panel4_4.add(forceCornerLabel);
-	panel4_4.add(forceCornerTextField);
-	JPanel panel4_5 = new JPanel();
-	panel4.add(timingMemoToggle);
-	panel4.add(panel4_2);	
-	panel4.add(panel4_3);
-	panel4.add(panel4_4);
-	panel4.add(panel4_5);
+	panel4 = new JPanel(new BorderLayout());
+	JPanel panel4LeftSide = new JPanel(new GridLayout(7,1));
+	JPanel panel4_1 = new JPanel();
+	scrambleOptionsLabel = new JLabel("Scramble Options");
+	scrambleOptionsLabel.setHorizontalAlignment(JLabel.CENTER);
+	panel4_1.add(scrambleOptionsLabel);
+	panel4LeftSide.add(panel4_1);
+	JPanel panel4_2 = new JPanel(new GridLayout(1,2));
+	paritySelectLabel = new JLabel("Parity:");
+	paritySelectLabel.setHorizontalAlignment(JLabel.RIGHT);
+	panel4_2.add(paritySelectLabel);
+	JComboBox<String> parityComboBox = new JComboBox<String>(selectYesNoRandomArray);
+	panel4_2.add(parityComboBox);
+	panel4LeftSide.add(panel4_2);
+	JPanel panel4_3 = new JPanel(new GridLayout(1,2));
+	edgeFlipsSelectLabel = new JLabel("Edge Flips:");
+	edgeFlipsSelectLabel.setHorizontalAlignment(JLabel.RIGHT);
+	panel4_3.add(edgeFlipsSelectLabel);
+        edgeFlipsComboBox = new JComboBox<String>(selectYesNoRandomArray);
+	panel4_3.add(edgeFlipsComboBox);
+	panel4LeftSide.add(panel4_3);
+	JPanel panel4_4 = new JPanel(new GridLayout(1,2));
+	forceEdgeCommLabel = new JLabel("Force edge comm:");
+	forceEdgeCommLabel.setHorizontalAlignment(JLabel.RIGHT);
+	panel4_4.add(forceEdgeCommLabel);
+        forceEdgeCommTextField = new JTextField();
+	panel4_4.add(forceEdgeCommTextField);
+	panel4LeftSide.add(panel4_4);
+	JPanel panel4_5 = new JPanel(new GridLayout(1,2));
+	cornerTwistsSelectLabel = new JLabel("Corner Twists:");
+	cornerTwistsSelectLabel.setHorizontalAlignment(JLabel.RIGHT);
+	panel4_5.add(cornerTwistsSelectLabel);
+	cornerTwistsComboBox = new JComboBox<String>(selectYesNoRandomArray);
+	panel4_5.add(cornerTwistsComboBox);
+	panel4LeftSide.add(panel4_5);
+	JPanel panel4_6 = new JPanel(new GridLayout(1,2));
+	forceCornerCommLabel = new JLabel("Force corner comm:");
+	forceCornerCommLabel.setHorizontalAlignment(JLabel.RIGHT);
+	panel4_6.add(forceCornerCommLabel);
+	JTextField forceCornerCommTextField = new JTextField();
+	panel4_6.add(forceCornerCommTextField);
+	panel4LeftSide.add(panel4_6);
+	JPanel panel4_7 = new JPanel();
+	timingMemoToggleButton = new JToggleButton("Timing memo: OFF");
+	panel4_7.add(timingMemoToggleButton);
+	panel4LeftSide.add(panel4_7);
+	panel4.add(panel4LeftSide);
+
+	JPanel panel4RightSide = new JPanel(new BorderLayout());
+	JTextArea logTextArea = new JTextArea("log text area");
+	panel4RightSide.add(logTextArea);
+	//panel4.add(panel4RightSide, BorderLayout.CENTER);
 	this.add(panel4);
 
 	panel5 = new JPanel(new GridLayout(1,2));
@@ -162,6 +185,7 @@ public class GUI extends JFrame
 	panel5_1.add(panel5_1bot,BorderLayout.SOUTH);
 	
 	//panel5-right side
+
 	solveTimesTextArea = new JTextArea();
 	solveTimesTextArea.setFont(SOLVES_TIMES_STATS_FONT);
 	solveTimesTextArea.setEditable(false);
@@ -172,13 +196,20 @@ public class GUI extends JFrame
 	panel5_1.add(solveTimesScroll, BorderLayout.CENTER);
 	panel5.add(panel5_1);
 
+	JPanel panel5_2 = new JPanel(new BorderLayout());
+	JPanel panel5_2top = new JPanel();
+	solveStatsLabel = new JLabel("Solve Stats");
+	solveStatsLabel.setHorizontalAlignment(JLabel.CENTER);
+	panel5_2top.add(solveStatsLabel);
+	panel5_2.add(panel5_2top,BorderLayout.NORTH);
 	solveStatsTextArea = new JTextArea(timerStats.toString());
 	solveStatsTextArea.setFont(SOLVES_TIMES_STATS_FONT);
 	solveStatsTextArea.setEditable(false);
-	panel5.add(solveStatsTextArea);
+	panel5_2.add(solveStatsTextArea, BorderLayout.CENTER);
 	JScrollPane solveStatsScroll = new JScrollPane(solveStatsTextArea);
 	solveStatsScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-	panel5.add(solveStatsScroll);
+	panel5_2.add(solveStatsScroll, BorderLayout.CENTER);
+	panel5.add(panel5_2);
 	this.add(panel5);
 
 	panel6 = new JPanel(new GridLayout(1,2));
@@ -198,16 +229,8 @@ public class GUI extends JFrame
 	timerTextField.requestFocusInWindow(); //so SPACE keybinding will work immediately
 
 	//DISABLED FEATURES
-	randomRadioButton.setEnabled(false);
-	parityRadioButton.setEnabled(false);
-	forceCornerTextField.setEnabled(false);
-	forceEdgeTextField.setEnabled(false);
-	forceCornerTextField.setEnabled(false);
 	deleteLastTimeButton.setEnabled(false);
-	forceCornerLabel.setEnabled(false);
-	forceEdgeLabel.setEnabled(false);
-	edgeFlipsCheckBox.setEnabled(false);
-	cornerTwistsCheckBox.setEnabled(false);
+
 	//	solveTimesTextArea.getInputMap().put(KeyStroke.getKeyStroke("D"), "doDAction");
 	//	solveTimesTextArea.getActionMap().put("doDAction", dAction);
     }
