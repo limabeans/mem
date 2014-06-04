@@ -25,7 +25,7 @@ public class GUI extends JFrame
 
     //GUI instances
     private JButton deleteLastTimeButton, exportSolveTimesButton, clearAllSolveTimesButton;
-    private JTextField timerTextField, generatedScramble, exportSolveTimesTextField, forceEdgeCommTextField;
+    private JTextField timerTextField, generatedScramble, exportSolveTimesTextField, forceEdgeCommTextField, forceCornerCommTextField;
     private JLabel solveTimesLabel, solveStatsLabel, scrambleOptionsLabel, paritySelectLabel, edgeFlipsSelectLabel, forceEdgeCommLabel, cornerTwistsSelectLabel, forceCornerCommLabel, forceCornerCommTetField;
     private JTextArea scrambleAnalysisTextArea, solveTimesTextArea, solveStatsTextArea;
     private JPanel panel1,panel2,panel3,panel4,panel5,panel6;
@@ -69,6 +69,7 @@ public class GUI extends JFrame
 	panel1.add(panel1_1,BorderLayout.NORTH);
 	generatedScramble = new JTextField(scramble);
 	generatedScramble.setEditable(false);
+	generatedScramble.setFocusable(false);
 	generatedScramble.setHorizontalAlignment(JLabel.CENTER);
 	generatedScramble.setFont(SCRAMBLE_FONT);
 	panel1.add(generatedScramble,BorderLayout.CENTER);
@@ -77,6 +78,7 @@ public class GUI extends JFrame
 	panel2 = new JPanel(new BorderLayout());
 	scrambleAnalysisTextArea = new JTextArea("welcome to Angel Lim's bld timer!");
 	scrambleAnalysisTextArea.setEditable(false);
+	scrambleAnalysisTextArea.setFocusable(false);
 	scrambleAnalysisTextArea.setFont(SCRAMBLE_FONT);
 	panel2.add(scrambleAnalysisTextArea,BorderLayout.CENTER);
 	this.add(panel2);
@@ -131,6 +133,7 @@ public class GUI extends JFrame
 	panel4_4.add(forceEdgeCommLabel);
         forceEdgeCommTextField = new JTextField();
 	panel4_4.add(forceEdgeCommTextField);
+	forceEdgeCommTextField.addActionListener(new CustomScrambleListener());
 	panel4LeftSide.add(panel4_4);
 	JPanel panel4_5 = new JPanel(new GridLayout(1,2));
 	cornerTwistsSelectLabel = new JLabel("Corner Twists:");
@@ -144,8 +147,9 @@ public class GUI extends JFrame
 	forceCornerCommLabel = new JLabel("Force corner comm:");
 	forceCornerCommLabel.setHorizontalAlignment(JLabel.RIGHT);
 	panel4_6.add(forceCornerCommLabel);
-	JTextField forceCornerCommTextField = new JTextField();
+	forceCornerCommTextField = new JTextField();
 	panel4_6.add(forceCornerCommTextField);
+	forceCornerCommTextField.addActionListener(new CustomScrambleListener());
 	panel4LeftSide.add(panel4_6);
 	JPanel panel4_7 = new JPanel();
 	timingMemoToggleButton = new JToggleButton("Timing memo: OFF");
@@ -218,7 +222,7 @@ public class GUI extends JFrame
 
 	panel6 = new JPanel(new GridLayout(1,2));
 	JTextArea temp6 = new JTextArea("Key Bindings:\n SPACE: start/stop timer\n D: DNF\n");
-	JTextArea settingstemp = new JTextArea("TODO\nParity,yes[],no[],random[]\nflips,yes[x],no[x],random[x],\ntwists,yes[],no[],random[]\nedgeforce[], cornerforce[]");
+	JTextArea settingstemp = new JTextArea("TODO\nParity,yes[],no[x],random[]\n\nedgeforce[], cornerforce[]");
 	panel6.add(temp6);
 	panel6.add(settingstemp);
 	this.add(panel6);
@@ -228,13 +232,14 @@ public class GUI extends JFrame
 	setSize((int)(screen.getWidth()*.9),(int)(screen.getHeight()*.9));
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	setVisible(true);
-	
+
 	prepNewScramble();
 	exportSolveTimesFile = new File(exportSolveTimesTextField.getText());
 	timerTextField.requestFocusInWindow(); //so SPACE keybinding will work immediately
 
-	//DISABLED FEATURES
+	//DISABLED FEATURES broken
 	deleteLastTimeButton.setEnabled(false);
+	timingMemoToggleButton.setEnabled(false);
 
 	//	solveTimesTextArea.getInputMap().put(KeyStroke.getKeyStroke("D"), "doDAction");
 	//	solveTimesTextArea.getActionMap().put("doDAction", dAction);
@@ -248,17 +253,8 @@ public class GUI extends JFrame
 	public void actionPerformed(ActionEvent e)
 	{
 	    prepNewScramble();
-	    System.out.println("CUSTOM STUFF CHANGED");
 	    timerTextField.requestFocusInWindow();
-
 	}
-	//if(((String)selectPuzzleComboBox.getSelectedItem()) ----- format
-	/*public void prepNewScramble()
-    {
-	scramble = scrambler.genFriendlyScramble();
-	generatedScramble.setText(scramble);
-	solver.refresh(scramble);
-	}*/
 	
     }
     class ClockListener implements ActionListener 
@@ -390,14 +386,15 @@ public class GUI extends JFrame
 	    }
 	}
     }
+
     //findScramble-parity/flips/twists 4/2/1/0 no,yes,random,blank
-    
+    //27
     //FIND A CUSTOM SCRAMBLE
     public void prepNewScramble()
     {
+	tempParityFix();
 	scramble = scrambler.genFriendlyScramble();
 	solver.refresh(scramble);
-	System.out.println("prep newscramble ran");
 	switch((String)parityComboBox.getSelectedItem()) 
 	{
 	case "No": //4 0 0
@@ -456,29 +453,65 @@ public class GUI extends JFrame
 		}
 		break;
 	    }
+	    break;
 
+	default:
+	    scrambleAnalysisTextArea.setText("Scramble may have parity, \n scramble analysis and options broken for now :(");
+	    scramble = scrambler.genDangerousScramble();
+	    tempParityBreak();
+	    break;
 
-
-
-
-
-	case "Yes": //2 0 0
+	    /*	case "Yes": //2 0 0
 	    break;
 	case "Random": //1 0 0 
 	    break;
 	default:
-	    System.out.println("You really messed up");
+	System.out.println("You really messed up");*/
+	
 	}
 
-
-
-
-
+	if(forceEdgeCommTextField.getText().length()>0)
+	{
+	    forceEdgeCommInScramble();
+	}
+	if(forceCornerCommTextField.getText().length()>0)
+	{
+	    forceCornerCommInScramble();
+	}
 	generatedScramble.setText(scramble);
     }
 
+    public void forceEdgeCommInScramble()
+    {
+	while(!solver.hasGivenEdgeComm(forceEdgeCommTextField.getText()))
+	{
+	    prepNewScramble();
+	}
+	forceEdgeCommTextField.setText("");
+    }
+    public void forceCornerCommInScramble()
+    {
+	while(!solver.hasGivenCornerComm(forceCornerCommTextField.getText()))
+	{
+	    prepNewScramble();
+	}
+	forceCornerCommTextField.setText("");
+    }
+    public void tempParityBreak()
+    {
+	edgeFlipsComboBox.setEnabled(false);
+	cornerTwistsComboBox.setEnabled(false);
+	forceEdgeCommTextField.setEnabled(false);
+	forceCornerCommTextField.setEnabled(false);
+    }
+    public void tempParityFix()
+    {
+	edgeFlipsComboBox.setEnabled(true);
+	cornerTwistsComboBox.setEnabled(true);
+	forceEdgeCommTextField.setEnabled(true);
+	forceCornerCommTextField.setEnabled(true);
+    }
 
-    //27 TROLL METHODS
     
 
 

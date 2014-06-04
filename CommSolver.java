@@ -23,6 +23,30 @@ public class CommSolver
     {
 	refresh(givenScramble);
     }
+    public String getEdgeCycles()
+    {
+	return edgeCycles;
+    }
+    public String getCornerCycles()
+    {
+	return cornerCycles;
+    }
+    public boolean hasGivenEdgeComm(String comm)
+    {
+	if(edgeCycles.contains(comm))
+	{
+	    return true;
+	}
+	return false;
+    }
+    public boolean hasGivenCornerComm(String comm)
+    {
+	if(cornerCycles.contains(comm))
+	{
+	    return true;
+	}
+	return false;
+    }
     public boolean hasFlippedEdges()
     {
 	return hasEdgeFlips;
