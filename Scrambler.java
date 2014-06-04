@@ -21,8 +21,8 @@ public class Scrambler
 	Tracer tracer = new Tracer(testScramble);
 	EdgeTracer edgeTracer = new EdgeTracer(testScramble);
 	CornerTracer cornerTracer = new CornerTracer(testScramble);
-
-	while(tracer.hasParity() ||  cornerTracer.hasTwistedCorners())
+	//all scrambles have twisted corners now
+	while(tracer.hasParity() || !cornerTracer.hasTwistedCorners())
 	{
 	    
 	    testScramble = scrambler.genDangerousScramble();

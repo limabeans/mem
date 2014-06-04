@@ -1,11 +1,12 @@
 import java.util.*;
-
+import java.io.*;
 public class CornerTracer extends Tracer
 {
     private int numCornerIterations;
     private String cornerLetterSequence;
     private boolean requiredCornerCycleBreak;
     private int numCornerCycleBreaks;
+    int x = 0;
     public CornerTracer(String scramble)
     {
 	super(scramble);
@@ -20,7 +21,7 @@ public class CornerTracer extends Tracer
     }
     public String toString()
     {
-	return String.format("NO TWISTED CORNERS\nNO PARITY\nNumber of corner comms used: %s\nCorner letter sequence %s\nNumber of corner cycle breaks: %d",numCornerIterations,cornerLetterSequence,numCornerCycleBreaks);
+	return String.format("NO PARITY\nNumber of corner comms used: %s\nCorner letter sequence %s\nNumber of corner cycle breaks: %d",numCornerIterations,cornerLetterSequence,numCornerCycleBreaks);
     }
     public String traceCorners()
     {
@@ -30,19 +31,26 @@ public class CornerTracer extends Tracer
 	}
 	return cornerLetterSequence;
     }
+    
     public void solveNextCornerComm()
     {
-	String[][] afterBuffer = determineNextTarget("C","O","S");
-	String[][] afterFirstTarget = determineNextTarget(afterBuffer[0][0],afterBuffer[1][0],afterBuffer[2][0]);
-	//insert into firstTarget
-	cornerMap.put(afterBuffer[0][0], cornerMap.get("C")); cornerMap.put(afterBuffer[1][0], cornerMap.get("O")); cornerMap.put(afterBuffer[2][0], cornerMap.get("S"));
-	//insert into lastTarget
-	cornerMap.put(afterFirstTarget[0][0],afterBuffer[0][1]); cornerMap.put(afterFirstTarget[1][0],afterBuffer[1][1]); cornerMap.put(afterFirstTarget[2][0],afterBuffer[2][1]);
-	//insert into buffer
-	cornerMap.put("C",afterFirstTarget[0][1]); cornerMap.put("O",afterFirstTarget[1][1]); cornerMap.put("S",afterFirstTarget[2][1]);
 
-	cornerLetterSequence = cornerLetterSequence + afterBuffer[0][0]+afterFirstTarget[0][0]+ " ";
-	numCornerIterations++;
+	fixTwistedCorners();
+	if(!isCornersSolved())
+	{
+	    String[][] afterBuffer = determineNextTarget("C","O","S");
+	    String[][] afterFirstTarget = determineNextTarget(afterBuffer[0][0],afterBuffer[1][0],afterBuffer[2][0]);
+	    //insert into firstTarget
+	    cornerMap.put(afterBuffer[0][0], cornerMap.get("C")); cornerMap.put(afterBuffer[1][0], cornerMap.get("O")); cornerMap.put(afterBuffer[2][0], cornerMap.get("S"));
+	    //insert into lastTarget
+	    cornerMap.put(afterFirstTarget[0][0],afterBuffer[0][1]); cornerMap.put(afterFirstTarget[1][0],afterBuffer[1][1]); cornerMap.put(afterFirstTarget[2][0],afterBuffer[2][1]);
+	    //insert into buffer
+	    cornerMap.put("C",afterFirstTarget[0][1]); cornerMap.put("O",afterFirstTarget[1][1]); cornerMap.put("S",afterFirstTarget[2][1]);
+
+	    cornerLetterSequence = cornerLetterSequence + afterBuffer[0][0]+afterFirstTarget[0][0]+ " ";
+	    numCornerIterations++;
+	}
+
     }
 
     private String[][] determineNextTarget(String loc1, String loc2, String loc3)
@@ -231,7 +239,58 @@ public class CornerTracer extends Tracer
 	    return true;
 	return false;
     }
-
+    public void fixTwistedCorners()
+    {
+	//afk,bjn,cos,dgr,elu,imv,ptw,hqy
+	if(checkAFK() == CW || checkAFK() == CCW)
+	{
+	    cornerMap.put("A","A");
+	    cornerMap.put("F","F");
+	    cornerMap.put("K","K");
+	}
+	if(checkBJN() == CW || checkBJN() == CCW)
+	{
+	    cornerMap.put("B","B");
+	    cornerMap.put("J","J");
+	    cornerMap.put("N","N");
+	}
+	if(checkCOS() == CW || checkCOS() == CCW)
+	{
+	    cornerMap.put("C","C");
+	    cornerMap.put("O","O");
+	    cornerMap.put("S","S");
+	}
+	if(checkDGR() == CW || checkDGR() == CCW)
+	{
+	    cornerMap.put("D","D");
+	    cornerMap.put("G","G");
+	    cornerMap.put("R","R");
+	}
+	if(checkELU() == CW || checkELU() == CCW)
+	{
+	    cornerMap.put("E","E");
+	    cornerMap.put("L","L");
+	    cornerMap.put("U","U");
+	}
+	if(checkIMV() == CW || checkIMV() == CCW)
+	{
+	    cornerMap.put("I","I");
+	    cornerMap.put("M","M");
+	    cornerMap.put("V","V");
+	}
+	if(checkPTW() == CW || checkPTW() == CCW)
+	{
+	    cornerMap.put("P","P");
+	    cornerMap.put("T","T");
+	    cornerMap.put("W","W");
+	}
+	if(checkHQY() == CW || checkHQY() == CCW)
+	{
+	    cornerMap.put("H","H");
+	    cornerMap.put("Q","Q");
+	    cornerMap.put("Y","Y");
+	}
+    }
     public int checkAFK()
     {
 	if(cornerMap.get("A").equals("A")

@@ -55,7 +55,7 @@ public class GUI extends JFrame
 
     public GUI()
     {
-	super("MEM -- Angel Lim's personal java prototype of limatime.");
+	super("MEM -- my personal java prototype of (what will eventually become) limatime.");
 	this.setLayout(new GridLayout(3,2));
 
 	solver = new CommSolver(scramble);
@@ -153,9 +153,11 @@ public class GUI extends JFrame
 	panel4LeftSide.add(panel4_7);
 	panel4.add(panel4LeftSide, BorderLayout.WEST);
 
-	JPanel panel4RightSide = new JPanel(new BorderLayout());
-	JButton tempButton = new JButton("IMMA BUTTON!");
+	JPanel panel4RightSide = new JPanel(new GridLayout(2,1));
+	JButton tempButton = new JButton("//add new feature here");
+	JButton temp2 = new JButton("MEM v1.0 --Angel Lim");
 	panel4RightSide.add(tempButton);
+	panel4RightSide.add(temp2);
 	panel4.add(panel4RightSide, BorderLayout.CENTER);
 	this.add(panel4);
 
@@ -275,7 +277,7 @@ public class GUI extends JFrame
 	}
 	public void focusLost(FocusEvent e)
 	{
-	    timerTextField.setForeground(new Color(204,204,204));
+	    //	    timerTextField.setForeground(new Color(204,204,204));
 	}
     }
     class deleteAllSolveTimesButtonListener implements ActionListener
@@ -388,6 +390,7 @@ public class GUI extends JFrame
 	    }
 	}
     }
+    //CUSTOM SCRAMBLES MASSIVE IF
     public void prepNewScramble()
     {
 	    if(((String)parityComboBox.getSelectedItem()).equals("No"))
