@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 import java.util.*;
 import java.text.*;
 import java.io.*;
-public class GUI extends JFrame 
+public class GUI extends JFrame
 {
     //constants
     private final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("m:ss.SSS");
@@ -24,7 +24,7 @@ public class GUI extends JFrame
     private CommSolver solver;
 
     //GUI instances
-    private JButton deleteLastTimeButton, exportSolveTimesButton;
+    private JButton deleteLastTimeButton, exportSolveTimesButton, clearAllSolveTimesButton;
     private JTextField timerTextField, generatedScramble, forceEdgeTextField, forceCornerTextField, exportSolveTimesTextField;
     private JLabel forceEdgeLabel, forceCornerLabel, solveTimesLabel;
     private JTextArea scrambleAnalysisTextArea, solveTimesTextArea, solveStatsTextArea;
@@ -32,9 +32,9 @@ public class GUI extends JFrame
     private JToggleButton timingMemoToggle;
     private JRadioButton randomRadioButton, parityRadioButton, noParityRadioButton;
     private JCheckBox edgeFlipsCheckBox, cornerTwistsCheckBox;
-    private JComboBox<String> selectPuzzleComboBox, selectAnalysisOrNotComboBox;
+    private JComboBox<String> selectPuzzleComboBox;
     private String[] selectPuzzleArray = { "3x3 blindfolded", "3x3 speedsolve" };
-    private String[] selectAnalysisOrNotArray = { "analysis" , "no analysis" };
+
     File exportSolveTimesFile;
     
     private javax.swing.Timer timer;
@@ -64,9 +64,8 @@ public class GUI extends JFrame
 	panel1 = new JPanel(new BorderLayout());
 	JPanel panel1_1 = new JPanel(new GridLayout(1,2));
 	selectPuzzleComboBox = new JComboBox<String>(selectPuzzleArray);
-	selectAnalysisOrNotComboBox = new JComboBox<String>(selectAnalysisOrNotArray);
 	panel1_1.add(selectPuzzleComboBox);
-	panel1_1.add(selectAnalysisOrNotComboBox);
+	selectPuzzleComboBox.addActionListener(new selectPuzzleComboBoxListener());
 	panel1.add(panel1_1,BorderLayout.NORTH);
 	generatedScramble = new JTextField(scramble);
 	generatedScramble.setEditable(false);
@@ -87,6 +86,7 @@ public class GUI extends JFrame
 	timerTextField.setFont(TIMER_FONT);
 	timerTextField.setHorizontalAlignment(JTextField.CENTER);
 	timerTextField.setEditable(false);
+	timerTextField.addFocusListener(new TimerFocusListener());
 	timer = new javax.swing.Timer(TIMER_DELAY, new ClockListener());
 	panel3.add(timerTextField, BorderLayout.CENTER);
 	this.add(panel3);
@@ -96,6 +96,7 @@ public class GUI extends JFrame
 	timerTextField.getInputMap().put(KeyStroke.getKeyStroke("D"), "doDAction");
 	timerTextField.getActionMap().put("doDAction", dAction);
 
+
 	//set timerTextField Key Binding to SPACE
 	SpaceAction spaceAction = new SpaceAction();	
 	timerTextField.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "doSpaceAction");
@@ -103,6 +104,7 @@ public class GUI extends JFrame
 
 	panel4 = new JPanel(new GridLayout(5,1));
 	timingMemoToggle = new JToggleButton("Timing memo: OFF");
+	timingMemoToggle.setEnabled(false);
 	JPanel panel4_2 = new JPanel();
 	randomRadioButton = new JRadioButton("random");
 	parityRadioButton = new JRadioButton("with parity");
@@ -133,23 +135,33 @@ public class GUI extends JFrame
 	this.add(panel4);
 
 	panel5 = new JPanel(new GridLayout(1,2));
+	//panel5-left side
 	JPanel panel5_1 = new JPanel(new BorderLayout());
-	JPanel panel5_1top = new JPanel(new GridLayout(1,2));
+	JPanel panel5_1top = new JPanel();
 	solveTimesLabel = new JLabel("Solve Times");
 	solveTimesLabel.setHorizontalAlignment(JLabel.CENTER);
 	panel5_1top.add(solveTimesLabel);
-	deleteLastTimeButton = new JButton("Delete Last Time");
 	exportSolveTimesButton = new JButton("Export");
-	panel5_1top.add(deleteLastTimeButton);
 	panel5_1.add(panel5_1top, BorderLayout.NORTH);
+	JPanel panel5_1bot = new JPanel(new GridLayout(2,1));
+	JPanel panel5_1botdelete = new JPanel(new GridLayout(1,2));
+	deleteLastTimeButton = new JButton("Delete Last Time");
+	panel5_1botdelete.add(deleteLastTimeButton);
+	clearAllSolveTimesButton = new JButton("Clear All Times");
+	clearAllSolveTimesButton.addActionListener(new deleteAllSolveTimesButtonListener());
+	clearAllSolveTimesButton.setForeground(Color.RED);
+	panel5_1botdelete.add(clearAllSolveTimesButton);
+	panel5_1bot.add(panel5_1botdelete);
 	JPanel panel5_1botexport = new JPanel(new FlowLayout());
-	exportSolveTimesTextField = new JTextField("/home/lima/Desktop/session.txt");
+	exportSolveTimesTextField = new JTextField("/home/lima/Desktop/session.txt",19);
 	exportSolveTimesButton = new JButton("Export");
 	panel5_1botexport.add(exportSolveTimesTextField);
 	panel5_1botexport.add(exportSolveTimesButton);
 	exportSolveTimesButton.addActionListener( new ExportSolveTimesButtonListener() );
-	panel5_1.add(panel5_1botexport,BorderLayout.SOUTH);
-
+	panel5_1bot.add(panel5_1botexport);
+	panel5_1.add(panel5_1bot,BorderLayout.SOUTH);
+	
+	//panel5-right side
 	solveTimesTextArea = new JTextArea();
 	solveTimesTextArea.setFont(SOLVES_TIMES_STATS_FONT);
 	solveTimesTextArea.setEditable(false);
@@ -162,6 +174,7 @@ public class GUI extends JFrame
 
 	solveStatsTextArea = new JTextArea(timerStats.toString());
 	solveStatsTextArea.setFont(SOLVES_TIMES_STATS_FONT);
+	solveStatsTextArea.setEditable(false);
 	panel5.add(solveStatsTextArea);
 	JScrollPane solveStatsScroll = new JScrollPane(solveStatsTextArea);
 	solveStatsScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -169,7 +182,7 @@ public class GUI extends JFrame
 	this.add(panel5);
 
 	panel6 = new JPanel(new GridLayout(1,2));
-	JTextArea temp6 = new JTextArea("for exporting text files");
+	JTextArea temp6 = new JTextArea("Key Bindings:\n SPACE: start/stop timer\n D: DNF\n");
 	JTextArea settingstemp = new JTextArea("Settings");
 	panel6.add(temp6);
 	panel6.add(settingstemp);
@@ -183,18 +196,101 @@ public class GUI extends JFrame
 	
 	exportSolveTimesFile = new File(exportSolveTimesTextField.getText());
 	timerTextField.requestFocusInWindow(); //so SPACE keybinding will work immediately
+
+	//DISABLED FEATURES
+	randomRadioButton.setEnabled(false);
+	parityRadioButton.setEnabled(false);
+	forceCornerTextField.setEnabled(false);
+	forceEdgeTextField.setEnabled(false);
+	forceCornerTextField.setEnabled(false);
+	deleteLastTimeButton.setEnabled(false);
+	forceCornerLabel.setEnabled(false);
+	forceEdgeLabel.setEnabled(false);
+	edgeFlipsCheckBox.setEnabled(false);
+	cornerTwistsCheckBox.setEnabled(false);
+	//	solveTimesTextArea.getInputMap().put(KeyStroke.getKeyStroke("D"), "doDAction");
+	//	solveTimesTextArea.getActionMap().put("doDAction", dAction);
+    }
+
+
+    //INNER CLASSES
+    class TimerFocusListener implements FocusListener
+    {
+	public void focusGained(FocusEvent e)
+	{
+	    timerTextField.setForeground(new Color(0,0,0));
+	}
+	public void focusLost(FocusEvent e)
+	{
+	    timerTextField.setForeground(new Color(204,204,204));
+	}
+    }
+    class deleteAllSolveTimesButtonListener implements ActionListener
+    {
+	public void actionPerformed(ActionEvent e)
+	{
+	    int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to clear all times?", "Confirmation", JOptionPane.YES_NO_OPTION);
+	    if(confirm == JOptionPane.YES_OPTION)
+	    {
+		database1.clear();
+		updateSolveTimesTextArea();
+		updateSolveStatsTextArea();
+		timerTextField.setText("Ready");
+		timerTextField.requestFocusInWindow();
+		scrambleAnalysisTextArea.setText("Ready!");
+	    }
+	 	    
+	}
+    }
+    class selectPuzzleComboBoxListener implements ActionListener
+    {
+	public void actionPerformed(ActionEvent e)
+	{
+	    if(((String)selectPuzzleComboBox.getSelectedItem()).equals("3x3 speedsolve"))
+	    {
+		panel2.setVisible(false);
+		panel4.setVisible(false);
+	    }
+	    if(((String)selectPuzzleComboBox.getSelectedItem()).equals("3x3 blindfolded"))
+	    {
+		panel2.setVisible(true);
+		panel4.setVisible(true);
+	    }
+	    timerTextField.requestFocusInWindow();
+	}
     }
 
     class ExportSolveTimesButtonListener implements ActionListener
     {
 	public void actionPerformed(ActionEvent e)
 	{
+	    exportSolveTimesFile = new File(exportSolveTimesTextField.getText());
+	    if(!exportSolveTimesFile.exists())
+	    {
+		export();
+	    }
+	    else
+	    {
+		int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to write over " + exportSolveTimesTextField.getText(), exportSolveTimesTextField.getText() + " exists!", JOptionPane.YES_NO_OPTION);
+		if(confirm == JOptionPane.YES_OPTION)
+		{
+		    export();
+		}
+		else
+		{
+		    JOptionPane.showMessageDialog(null,"Did not export");
+		}
+	    }
+	    timerTextField.requestFocusInWindow();
+	}
+	public void export()
+	{
 	    try(PrintWriter out = new PrintWriter(new FileWriter(exportSolveTimesFile))) {
 		    out.print("Session Solve Times\n"); 
 		    out.print(solveTimesTextArea.getText());
 		    out.close();
-		} catch (IOException IOE) { } 
-	    System.out.println(exportSolveTimesTextField.getText());
+		} catch (IOException IOE) { JOptionPane.showMessageDialog(null, "Exporting failure");} 
+	    JOptionPane.showMessageDialog(null,"Exported");
 	}
     }
     class DAction extends AbstractAction
@@ -210,10 +306,12 @@ public class GUI extends JFrame
 	    }
 	}
     }
+
     class SpaceAction extends AbstractAction
     {
 	public void actionPerformed(ActionEvent e)
 	{
+
 	    if(!timeIsStarted)
 	    {
 		timeIsStarted = true;
