@@ -17,7 +17,7 @@ public class GUI extends JFrame
 
     private Scrambler scrambler = new Scrambler();
     private String scramble = scrambler.genEasyScramble();
-    private TimerStats timerStats = new TimerStats();
+    private CubeSolveStats cubeSolveStats = new CubeSolveStats();
 
     protected ArrayList<SolveTime> database1;
 
@@ -58,7 +58,6 @@ public class GUI extends JFrame
 	super("MEM -- Angel Lim's personal java prototype of limatime.");
 	this.setLayout(new GridLayout(3,2));
 
-	appendLog(); //debugging purposes
 	solver = new CommSolver(scramble);
 	database1 = new ArrayList<SolveTime>();
 
@@ -149,12 +148,12 @@ public class GUI extends JFrame
 	timingMemoToggleButton = new JToggleButton("Timing memo: OFF");
 	panel4_7.add(timingMemoToggleButton);
 	panel4LeftSide.add(panel4_7);
-	panel4.add(panel4LeftSide);
+	panel4.add(panel4LeftSide, BorderLayout.WEST);
 
 	JPanel panel4RightSide = new JPanel(new BorderLayout());
-	JTextArea logTextArea = new JTextArea("log text area");
-	panel4RightSide.add(logTextArea);
-	//panel4.add(panel4RightSide, BorderLayout.CENTER);
+	JButton tempButton = new JButton("IMMA BUTTON!");
+	panel4RightSide.add(tempButton);
+	panel4.add(panel4RightSide, BorderLayout.CENTER);
 	this.add(panel4);
 
 	panel5 = new JPanel(new GridLayout(1,2));
@@ -202,7 +201,7 @@ public class GUI extends JFrame
 	solveStatsLabel.setHorizontalAlignment(JLabel.CENTER);
 	panel5_2top.add(solveStatsLabel);
 	panel5_2.add(panel5_2top,BorderLayout.NORTH);
-	solveStatsTextArea = new JTextArea(timerStats.toString());
+	solveStatsTextArea = new JTextArea(cubeSolveStats.toString());
 	solveStatsTextArea.setFont(SOLVES_TIMES_STATS_FONT);
 	solveStatsTextArea.setEditable(false);
 	panel5_2.add(solveStatsTextArea, BorderLayout.CENTER);
@@ -214,7 +213,7 @@ public class GUI extends JFrame
 
 	panel6 = new JPanel(new GridLayout(1,2));
 	JTextArea temp6 = new JTextArea("Key Bindings:\n SPACE: start/stop timer\n D: DNF\n");
-	JTextArea settingstemp = new JTextArea("Settings");
+	JTextArea settingstemp = new JTextArea("TODO\nParity,yes[],no[],random[]\nflips,yes[],no[],random[],\ntwists,yes[],no[],random[]\nedgeforce[], cornerforce[]");
 	panel6.add(temp6);
 	panel6.add(settingstemp);
 	this.add(panel6);
@@ -237,6 +236,19 @@ public class GUI extends JFrame
 
 
     //INNER CLASSES
+
+    class CustomScrambleListener implements ActionListener
+    {
+	//if(((String)selectPuzzleComboBox.getSelectedItem()) ----- format
+    }
+    class ClockListener implements ActionListener 
+    {
+	//this method is called repeatedly based on a certain delay, once start() is called.
+	public void actionPerformed(ActionEvent e)
+	{
+	    updateTimer();
+	}
+    }
     class TimerFocusListener implements FocusListener
     {
 	public void focusGained(FocusEvent e)
@@ -265,6 +277,7 @@ public class GUI extends JFrame
 	 	    
 	}
     }
+
     class selectPuzzleComboBoxListener implements ActionListener
     {
 	public void actionPerformed(ActionEvent e)
@@ -357,6 +370,13 @@ public class GUI extends JFrame
 	    }
 	}
     }
+    public void prepNewScramble()
+    {
+	scramble = scrambler.genEasyScramble();
+	generatedScramble.setText(scramble);
+	solver.refresh(scramble);
+    }
+    //UPDATE METHODS
     public void updateSolveTimesArrayList()
     {
 	SolveTime newSolveTime = new SolveTime(solveTime);
@@ -371,38 +391,15 @@ public class GUI extends JFrame
 	}
 	solveTimesTextArea.setText(toThisTextArea.toString());
     }
-    public void prepNewScramble()
-    {
-	scramble = scrambler.genEasyScramble();
-	generatedScramble.setText(scramble);
-	solver.refresh(scramble);
-    }
+
     public void updateSolveStatsTextArea()
     {
-	solveStatsTextArea.setText(timerStats.toString());
+	solveStatsTextArea.setText(cubeSolveStats.toString());
     }
     public void updateScrambleAnalysisTextArea()
     {
 	scrambleAnalysisTextArea.setText(solver.toString());
     }
-    //temp method for debugging purposes.
-    public void appendLog()
-    {
-	try(PrintWriter out = new PrintWriter(new FileWriter("log.txt",true))){
-		out.print(String.format("%s\n",scramble));
-	    } catch (IOException e){}
-    }
-
-    class ClockListener implements ActionListener 
-    {
-	//this method is called repeatedly based on a certain delay, once start() is called.
-	public void actionPerformed(ActionEvent e)
-	{
-	    updateTimer();
-	}
-    }
-
-
     public void updateTimer() //calcuates the solve time, sets it to solveTime, and edits timerTextField
     {
 	timeInMillis = System.currentTimeMillis() - startTime;
@@ -411,12 +408,13 @@ public class GUI extends JFrame
 	timerTextField.setText(solveTime);
     }
 
+    //HELPER CLASSES
 
-    class TimerStats
+    class CubeSolveStats
     {
 	private String bestMO3, bestAVG5;
 	private ArrayList<SolveTime> databaseAVG5;
-	public TimerStats()
+	public CubeSolveStats()
 	{
 	    databaseAVG5 = new ArrayList<SolveTime>();
 	    bestAVG5 = "99:59.59";
@@ -536,7 +534,5 @@ public class GUI extends JFrame
 	    }
 	}
     }
-
-
 
 }

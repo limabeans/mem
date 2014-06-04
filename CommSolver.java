@@ -23,6 +23,10 @@ public class CommSolver
     {
 	refresh(givenScramble);
     }
+    public boolean hasEdgeFlips()
+    {
+	return hasEdgeFlips;
+    }
     public void refresh(String newScramble)
     {
 	cornerTracer = new CornerTracer(newScramble);

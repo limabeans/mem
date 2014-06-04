@@ -1,6 +1,6 @@
 import java.util.*;
 /*
- *solveNextEdgeComm(), determineNextTarget(), findEdgeCycleBreak() all used to find/solve next edge comm
+ *private solveNextEdgeComm(), determineNextTarget(), findEdgeCycleBreak() all used to find/solve next edge comm
  */
 public class EdgeTracer extends Tracer 
 {
