@@ -408,34 +408,52 @@ public class GUI extends JFrame
 		{
 		case "No": //4 4 4
 		    while(solver.hasFlippedEdges() || solver.hasTwistedCorners())
-		    {
-			System.out.println("4 4 4");
-			scramble = scrambler.genFriendlyScramble();
-			solver.refresh(scramble);
-		    }
+			reloadSolverEngine();
 		    break;
 		case "Yes": //4 4 2
 		    while(solver.hasFlippedEdges() || !solver.hasTwistedCorners())
-		    {
-			System.out.println("4 4 2");
-			scramble = scrambler.genFriendlyScramble();
-			solver.refresh(scramble);
-		    }
+			reloadSolverEngine();
 		    break;
 		case "Random": //4 4 1
 		    while(solver.hasFlippedEdges())
-		    {
-			System.out.println("4 4 1");
-			scramble = scrambler.genFriendlyScramble();
-			solver.refresh(scramble);
-		    }
+			reloadSolverEngine();
 		    break;
 		}
 		break;
 	    
 	    case "Yes": //4 2 0
+	        switch((String)cornerTwistsComboBox.getSelectedItem())
+		{
+		case "No": //4 2 4
+		    while(!solver.hasFlippedEdges() || solver.hasTwistedCorners())
+			reloadSolverEngine();
+		    break;
+		case "Yes": //4 2 2
+		    while(!solver.hasFlippedEdges() || !solver.hasTwistedCorners())
+			reloadSolverEngine();
+		    break;
+		case "Random": //4 2 1
+		    while(!solver.hasFlippedEdges())
+			reloadSolverEngine();
+		    break;
+		}
 		break;
 	    case "Random": // 4 1 0
+	        switch((String)cornerTwistsComboBox.getSelectedItem())
+		{
+		case "No": //4 1 4
+		    while(solver.hasTwistedCorners())
+			reloadSolverEngine();
+		    break;
+		case "Yes": //4 1 2
+		    while(!solver.hasTwistedCorners())
+			reloadSolverEngine();
+		    break;
+		case "Random": //4 1 1
+		    //while(parity)
+		    reloadSolverEngine();
+		    break;
+		}
 		break;
 	    }
 
@@ -465,6 +483,11 @@ public class GUI extends JFrame
 
 
     //UPDATE METHODS
+    public void reloadSolverEngine()
+    {
+	scramble = scrambler.genFriendlyScramble();
+	solver.refresh(scramble);
+    }
     public void updateSolveTimesArrayList()
     {
 	SolveTime newSolveTime = new SolveTime(solveTime);
