@@ -375,6 +375,8 @@ public class GUI extends JFrame
 		timeIsStarted = false;
 		timer.stop();
 		updateTimer();//calcs solve time, sets it to solveTime, and edits timerTextField
+		solver.setSolveTime(solveTime);		
+
 		updateSolveTimesArrayList();
 	        updateSolveStatsTextArea(); 
 		updateScrambleAnalysisTextArea();//write to right

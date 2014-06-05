@@ -15,6 +15,48 @@ public class CommSolver
     private String cornerCycles;
     private boolean hasTwistedCorners;
     private boolean hasCornerCycleBreaks;
+
+    private String solveTime;
+
+    public void setSolveTime(String newSolveTime)
+    {
+	solveTime = newSolveTime;
+    }
+
+    public String getSolveTime()
+    {
+	return solveTime;
+    }
+
+    public void refresh(String newScramble)
+    {
+	cornerTracer = new CornerTracer(newScramble);
+	edgeTracer = new EdgeTracer(newScramble);
+	scramble = newScramble;
+	hasParity = Tracer.hasParity(newScramble);
+
+	hasEdgeFlips = edgeTracer.hasFlippedEdges();
+	edgeCycles = edgeTracer.traceEdges();	
+	hasEdgeCycleBreaks = edgeTracer.getIfEdgeCycleBreaks();
+
+	hasTwistedCorners = cornerTracer.hasTwistedCorners();	
+	cornerCycles = cornerTracer.traceCorners();
+	hasCornerCycleBreaks = cornerTracer.getIfCornerCycleBreaks();
+
+	solveTime = "DNS";
+    }
+    public String toString()
+    {
+	String reported = getSolveTime() + "\n" +
+	    "last scramble:\n " + scramble + "\n"
+	    + "parity: " + hasParity + "\n"
+	    + "edge cycle: " + edgeCycles + "\n"
+	    + "corner cycle: " + cornerCycles + "\n"
+	    + "edge flips: " + hasEdgeFlips + " / edge cycle breaks: " + hasEdgeCycleBreaks + "\n"
+ 	    + "corner twists: " + hasTwistedCorners + " / corner cycle breaks: " + hasCornerCycleBreaks + "\n";
+	
+	return reported;
+    }
     public static void main (String[] args)
     {
 	System.out.println(new CommSolver(Scrambler.genFriendlyScramble()).toString());
@@ -55,30 +97,5 @@ public class CommSolver
     {
 	return hasTwistedCorners;
     }
-    public void refresh(String newScramble)
-    {
-	cornerTracer = new CornerTracer(newScramble);
-	edgeTracer = new EdgeTracer(newScramble);
-	scramble = newScramble;
-	hasParity = Tracer.hasParity(newScramble);
 
-	hasEdgeFlips = edgeTracer.hasFlippedEdges();
-	edgeCycles = edgeTracer.traceEdges();	
-	hasEdgeCycleBreaks = edgeTracer.getIfEdgeCycleBreaks();
-
-	hasTwistedCorners = cornerTracer.hasTwistedCorners();	
-	cornerCycles = cornerTracer.traceCorners();
-	hasCornerCycleBreaks = cornerTracer.getIfCornerCycleBreaks();
-    }
-    public String toString()
-    {
-	String reported = "last scramble:\n " + scramble + "\n"
-	    + "parity: " + hasParity + "\n"
-	    + "edge cycle: " + edgeCycles + "\n"
-	    + "corner cycle: " + cornerCycles + "\n"
-	    + "edge flips: " + hasEdgeFlips + " / edge cycle breaks: " + hasEdgeCycleBreaks + "\n"
- 	    + "corner twists: " + hasTwistedCorners + " / corner cycle breaks: " + hasCornerCycleBreaks + "\n";
-	
-	return reported;
-    }
 }
