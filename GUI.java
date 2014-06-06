@@ -15,35 +15,32 @@ public class GUI extends JFrame
     private final Font SCRAMBLE_FONT = new Font("Serif",Font.BOLD,16);
     private final Font SOLVES_TIMES_STATS_FONT = new Font("Georgia",Font.BOLD,14);
 
+    //tool instances
+    private javax.swing.Timer timer;
     private Scrambler scrambler = new Scrambler();
     private String scramble = scrambler.genFriendlyScramble();
     private SessionStats sessionStats = new SessionStats();
 
-    protected ArrayList<ASolve> database1;
-
     //GUI instances
-    private JButton deleteLastTimeButton, exportSolveTimesButton, clearAllSolveTimesButton;
-    private JTextField timerTextField, generatedScramble, exportSolveTimesTextField, forceEdgeCommTextField, forceCornerCommTextField;
-    private JLabel solveTimesLabel, sessionStatsLabel, scrambleOptionsLabel, paritySelectLabel, edgeFlipsSelectLabel, forceEdgeCommLabel, cornerTwistsSelectLabel, forceCornerCommLabel, forceCornerCommTetField;
+    private JButton deleteLastTimeButton, exportSolveTimesButton, clearAllSolveTimesButton, commentSubmitButton;
+    private JTextField timerTextField, generatedScramble, exportSolveTimesTextField, forceEdgeCommTextField, forceCornerCommTextField, commentTextField;
+    private JLabel solveTimesLabel, sessionStatsLabel, scrambleOptionsLabel, paritySelectLabel, edgeFlipsSelectLabel, forceEdgeCommLabel, cornerTwistsSelectLabel, forceCornerCommLabel, commentLabel;
     private JTextArea scrambleAnalysisTextArea, solveTimesTextArea, sessionStatsTextArea;
     private JPanel panel1,panel2,panel3,panel4,panel5,panel6;
     private JToggleButton timingMemoToggleButton;
     //    private JRadioButton 
     //    private JCheckBox
-    private JComboBox<String> selectPuzzleComboBox, cornerTwistsComboBox, edgeFlipsComboBox, parityComboBox;
+    private JComboBox<String> selectPuzzleComboBox, cornerTwistsComboBox, edgeFlipsComboBox, parityComboBox, commentOnOffComboBox;
     private String[] selectPuzzleArray = { "3x3 blindfolded", "3x3 speedsolve" };
     private String[] selectYesNoRandomArray = { "No", "Yes", "Random" };
+    private String[] onOffArray = {"Off","On"};
 
+
+    //data instances
+    protected ArrayList<ASolve> database1;
     private ASolve currentSolve;
-
-
-
     File exportSolveTimesFile;
     
-    private javax.swing.Timer timer;
-
-    //actual data
-
     //variables that are constantly changing
     private long startTime;
     private boolean timeIsStarted;
@@ -99,13 +96,13 @@ public class GUI extends JFrame
 	timerTextField.getInputMap().put(KeyStroke.getKeyStroke("D"), "doDAction");
 	timerTextField.getActionMap().put("doDAction", dAction);
 
-
 	//set timerTextField Key Binding to SPACE
 	SpaceAction spaceAction = new SpaceAction();	
 	timerTextField.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "doSpaceAction");
 	timerTextField.getActionMap().put("doSpaceAction", spaceAction);
 
 	panel4 = new JPanel(new BorderLayout());
+	//panel4LeftSide
 	JPanel panel4LeftSide = new JPanel(new GridLayout(7,1));
 	JPanel panel4_1 = new JPanel();
 	scrambleOptionsLabel = new JLabel("Scramble Options");
@@ -157,7 +154,7 @@ public class GUI extends JFrame
 	panel4_7.add(timingMemoToggleButton);
 	panel4LeftSide.add(panel4_7);
 	panel4.add(panel4LeftSide, BorderLayout.WEST);
-
+	//panel4RightSide
 	JPanel panel4RightSide = new JPanel(new GridLayout(2,1));
 	JButton tempButton = new JButton("//add new feature here");
 	JButton temp2 = new JButton("MEM v1.0 --Angel Lim");
@@ -192,9 +189,7 @@ public class GUI extends JFrame
 	exportSolveTimesButton.addActionListener( new ExportSolveTimesButtonListener() );
 	panel5_1bot.add(panel5_1botexport);
 	panel5_1.add(panel5_1bot,BorderLayout.SOUTH);
-	
 	//panel5-right side
-
 	solveTimesTextArea = new JTextArea();
 	solveTimesTextArea.setFont(SOLVES_TIMES_STATS_FONT);
 	solveTimesTextArea.setEditable(false);
@@ -204,7 +199,7 @@ public class GUI extends JFrame
 	solveTimesScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 	panel5_1.add(solveTimesScroll, BorderLayout.CENTER);
 	panel5.add(panel5_1);
-
+	//panel5_2
 	JPanel panel5_2 = new JPanel(new BorderLayout());
 	JPanel panel5_2top = new JPanel();
 	sessionStatsLabel = new JLabel("Solve Stats");
@@ -221,19 +216,30 @@ public class GUI extends JFrame
 	panel5.add(panel5_2);
 	this.add(panel5);
 
-	panel6 = new JPanel(new GridLayout(1,2));
-	JTextArea temp6 = new JTextArea("Key Bindings:\n SPACE: start/stop timer\n D: DNF\n");
-	JTextArea settingstemp = new JTextArea("TODO\nParity,yes[],no[x],random[]\n");
-	panel6.add(temp6);
-	panel6.add(settingstemp);
+	panel6 = new JPanel(new BorderLayout());
+	JPanel panel6bot = new JPanel(new FlowLayout());
+	commentLabel = new JLabel("Comments:");
+	panel6bot.add(commentLabel);
+	commentTextField = new JTextField(15);
+	commentTextField.addActionListener(new CommentListener());
+	panel6bot.add(commentTextField);
+	commentOnOffComboBox = new JComboBox<String>(onOffArray);
+	commentOnOffComboBox.addActionListener(new CommentOnOffListener());
+	panel6bot.add(commentOnOffComboBox);
+	commentSubmitButton = new JButton("Submit");
+	commentSubmitButton.addActionListener(new CommentListener());
+	panel6bot.add(commentSubmitButton);
+	panel6.add(panel6bot,BorderLayout.SOUTH);
 	this.add(panel6);
 
+	//setting size/display appropriately
 	Toolkit toolkit = Toolkit.getDefaultToolkit();
 	Dimension screen = toolkit.getScreenSize();
 	setSize((int)(screen.getWidth()*.9),(int)(screen.getHeight()*.9));
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	setVisible(true);
 
+	//housekeeping prep
 	prepNewScramble();
 	exportSolveTimesFile = new File(exportSolveTimesTextField.getText());
 	timerTextField.requestFocusInWindow(); //so SPACE keybinding will work immediately
@@ -242,13 +248,44 @@ public class GUI extends JFrame
 	deleteLastTimeButton.setEnabled(false);
 	timingMemoToggleButton.setEnabled(false);
 
-	//	solveTimesTextArea.getInputMap().put(KeyStroke.getKeyStroke("D"), "doDAction");
-	//	solveTimesTextArea.getActionMap().put("doDAction", dAction);
+	//COMMENTS DISABLED AT START
+	commentLabel.setEnabled(false);
+	commentTextField.setEnabled(false);
+	commentSubmitButton.setEnabled(false);
     }
 
+    //LISTENERS
+    class CommentListener implements ActionListener
+    {
+	public void actionPerformed(ActionEvent event)
+	{
+	    database1.get(database1.size()-1).setComment(commentTextField.getText());
+	    updateSolveTimesTextArea();
+	    updateScrambleAnalysisTextArea();
+	    timerTextField.requestFocusInWindow();
+	}
+    }
+    class CommentOnOffListener implements ActionListener
+    {
+	public void actionPerformed(ActionEvent event)
+	{
+	    if(((String)commentOnOffComboBox.getSelectedItem()).equals("Off"))
+	       {
+		   commentLabel.setEnabled(false);
+		   commentTextField.setEnabled(false);
+		   commentSubmitButton.setEnabled(false);
+		   timerTextField.requestFocusInWindow();
+	       }
+	    if(((String)commentOnOffComboBox.getSelectedItem()).equals("On"))
+	       {
+		   commentLabel.setEnabled(true);
+		   commentTextField.setEnabled(true);
+		   commentSubmitButton.setEnabled(true);
+		   timerTextField.requestFocusInWindow();
+	       }
 
-    //INNER CLASSES
-
+	}
+    }
     class CustomScrambleListener implements ActionListener
     {
 	public void actionPerformed(ActionEvent e)
@@ -256,7 +293,6 @@ public class GUI extends JFrame
 	    prepNewScramble();
 	    timerTextField.requestFocusInWindow();
 	}
-	
     }
     class ClockListener implements ActionListener 
     {
@@ -514,8 +550,6 @@ public class GUI extends JFrame
 	forceCornerCommTextField.setEnabled(true);
     }
 
-    
-
 
     //UPDATE METHODS
     public void reloadSolverEngine()
@@ -544,9 +578,9 @@ public class GUI extends JFrame
     }
     public void updateScrambleAnalysisTextArea()
     {
-	scrambleAnalysisTextArea.setText(currentSolve.getAnalysis());
+	scrambleAnalysisTextArea.setText(database1.get((database1.size()-1)).getAnalysis());
     }
-    public void updateTimer() //calcuates the solve time, sets it to solveTime, and edits timerTextField
+    public void updateTimer()
     {
 	Date elapsed = new Date(System.currentTimeMillis() - startTime);
 	currentSolveTime = SIMPLE_DATE_FORMAT.format(elapsed);

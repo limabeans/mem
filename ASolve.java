@@ -18,9 +18,34 @@ public class ASolve implements Comparable<ASolve>
 	isDNF = false;
 	comment = "";
     }
+    public void setComment(String newComment)
+    {
+	comment = newComment;
+    }
+
+    public String getComment()
+    {
+	return comment;
+    }
+			     
     public String getAnalysis()
     {
-	return( getTime() + "\n" + solver.toString());
+	if(isDNF && hasComment())
+	{
+	    return("dnf(" +  getTime() + ")\n//" + getComment() + "\n" + solver.toString());
+	}
+	if(isDNF && !hasComment())
+	{
+	    return("dnf(" +  getTime() + ")\n" + solver.toString());
+	}
+	if(!isDNF && hasComment())
+	{
+	    return(getTime() + "\n//" + getComment() + "\n" + solver.toString());
+	}
+	else //!isDNF && !hasComment()
+	{
+	    return(getTime() + "\n" + solver.toString());
+	}
     }
     public boolean hasFlippedEdges()
     {
@@ -117,10 +142,7 @@ public class ASolve implements Comparable<ASolve>
     {
 	return isDNF;
     }
-    public void setComment(String newComment)
-    {
-	comment = newComment;
-    }
+
     public String toString()
     {
 	String returnString = "";

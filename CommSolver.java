@@ -47,10 +47,7 @@ public class CommSolver
 	
 	return reported;
     }
-    public static void main (String[] args)
-    {
-	System.out.println(new CommSolver(Scrambler.genFriendlyScramble()).toString());
-    }
+
     public CommSolver(String givenScramble)
     {
 	refresh(givenScramble);
