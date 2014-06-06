@@ -17,7 +17,7 @@ public class GUI extends JFrame
 
     private Scrambler scrambler = new Scrambler();
     private String scramble = scrambler.genFriendlyScramble();
-    private CubeSolveStats cubeSolveStats = new CubeSolveStats();
+    private SessionStats sessionStats = new SessionStats();
 
     protected ArrayList<SolveTime> database1;
 
@@ -26,8 +26,8 @@ public class GUI extends JFrame
     //GUI instances
     private JButton deleteLastTimeButton, exportSolveTimesButton, clearAllSolveTimesButton;
     private JTextField timerTextField, generatedScramble, exportSolveTimesTextField, forceEdgeCommTextField, forceCornerCommTextField;
-    private JLabel solveTimesLabel, solveStatsLabel, scrambleOptionsLabel, paritySelectLabel, edgeFlipsSelectLabel, forceEdgeCommLabel, cornerTwistsSelectLabel, forceCornerCommLabel, forceCornerCommTetField;
-    private JTextArea scrambleAnalysisTextArea, solveTimesTextArea, solveStatsTextArea;
+    private JLabel solveTimesLabel, sessionStatsLabel, scrambleOptionsLabel, paritySelectLabel, edgeFlipsSelectLabel, forceEdgeCommLabel, cornerTwistsSelectLabel, forceCornerCommLabel, forceCornerCommTetField;
+    private JTextArea scrambleAnalysisTextArea, solveTimesTextArea, sessionStatsTextArea;
     private JPanel panel1,panel2,panel3,panel4,panel5,panel6;
     private JToggleButton timingMemoToggleButton;
     //    private JRadioButton 
@@ -206,17 +206,17 @@ public class GUI extends JFrame
 
 	JPanel panel5_2 = new JPanel(new BorderLayout());
 	JPanel panel5_2top = new JPanel();
-	solveStatsLabel = new JLabel("Solve Stats");
-	solveStatsLabel.setHorizontalAlignment(JLabel.CENTER);
-	panel5_2top.add(solveStatsLabel);
+	sessionStatsLabel = new JLabel("Solve Stats");
+	sessionStatsLabel.setHorizontalAlignment(JLabel.CENTER);
+	panel5_2top.add(sessionStatsLabel);
 	panel5_2.add(panel5_2top,BorderLayout.NORTH);
-	solveStatsTextArea = new JTextArea(cubeSolveStats.toString());
-	solveStatsTextArea.setFont(SOLVES_TIMES_STATS_FONT);
-	solveStatsTextArea.setEditable(false);
-	panel5_2.add(solveStatsTextArea, BorderLayout.CENTER);
-	JScrollPane solveStatsScroll = new JScrollPane(solveStatsTextArea);
-	solveStatsScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-	panel5_2.add(solveStatsScroll, BorderLayout.CENTER);
+	sessionStatsTextArea = new JTextArea(sessionStats.toString());
+	sessionStatsTextArea.setFont(SOLVES_TIMES_STATS_FONT);
+	sessionStatsTextArea.setEditable(false);
+	panel5_2.add(sessionStatsTextArea, BorderLayout.CENTER);
+	JScrollPane sessionStatsScroll = new JScrollPane(sessionStatsTextArea);
+	sessionStatsScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+	panel5_2.add(sessionStatsScroll, BorderLayout.CENTER);
 	panel5.add(panel5_2);
 	this.add(panel5);
 
@@ -540,7 +540,7 @@ public class GUI extends JFrame
 
     public void updateSolveStatsTextArea()
     {
-	solveStatsTextArea.setText(cubeSolveStats.toString());
+	sessionStatsTextArea.setText(sessionStats.toString());
     }
     public void updateScrambleAnalysisTextArea()
     {
@@ -556,11 +556,11 @@ public class GUI extends JFrame
 
     //HELPER CLASSES
 
-    class CubeSolveStats
+    class SessionStats
     {
 	private String bestMO3, bestAVG5;
 	private ArrayList<SolveTime> databaseAVG5;
-	public CubeSolveStats()
+	public SessionStats()
 	{
 	    databaseAVG5 = new ArrayList<SolveTime>();
 	    bestAVG5 = "99:59.59";
