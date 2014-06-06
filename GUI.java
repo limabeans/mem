@@ -31,7 +31,7 @@ public class GUI extends JFrame
     //    private JRadioButton 
     //    private JCheckBox
     private JComboBox<String> selectPuzzleComboBox, cornerTwistsComboBox, edgeFlipsComboBox, parityComboBox, commentOnOffComboBox;
-    private String[] selectPuzzleArray = { "3x3 blindfolded", "3x3 speedsolve" };
+    private String[] selectPuzzleArray = { "3x3 blindfolded", "3x3 speedsolve", "3x3 blindfolded memo practice" };
     private String[] selectYesNoRandomArray = { "No", "Yes", "Random" };
     private String[] onOffArray = {"Off","On"};
 
@@ -53,7 +53,7 @@ public class GUI extends JFrame
 
     public GUI()
     {
-	super("MEM -- my personal java prototype of (what will eventually become) limatime.");
+	super("mem -- my personal java prototype of (what will eventually become) limatime.");
 	this.setLayout(new GridLayout(3,2));
 	currentSolve = new ASolve(scramble);
 	
@@ -157,7 +157,7 @@ public class GUI extends JFrame
 	//panel4RightSide
 	JPanel panel4RightSide = new JPanel(new GridLayout(2,1));
 	JButton tempButton = new JButton("//add new feature here");
-	JButton temp2 = new JButton("MEM v1.0 --Angel Lim");
+	JButton temp2 = new JButton("mem v0.5 --Angel Lim");
 	panel4RightSide.add(tempButton);
 	panel4RightSide.add(temp2);
 	panel4.add(panel4RightSide, BorderLayout.CENTER);
@@ -344,6 +344,11 @@ public class GUI extends JFrame
 	    {
 		panel2.setVisible(true);
 		panel4.setVisible(true);
+	    }
+	    if(((String)selectPuzzleComboBox.getSelectedItem()).equals("3x3 blindfolded memo practice"))
+	    {
+		panel2.setVisible(false);
+		panel4.setVisible(false);
 	    }
 	    timerTextField.requestFocusInWindow();
 	}
