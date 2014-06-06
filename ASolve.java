@@ -1,23 +1,63 @@
-public class SolveTime implements Comparable<SolveTime>
+public class ASolve implements Comparable<ASolve>
 {
+
+    //pre-action
+    private String scramble;
+    private CommSolver solver;
+
+    //post-action
     private String time;
     private boolean isDNF;
     private String comment;
-    
-    public SolveTime(String time)
+
+
+    public ASolve(String scramble)
     {
-	this.time = time;
+	solver = new CommSolver(scramble);
+	time = null;
 	isDNF = false;
 	comment = "";
     }
-    public SolveTime(String time, boolean isDNF)
+    public CommSolver getSolver()
     {
-	this.time = time;
-	this.isDNF = isDNF;
-	comment = "";
+	return solver;
+    }
+    public boolean hasFlippedEdges()
+    {
+	return solver.hasFlippedEdges();
+    }
+    public boolean hasTwistedCorners()
+    {
+	return solver.hasTwistedCorners();
+    }
+    public boolean hasParity()
+    {
+	return solver.getHasParity();
+    }
+    public boolean hasGivenCornerComm(String comm)
+    {
+	return solver.hasGivenCornerComm(comm);
+    }
+    public boolean hasGivenEdgeComm(String comm)
+    {
+	return solver.hasGivenEdgeComm(comm);
+    }
+    public void refresh(String newScramble)
+    {
+	setScramble(newScramble);
+	solver.refresh(newScramble);
     }
 
-    public int compareTo(SolveTime s)
+    public void setScramble(String newScramble)
+    {
+	scramble = newScramble;
+    }
+    public String getScramble()
+    {
+	return scramble;
+    }
+
+    public int compareTo(ASolve s)
     {
 	if(this.getIsDNF() && s.getIsDNF())
 	    return 0;
@@ -55,6 +95,12 @@ public class SolveTime implements Comparable<SolveTime>
 	    index++;
 	}
 	return 60000*Long.parseLong(minutes) + 1000*Long.parseLong(seconds) + Long.parseLong(millis);
+    }
+
+    public void setTime(String time)
+    {
+	this.time = time;
+	solver.setSolveTime(time);
     }
     public String getTime()
     {

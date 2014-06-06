@@ -18,6 +18,10 @@ public class CommSolver
 
     private String solveTime;
 
+    public boolean getHasParity()
+    {
+	return hasParity;
+    }
     public void setSolveTime(String newSolveTime)
     {
 	solveTime = newSolveTime;
@@ -48,7 +52,7 @@ public class CommSolver
     public String toString()
     {
 	String reported = getSolveTime() + "\n" +
-	    "last scramble:\n " + scramble + "\n"
+	    scramble + "\n"
 	    + "parity: " + hasParity + "\n"
 	    + "edge cycle: " + edgeCycles + "\n"
 	    + "corner cycle: " + cornerCycles + "\n"

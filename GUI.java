@@ -19,9 +19,7 @@ public class GUI extends JFrame
     private String scramble = scrambler.genFriendlyScramble();
     private SessionStats sessionStats = new SessionStats();
 
-    protected ArrayList<SolveTime> database1;
-
-    private CommSolver solver;
+    protected ArrayList<ASolve> database1;
 
     //GUI instances
     private JButton deleteLastTimeButton, exportSolveTimesButton, clearAllSolveTimesButton;
@@ -36,6 +34,10 @@ public class GUI extends JFrame
     private String[] selectPuzzleArray = { "3x3 blindfolded", "3x3 speedsolve" };
     private String[] selectYesNoRandomArray = { "No", "Yes", "Random" };
 
+    private ASolve currentSolve;
+
+
+
     File exportSolveTimesFile;
     
     private javax.swing.Timer timer;
@@ -45,8 +47,8 @@ public class GUI extends JFrame
     //variables that are constantly changing
     private long startTime;
     private boolean timeIsStarted;
-    private long timeInMillis;
-    private String prevScrambleAnalysis = null;
+    private String currentSolveTime;
+
     public static void main(String[] args)
     {
 	GUI exe = new GUI();
@@ -56,9 +58,9 @@ public class GUI extends JFrame
     {
 	super("MEM -- my personal java prototype of (what will eventually become) limatime.");
 	this.setLayout(new GridLayout(3,2));
-
-	solver = new CommSolver(scramble);
-	database1 = new ArrayList<SolveTime>();
+	currentSolve = new ASolve(scramble);
+	
+	database1 = new ArrayList<ASolve>();
 
 	panel1 = new JPanel(new BorderLayout());
 	JPanel panel1_1 = new JPanel(new GridLayout(1,2));
@@ -221,7 +223,7 @@ public class GUI extends JFrame
 
 	panel6 = new JPanel(new GridLayout(1,2));
 	JTextArea temp6 = new JTextArea("Key Bindings:\n SPACE: start/stop timer\n D: DNF\n");
-	JTextArea settingstemp = new JTextArea("TODO\nParity,yes[],no[x],random[]\n\nedgeforce[], cornerforce[]");
+	JTextArea settingstemp = new JTextArea("TODO\nParity,yes[],no[x],random[]\n");
 	panel6.add(temp6);
 	panel6.add(settingstemp);
 	this.add(panel6);
@@ -352,7 +354,8 @@ public class GUI extends JFrame
 	    {
 		timerTextField.setText("DNF");
 		database1.get(database1.size()-1).setToDNF();
-		solver.setSolveTime(database1.get(database1.size()-1).toString());
+		currentSolve.setTime(database1.get(database1.size()-1).toString());
+		System.out.println(database1);
 		updateSolveTimesTextArea();
 		updateSolveStatsTextArea();
 		updateScrambleAnalysisTextArea();
@@ -364,7 +367,6 @@ public class GUI extends JFrame
     {
 	public void actionPerformed(ActionEvent e)
 	{
-
 	    if(!timeIsStarted)
 	    {
 		timeIsStarted = true;
@@ -375,9 +377,9 @@ public class GUI extends JFrame
 	    {
 		timeIsStarted = false;
 		timer.stop();
-		updateTimer();//calcs solve time, sets it to solveTime, and edits timerTextField
-
+		updateTimer();//calcs solve time,updates currentSolve.setTime(), and edits timerTextField
 		updateSolveTimesArrayList();
+		System.out.println(database1);
 	        updateSolveStatsTextArea(); 
 		updateScrambleAnalysisTextArea();//write to right
 
@@ -396,7 +398,7 @@ public class GUI extends JFrame
     {
 	tempParityFix();
 	scramble = scrambler.genFriendlyScramble();
-	solver.refresh(scramble);
+	currentSolve = new ASolve(scramble);
 	switch((String)parityComboBox.getSelectedItem()) 
 	{
 	case "No": //4 0 0
@@ -406,15 +408,15 @@ public class GUI extends JFrame
 		switch((String)cornerTwistsComboBox.getSelectedItem()) 
 		{
 		case "No": //4 4 4
-		    while(solver.hasFlippedEdges() || solver.hasTwistedCorners())
+		    while(currentSolve.hasFlippedEdges() || currentSolve.hasTwistedCorners())
 			reloadSolverEngine();
 		    break;
 		case "Yes": //4 4 2
-		    while(solver.hasFlippedEdges() || !solver.hasTwistedCorners())
+		    while(currentSolve.hasFlippedEdges() || !currentSolve.hasTwistedCorners())
 			reloadSolverEngine();
 		    break;
 		case "Random": //4 4 1
-		    while(solver.hasFlippedEdges())
+		    while(currentSolve.hasFlippedEdges())
 			reloadSolverEngine();
 		    break;
 		}
@@ -424,15 +426,15 @@ public class GUI extends JFrame
 	        switch((String)cornerTwistsComboBox.getSelectedItem())
 		{
 		case "No": //4 2 4
-		    while(!solver.hasFlippedEdges() || solver.hasTwistedCorners())
+		    while(!currentSolve.hasFlippedEdges() || currentSolve.hasTwistedCorners())
 			reloadSolverEngine();
 		    break;
 		case "Yes": //4 2 2
-		    while(!solver.hasFlippedEdges() || !solver.hasTwistedCorners())
+		    while(!currentSolve.hasFlippedEdges() || !currentSolve.hasTwistedCorners())
 			reloadSolverEngine();
 		    break;
 		case "Random": //4 2 1
-		    while(!solver.hasFlippedEdges())
+		    while(!currentSolve.hasFlippedEdges())
 			reloadSolverEngine();
 		    break;
 		}
@@ -441,11 +443,11 @@ public class GUI extends JFrame
 	        switch((String)cornerTwistsComboBox.getSelectedItem())
 		{
 		case "No": //4 1 4
-		    while(solver.hasTwistedCorners())
+		    while(currentSolve.hasTwistedCorners())
 			reloadSolverEngine();
 		    break;
 		case "Yes": //4 1 2
-		    while(!solver.hasTwistedCorners())
+		    while(!currentSolve.hasTwistedCorners())
 			reloadSolverEngine();
 		    break;
 		case "Random": //4 1 1
@@ -485,7 +487,7 @@ public class GUI extends JFrame
 
     public void forceEdgeCommInScramble()
     {
-	while(!solver.hasGivenEdgeComm(forceEdgeCommTextField.getText()))
+	while(!currentSolve.hasGivenEdgeComm(forceEdgeCommTextField.getText()))
 	{
 	    prepNewScramble();
 	}
@@ -493,7 +495,7 @@ public class GUI extends JFrame
     }
     public void forceCornerCommInScramble()
     {
-	while(!solver.hasGivenCornerComm(forceCornerCommTextField.getText()))
+	while(!currentSolve.hasGivenCornerComm(forceCornerCommTextField.getText()))
 	{
 	    prepNewScramble();
 	}
@@ -521,12 +523,12 @@ public class GUI extends JFrame
     public void reloadSolverEngine()
     {
 	scramble = scrambler.genFriendlyScramble();
-	solver.refresh(scramble);
+	currentSolve.refresh(scramble);
     }
     public void updateSolveTimesArrayList()
     {
-	SolveTime newSolveTime = new SolveTime(solver.getSolveTime());
-	database1.add(newSolveTime);
+	currentSolve.setTime(currentSolveTime);
+	database1.add(currentSolve);
     }
     public void updateSolveTimesTextArea()
     {
@@ -544,24 +546,14 @@ public class GUI extends JFrame
     }
     public void updateScrambleAnalysisTextArea()
     {
-	if(database1.get(database1.size()-1).getIsDNF())
-	{
-	    prevScrambleAnalysis = "(DNF) " + prevScrambleAnalysis;
-	    scrambleAnalysisTextArea.setText(prevScrambleAnalysis);
-	}
-	else
-	{
-	    prevScrambleAnalysis = solver.toString();
-	    scrambleAnalysisTextArea.setText(solver.toString());
-	}
-
+	scrambleAnalysisTextArea.setText(currentSolve.getSolver().toString());
     }
     public void updateTimer() //calcuates the solve time, sets it to solveTime, and edits timerTextField
     {
-	timeInMillis = System.currentTimeMillis() - startTime;
-	Date elapsed = new Date(timeInMillis);
-	solver.setSolveTime(SIMPLE_DATE_FORMAT.format(elapsed));
-	timerTextField.setText(solver.getSolveTime());
+	Date elapsed = new Date(System.currentTimeMillis() - startTime);
+	currentSolveTime = SIMPLE_DATE_FORMAT.format(elapsed);
+	currentSolve.setTime(currentSolveTime);
+	timerTextField.setText(currentSolve.getTime());
     }
 
     //HELPER CLASSES
@@ -569,126 +561,20 @@ public class GUI extends JFrame
     class SessionStats
     {
 	private String bestMO3, bestAVG5;
-	private ArrayList<SolveTime> databaseAVG5;
+	private ArrayList<ASolve> databaseAVG5;
 	public SessionStats()
 	{
-	    databaseAVG5 = new ArrayList<SolveTime>();
+	    databaseAVG5 = new ArrayList<ASolve>();
 	    bestAVG5 = "99:59.59";
 	    bestMO3 = "99:59.59";
 	}
+	
 	public String toString()
 	{
-	    String formatted = "Best Time: " + getBestTime() + "\n" +
-		"Worst Time: " + getWorstTime() + "\n" ;//+
-		/*	"Best mo3: " + getBestMO3() + "\n" +
-		"Best avg5: " + getBestAVG5() + "\n" +
-		"Current mo3: " + getCurrentMO3() + "\n" +
-		"Current avg5: " + getCurrentAVG5() + "\n" ;*/
-
-	    return formatted;
-	}
-	public String getBestAVG5()
-	{
-	    if(database1.size()<5)
-		return "DNF";
-	    System.out.println("WEOIFUDSFOA");
-	    Collections.sort(databaseAVG5);
-	    return databaseAVG5.get(databaseAVG5.size()-1).getTime();
-	}
-	public String getCurrentAVG5()
-	{
-	    databaseAVG5.add(getCurrentAVGz(5));
-	    System.out.println(databaseAVG5);
-	    return databaseAVG5.get(databaseAVG5.size()-1).getTime();
-	}
-	public SolveTime getCurrentAVGz(int z)
-	{
-	    int numDNFs=0;
-	    if(database1.size()<z)
-		return new SolveTime("99:59.59",true);
-	    ArrayList<SolveTime> solves = new ArrayList<SolveTime>();
-	    for(int x = 1; x<=z ; x++)
-	    {
-		solves.add(database1.get(database1.size() -x));
-		if(database1.get(database1.size() -x).getIsDNF())
-		{
-		    numDNFs++;
-		}
-		if(numDNFs==2)
-		{
-		    return new SolveTime("99:59.59",true);
-		}
-	    }
-	    Collections.sort(solves);
-	    long sumZ=0;
-	    for(int i = 1; i <= solves.size()-2 ; i++)
-	    {
-		sumZ+= SolveTime.convertToMillis(solves.get(i).getTime());
-	    }
-	    return new SolveTime(SIMPLE_DATE_FORMAT.format((sumZ ) / (z-2)), false);
-	}
-	public String getBestMO3()
-	{
-	    if(database1.size()<3)
-		return "DNS";
-	    if(!getCurrentMO3().equals("DNF") &&
-	       ((SolveTime.convertToMillis(bestMO3) - SolveTime.convertToMillis(getCurrentMO3())) > 0))
-	    {
-		bestMO3 = getCurrentMO3();
-	    }
-	    return bestMO3;
-	}
-	public String getCurrentMO3()
-	{
-	    if(database1.size()<3)
-		return "DNS";
-	    if(database1.get(database1.size()-1).getIsDNF() || 
-	       database1.get(database1.size()-2).getIsDNF() ||
-	       database1.get(database1.size()-3).getIsDNF())
-		return "DNF";
-	    
-	    return SIMPLE_DATE_FORMAT.format((SolveTime.convertToMillis(database1.get(database1.size()-1).getTime())
-					      +SolveTime.convertToMillis(database1.get(database1.size()-2).getTime())
-					      +SolveTime.convertToMillis(database1.get(database1.size()-3).getTime())) / 3);
-	}
-	public String getBestTime()
-	{
-	    if(database1.size()==0)
-		return "DNS";
-	    if(database1.size()==1)
-		return database1.get(0).toString();
-	    else
-	    {
-		SolveTime best = database1.get(0);
-		for(int x = 0; x < database1.size(); x++)
-		{
-		    if(database1.get(x).compareTo(best)>0)
-			best = database1.get(x);
-		}
-		return best.getTime();
-	    }
-	}
-	public String getWorstTime()
-	{
-	    if(database1.size()==0)
-		return "DNS";
-	    if(database1.size()==1)
-		return database1.get(0).toString();
-	    else
-	    {
-		SolveTime worst = database1.get(0);
-		for(int x = 0; x < database1.size(); x++)
-		{
-		    if(database1.get(x).compareTo(worst)<0)
-			worst = database1.get(x);
-		}
-		if(worst.getIsDNF())
-		{
-		    return "DNF";
-		}
-		return worst.getTime();
-	    }
+	    return "nope";
 	}
     }
+        
+
 
 }
