@@ -2,3 +2,6 @@
 #*
 .saves/
 .extraneous/
+*.txt
+*.log
+*~

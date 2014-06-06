@@ -44,10 +44,9 @@ public class GUI extends JFrame
 
     //variables that are constantly changing
     private long startTime;
-    private String solveTime;
     private boolean timeIsStarted;
     private long timeInMillis;
-
+    private String prevScrambleAnalysis = null;
     public static void main(String[] args)
     {
 	GUI exe = new GUI();
@@ -353,8 +352,10 @@ public class GUI extends JFrame
 	    {
 		timerTextField.setText("DNF");
 		database1.get(database1.size()-1).setToDNF();
+		solver.setSolveTime(database1.get(database1.size()-1).toString());
 		updateSolveTimesTextArea();
 		updateSolveStatsTextArea();
+		updateScrambleAnalysisTextArea();
 	    }
 	}
     }
@@ -375,7 +376,6 @@ public class GUI extends JFrame
 		timeIsStarted = false;
 		timer.stop();
 		updateTimer();//calcs solve time, sets it to solveTime, and edits timerTextField
-		solver.setSolveTime(solveTime);		
 
 		updateSolveTimesArrayList();
 	        updateSolveStatsTextArea(); 
@@ -383,7 +383,7 @@ public class GUI extends JFrame
 
 		updateSolveTimesTextArea(); //write to bottom-left 
 
-	        prepNewScramble();
+		prepNewScramble();
 
 	    }
 	}
@@ -525,7 +525,7 @@ public class GUI extends JFrame
     }
     public void updateSolveTimesArrayList()
     {
-	SolveTime newSolveTime = new SolveTime(solveTime);
+	SolveTime newSolveTime = new SolveTime(solver.getSolveTime());
 	database1.add(newSolveTime);
     }
     public void updateSolveTimesTextArea()
@@ -544,14 +544,24 @@ public class GUI extends JFrame
     }
     public void updateScrambleAnalysisTextArea()
     {
-	scrambleAnalysisTextArea.setText(solver.toString());
+	if(database1.get(database1.size()-1).getIsDNF())
+	{
+	    prevScrambleAnalysis = "(DNF) " + prevScrambleAnalysis;
+	    scrambleAnalysisTextArea.setText(prevScrambleAnalysis);
+	}
+	else
+	{
+	    prevScrambleAnalysis = solver.toString();
+	    scrambleAnalysisTextArea.setText(solver.toString());
+	}
+
     }
     public void updateTimer() //calcuates the solve time, sets it to solveTime, and edits timerTextField
     {
 	timeInMillis = System.currentTimeMillis() - startTime;
 	Date elapsed = new Date(timeInMillis);
-	solveTime = SIMPLE_DATE_FORMAT.format(elapsed);
-	timerTextField.setText(solveTime);
+	solver.setSolveTime(SIMPLE_DATE_FORMAT.format(elapsed));
+	timerTextField.setText(solver.getSolveTime());
     }
 
     //HELPER CLASSES
