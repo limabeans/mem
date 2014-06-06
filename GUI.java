@@ -355,7 +355,6 @@ public class GUI extends JFrame
 		timerTextField.setText("DNF");
 		database1.get(database1.size()-1).setToDNF();
 		currentSolve.setTime(database1.get(database1.size()-1).toString());
-		System.out.println(database1);
 		updateSolveTimesTextArea();
 		updateSolveStatsTextArea();
 		updateScrambleAnalysisTextArea();
@@ -379,7 +378,6 @@ public class GUI extends JFrame
 		timer.stop();
 		updateTimer();//calcs solve time,updates currentSolve.setTime(), and edits timerTextField
 		updateSolveTimesArrayList();
-		System.out.println(database1);
 	        updateSolveStatsTextArea(); 
 		updateScrambleAnalysisTextArea();//write to right
 
@@ -546,7 +544,7 @@ public class GUI extends JFrame
     }
     public void updateScrambleAnalysisTextArea()
     {
-	scrambleAnalysisTextArea.setText(currentSolve.getSolver().toString());
+	scrambleAnalysisTextArea.setText(currentSolve.getAnalysis());
     }
     public void updateTimer() //calcuates the solve time, sets it to solveTime, and edits timerTextField
     {

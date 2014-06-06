@@ -16,20 +16,9 @@ public class CommSolver
     private boolean hasTwistedCorners;
     private boolean hasCornerCycleBreaks;
 
-    private String solveTime;
-
     public boolean getHasParity()
     {
 	return hasParity;
-    }
-    public void setSolveTime(String newSolveTime)
-    {
-	solveTime = newSolveTime;
-    }
-
-    public String getSolveTime()
-    {
-	return solveTime;
     }
 
     public void refresh(String newScramble)
@@ -46,13 +35,10 @@ public class CommSolver
 	hasTwistedCorners = cornerTracer.hasTwistedCorners();	
 	cornerCycles = cornerTracer.traceCorners();
 	hasCornerCycleBreaks = cornerTracer.getIfCornerCycleBreaks();
-
-	solveTime = "DNS";
     }
     public String toString()
     {
-	String reported = getSolveTime() + "\n" +
-	    scramble + "\n"
+	String reported = scramble + "\n"
 	    + "parity: " + hasParity + "\n"
 	    + "edge cycle: " + edgeCycles + "\n"
 	    + "corner cycle: " + cornerCycles + "\n"

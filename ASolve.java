@@ -18,9 +18,9 @@ public class ASolve implements Comparable<ASolve>
 	isDNF = false;
 	comment = "";
     }
-    public CommSolver getSolver()
+    public String getAnalysis()
     {
-	return solver;
+	return( getTime() + "\n" + solver.toString());
     }
     public boolean hasFlippedEdges()
     {
@@ -100,7 +100,6 @@ public class ASolve implements Comparable<ASolve>
     public void setTime(String time)
     {
 	this.time = time;
-	solver.setSolveTime(time);
     }
     public String getTime()
     {
