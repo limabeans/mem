@@ -31,7 +31,7 @@ public class GUI extends JFrame
     private JToggleButton timingMemoToggleButton;
     //    private JRadioButton 
     //    private JCheckBox
-    private JComboBox<String> selectPuzzleComboBox, cornerTwistsComboBox, edgeFlipsComboBox, parityComboBox, commentOnOffComboBox;
+    private JComboBox<String> selectPuzzleComboBox, cornerTwistsComboBox, edgeFlipsComboBox, parityComboBox;
     private String[] selectPuzzleArray = { "3x3 blindfolded", "3x3 speedsolve", "3x3 blindfolded memo practice" };
     private String[] selectYesNoRandomArray = { "No", "Yes", "Random" };
     private String[] onOffArray = {"On","Off"};
@@ -178,7 +178,7 @@ public class GUI extends JFrame
 	JPanel panel5_1top = new JPanel();
 	solveTimesLabel = new JLabel("Solve Times");
 	solveTimesLabel.setHorizontalAlignment(JLabel.CENTER);
-	panel5_1top.add(solveTimesLabel);
+	//	panel5_1top.add(solveTimesLabel);
 	exportSolveTimesButton = new JButton("Export");
 	panel5_1.add(panel5_1top, BorderLayout.NORTH);
 	JPanel panel5_1bot = new JPanel(new GridLayout(2,1));
@@ -190,13 +190,17 @@ public class GUI extends JFrame
 	clearAllSolveTimesButton.setForeground(Color.RED);
 	panel5_1botdelete.add(clearAllSolveTimesButton);
 	panel5_1bot.add(panel5_1botdelete);
-	JPanel panel5_1botexport = new JPanel(new FlowLayout());
-	exportSolveTimesTextField = new JTextField("/home/lima/Desktop/session.txt",19);
-	exportSolveTimesButton = new JButton("Export");
-	panel5_1botexport.add(exportSolveTimesTextField);
-	panel5_1botexport.add(exportSolveTimesButton);
-	exportSolveTimesButton.addActionListener( new ExportSolveTimesButtonListener() );
-	panel5_1bot.add(panel5_1botexport);
+	JPanel panel5_1botcomment = new JPanel(new FlowLayout());
+	commentLabel = new JLabel("Comment");
+	panel5_1botcomment.add(commentLabel);
+	commentTextField = new JTextField(12);
+	commentTextField.addActionListener(new CommentListener());
+	panel5_1botcomment.add(commentTextField);
+	commentSubmitButton = new JButton("Submit");
+	commentSubmitButton.addActionListener(new CommentListener());
+	panel5_1botcomment.add(commentSubmitButton);
+	panel5_1bot.add(panel5_1botcomment);
+
 	panel5_1.add(panel5_1bot,BorderLayout.SOUTH);
 	//panel5-right side
 	solveTimesTextArea = new JTextArea();
@@ -214,7 +218,7 @@ public class GUI extends JFrame
 	JPanel panel5_2top = new JPanel();
 	sessionStatsLabel = new JLabel("Solve Stats");
 	sessionStatsLabel.setHorizontalAlignment(JLabel.CENTER);
-	panel5_2top.add(sessionStatsLabel);
+	//	panel5_2top.add(sessionStatsLabel);
 	panel5_2.add(panel5_2top,BorderLayout.NORTH);
 	sessionStatsTextArea = new JTextArea(sessionStats.toString());
 	sessionStatsTextArea.setFont(SOLVES_TIMES_STATS_FONT);
@@ -224,23 +228,20 @@ public class GUI extends JFrame
 	JScrollPane sessionStatsScroll = new JScrollPane(sessionStatsTextArea);
 	sessionStatsScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 	panel5_2.add(sessionStatsScroll, BorderLayout.CENTER);
+
+	JPanel panel5_2bot = new JPanel(new FlowLayout());
+	exportSolveTimesTextField = new JTextField("/home/lima/Desktop/session.txt",19);
+	exportSolveTimesButton = new JButton("Export");
+	panel5_2bot.add(exportSolveTimesTextField);
+	panel5_2bot.add(exportSolveTimesButton);
+	exportSolveTimesButton.addActionListener( new ExportSolveTimesButtonListener() );
+	panel5_2.add(panel5_2bot,BorderLayout.SOUTH);
+
 	panel5.add(panel5_2);
 	this.add(panel5);
 
 	panel6 = new JPanel(new BorderLayout());
-	JPanel panel6bot = new JPanel(new FlowLayout());
-	commentLabel = new JLabel("Comments:");
-	panel6bot.add(commentLabel);
-	commentTextField = new JTextField(15);
-	commentTextField.addActionListener(new CommentListener());
-	panel6bot.add(commentTextField);
-	commentOnOffComboBox = new JComboBox<String>(onOffArray);
-	commentOnOffComboBox.addActionListener(new CommentOnOffListener());
-	panel6bot.add(commentOnOffComboBox);
-	commentSubmitButton = new JButton("Submit");
-	commentSubmitButton.addActionListener(new CommentListener());
-	panel6bot.add(commentSubmitButton);
-	panel6.add(panel6bot,BorderLayout.SOUTH);
+
 	this.add(panel6);
 
 	//setting size/display appropriately
@@ -263,8 +264,6 @@ public class GUI extends JFrame
 	//commentLabel.setEnabled(false);
 	//commentTextField.setEnabled(false);
 	//commentSubmitButton.setEnabled(false);
-	//set commentTextField to Ctrl-L keybinding
-
     }
 
     //LISTENERS
@@ -278,27 +277,7 @@ public class GUI extends JFrame
 	    timerTextField.requestFocusInWindow();
 	}
     }
-    class CommentOnOffListener implements ActionListener
-    {
-	public void actionPerformed(ActionEvent event)
-	{
-	    if(((String)commentOnOffComboBox.getSelectedItem()).equals("Off"))
-	       {
-		   commentLabel.setEnabled(false);
-		   commentTextField.setEnabled(false);
-		   commentSubmitButton.setEnabled(false);
-		   timerTextField.requestFocusInWindow();
-	       }
-	    if(((String)commentOnOffComboBox.getSelectedItem()).equals("On"))
-	       {
-		   commentLabel.setEnabled(true);
-		   commentTextField.setEnabled(true);
-		   commentSubmitButton.setEnabled(true);
-		   timerTextField.requestFocusInWindow();
-	       }
 
-	}
-    }
     class CustomScrambleListener implements ActionListener
     {
 	public void actionPerformed(ActionEvent e)
