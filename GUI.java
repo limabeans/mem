@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyEvent.*;
 import java.util.*;
 import java.text.*;
 import java.io.*;
@@ -33,7 +34,7 @@ public class GUI extends JFrame
     private JComboBox<String> selectPuzzleComboBox, cornerTwistsComboBox, edgeFlipsComboBox, parityComboBox, commentOnOffComboBox;
     private String[] selectPuzzleArray = { "3x3 blindfolded", "3x3 speedsolve", "3x3 blindfolded memo practice" };
     private String[] selectYesNoRandomArray = { "No", "Yes", "Random" };
-    private String[] onOffArray = {"Off","On"};
+    private String[] onOffArray = {"On","Off"};
 
 
     //data instances
@@ -100,6 +101,14 @@ public class GUI extends JFrame
 	SpaceAction spaceAction = new SpaceAction();	
 	timerTextField.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "doSpaceAction");
 	timerTextField.getActionMap().put("doSpaceAction", spaceAction);
+
+	//to shift focus to commentTextField with you hit enter
+	//KeyStroke.getKeyStroke('L',KeyEvent.CTRL_DOWN_MASK), "doCommentAction"
+	CommentAction commentAction = new CommentAction();
+	//KeyEvent.VK_ENTER
+	timerTextField.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), "doCommentAction");
+	timerTextField.getActionMap().put("doCommentAction", commentAction);
+
 
 	panel4 = new JPanel(new BorderLayout());
 	//panel4LeftSide
@@ -194,6 +203,7 @@ public class GUI extends JFrame
 	solveTimesTextArea.setFont(SOLVES_TIMES_STATS_FONT);
 	solveTimesTextArea.setEditable(false);
 	solveTimesTextArea.setLineWrap(true);
+	solveTimesTextArea.setFocusable(false);
 	panel5_1.add(solveTimesTextArea, BorderLayout.CENTER);
 	JScrollPane solveTimesScroll = new JScrollPane(solveTimesTextArea);
 	solveTimesScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -209,6 +219,7 @@ public class GUI extends JFrame
 	sessionStatsTextArea = new JTextArea(sessionStats.toString());
 	sessionStatsTextArea.setFont(SOLVES_TIMES_STATS_FONT);
 	sessionStatsTextArea.setEditable(false);
+	sessionStatsTextArea.setFocusable(false);
 	panel5_2.add(sessionStatsTextArea, BorderLayout.CENTER);
 	JScrollPane sessionStatsScroll = new JScrollPane(sessionStatsTextArea);
 	sessionStatsScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -248,10 +259,12 @@ public class GUI extends JFrame
 	deleteLastTimeButton.setEnabled(false);
 	timingMemoToggleButton.setEnabled(false);
 
-	//COMMENTS DISABLED AT START
-	commentLabel.setEnabled(false);
-	commentTextField.setEnabled(false);
-	commentSubmitButton.setEnabled(false);
+	//STUFF AUTO-DISABLED AT START
+	//commentLabel.setEnabled(false);
+	//commentTextField.setEnabled(false);
+	//commentSubmitButton.setEnabled(false);
+	//set commentTextField to Ctrl-L keybinding
+
     }
 
     //LISTENERS
@@ -387,6 +400,14 @@ public class GUI extends JFrame
 	    JOptionPane.showMessageDialog(null,"Exported");
 	}
     }
+    //KEYBINDING CLASSES
+    class CommentAction extends AbstractAction //note, figure out how to implement with CONTROL.....
+    {
+	public void actionPerformed(ActionEvent e)
+	{
+	    commentTextField.requestFocusInWindow();
+	}
+    }
     class DAction extends AbstractAction
     {
 	public void actionPerformed(ActionEvent e)
@@ -421,11 +442,8 @@ public class GUI extends JFrame
 		updateSolveTimesArrayList();
 	        updateSolveStatsTextArea(); 
 		updateScrambleAnalysisTextArea();//write to right
-
 		updateSolveTimesTextArea(); //write to bottom-left 
-
 		prepNewScramble();
-
 	    }
 	}
     }
@@ -608,7 +626,7 @@ public class GUI extends JFrame
 	
 	public String toString()
 	{
-	    return "nope";
+	    return "BestTime\nWorstTime\nSuccessStreak\ndnfStreak\nbestmo3\ncurrentmo3\nbestavg5\ncurrentavg5\nbestavg12\ncurrentavg12";
 	}
     }
         
