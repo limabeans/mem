@@ -25,7 +25,7 @@ public class GUI extends JFrame
     //GUI instances
     private JButton deleteLastTimeButton, exportSolveTimesButton, clearAllSolveTimesButton, commentSubmitButton;
     private JTextField timerTextField, generatedScramble, exportSolveTimesTextField, forceEdgeCommTextField, forceCornerCommTextField, commentTextField;
-    private JLabel solveTimesLabel, sessionStatsLabel, scrambleOptionsLabel, paritySelectLabel, edgeFlipsSelectLabel, forceEdgeCommLabel, cornerTwistsSelectLabel, forceCornerCommLabel, commentLabel;
+    private JLabel scrambleOptionsLabel, paritySelectLabel, edgeFlipsSelectLabel, forceEdgeCommLabel, cornerTwistsSelectLabel, forceCornerCommLabel, commentLabel;
     private JTextArea scrambleAnalysisTextArea, solveTimesTextArea, sessionStatsTextArea;
     private JPanel panel1,panel2,panel3,panel4,panel5,panel6;
     private JToggleButton timingMemoToggleButton;
@@ -176,9 +176,6 @@ public class GUI extends JFrame
 	//panel5-left side
 	JPanel panel5_1 = new JPanel(new BorderLayout());
 	JPanel panel5_1top = new JPanel();
-	solveTimesLabel = new JLabel("Solve Times");
-	solveTimesLabel.setHorizontalAlignment(JLabel.CENTER);
-	//	panel5_1top.add(solveTimesLabel);
 	exportSolveTimesButton = new JButton("Export");
 	panel5_1.add(panel5_1top, BorderLayout.NORTH);
 	JPanel panel5_1bot = new JPanel(new GridLayout(2,1));
@@ -216,9 +213,6 @@ public class GUI extends JFrame
 	//panel5_2
 	JPanel panel5_2 = new JPanel(new BorderLayout());
 	JPanel panel5_2top = new JPanel();
-	sessionStatsLabel = new JLabel("Solve Stats");
-	sessionStatsLabel.setHorizontalAlignment(JLabel.CENTER);
-	//	panel5_2top.add(sessionStatsLabel);
 	panel5_2.add(panel5_2top,BorderLayout.NORTH);
 	sessionStatsTextArea = new JTextArea(sessionStats.toString());
 	sessionStatsTextArea.setFont(SOLVES_TIMES_STATS_FONT);
