@@ -2,6 +2,7 @@ mem
 ===
 
 Commutator and memory training application for those who do 3BLD competitively. 
+
 Written in Java by Angel Lim.
 
 3BLD = solving the 3x3x3 Rubik's Cube blindfolded.
