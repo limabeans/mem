@@ -29,13 +29,10 @@ public class GUI extends JFrame
     private JTextArea scrambleAnalysisTextArea, solveTimesTextArea, sessionStatsTextArea;
     private JPanel panel1,panel2,panel3,panel4,panel5,panel6;
     private JToggleButton timingMemoToggleButton;
-    //    private JRadioButton 
-    //    private JCheckBox
     private JComboBox<String> selectPuzzleComboBox, cornerTwistsComboBox, edgeFlipsComboBox, parityComboBox;
     private String[] selectPuzzleArray = { "3x3 blindfolded", "3x3 speedsolve", "3x3 blindfolded memo practice" };
     private String[] selectYesNoRandomArray = { "No", "Yes", "Random" };
     private String[] onOffArray = {"On","Off"};
-
 
     //data instances
     protected ArrayList<ASolve> database1;
@@ -46,6 +43,9 @@ public class GUI extends JFrame
     private long startTime;
     private boolean timeIsStarted;
     private String currentSolveTime;
+
+    //the disable the [enter] and 'D' keybindings on first solve
+    private boolean firstSolveCompleted = false;
 
     public static void main(String[] args)
     {
@@ -265,10 +265,13 @@ public class GUI extends JFrame
     {
 	public void actionPerformed(ActionEvent event)
 	{
-	    database1.get(database1.size()-1).setComment(commentTextField.getText());
-	    updateSolveTimesTextArea();
-	    updateScrambleAnalysisTextArea();
-	    timerTextField.requestFocusInWindow();
+	    if(firstSolveCompleted)
+	    {
+		database1.get(database1.size()-1).setComment(commentTextField.getText());
+		updateSolveTimesTextArea();
+		updateScrambleAnalysisTextArea();
+		timerTextField.requestFocusInWindow();
+	    }
 	}
     }
 
@@ -378,14 +381,15 @@ public class GUI extends JFrame
     {
 	public void actionPerformed(ActionEvent e)
 	{
-	    commentTextField.requestFocusInWindow();
+	    if(firstSolveCompleted)
+		commentTextField.requestFocusInWindow();
 	}
     }
     class DAction extends AbstractAction
     {
 	public void actionPerformed(ActionEvent e)
 	{
-	    if(!timer.isRunning())
+	    if(!timer.isRunning() && firstSolveCompleted)
 	    {
 		timerTextField.setText("DNF");
 		database1.get(database1.size()-1).setToDNF();
@@ -409,6 +413,7 @@ public class GUI extends JFrame
 	    }
 	    else if(timeIsStarted)
 	    {
+		firstSolveCompleted = true;
 		timeIsStarted = false;
 		timer.stop();
 		updateTimer();//calcs solve time,updates currentSolve.setTime(), and edits timerTextField
