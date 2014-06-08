@@ -29,13 +29,10 @@ I am a BLDer, inspired by the ideas of <i>deliberative practice</i>, which lead 
 -the first timer with a built in Facebook chat?!<br>
 -the first timer with a built in music playlist builder?!<br>
 
-<b>Notes:</b>
-
-<b>My buffers, </b><b>Edges: </b>DF, <b>Corners: </b>UBL
-
+<b>Notes:</b><br>
+<b>My buffers, </b><b>Edges: </b>DF, <b>Corners: </b>UBL<br>
 You may noticed I hard-encoded my own lettering scheme for now.
-This was just to simplify coding on my part, this is easily changeable later.
-
+This was just to simplify coding on my part, this is easily changeable later.<br>
 <b>For now, to test the "Force edge/corner comm" feature(s), follow the following directions:</b><br>
 1. type in <code>BA</code> into "Force corner comm"<br>
 2. scramble using the given scramble <b>in your memo/solving orientation</b><br>
