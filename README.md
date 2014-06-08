@@ -11,6 +11,10 @@ Currently, the program can generate scrambles with any combination of parity, fl
 
 I am a BLDer, inspired by the ideas of <i>deliberative practice</i>, which lead me to create this.
 
+<u>My buffers:</u><br>
+<b>Edges: </b>DF
+<b>Corners: </b>UBL
+
 <b>It's still a work in progress, so here's how build/run/test/contribute:</b>
 
 <code>git clone https://github.com/limabeans/mem.git</code><br>
@@ -35,7 +39,7 @@ This was just to simplify coding on my part, this is easily changeable later.
 <b>For now, to test the "Force edge/corner comm" feature(s), follow the following directions:</b><br>
 1. type in <code>BA</code> into "Force corner comm"<br>
 2. scramble using the given scramble <b>in your memo/solving orientation</b><br>
-3. you are guaranteed a <code>CCW A-perm</code> in your next BLD solve!
+3. <code>BA</code> is my letter pair for <code>UBL-UBR-UFR</code>, so you are guaranteed a <code>CCW A-perm</code> in your next BLD solve!
 
 In the meantime, obfuscation working as intended. :^)
 
