@@ -3,8 +3,7 @@ mem v0.5
 
 <b>3BLD = solving the 3x3x3 Rubik's Cube blindfolded.</b>
 
-The first commutator and memory training application to exist.
-Specially designed for those who do 3BLD competitively. 
+The first commutator and memory training application to exist, tailored to those who do 3BLD competitively. 
 
 <b>Written in Java by Angel Lim.</b>
 
