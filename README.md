@@ -1,16 +1,22 @@
 mem
 ===
 
-Memory training application for those who do BLD competitively. 
+Commutator and memory training application for those who do 3BLD competitively. 
 Written in Java by Angel Lim.
 
-The final program is expected to force certain states of the cube, as well as simulate certain memo 'paces' under your lettering scheme.
-For example, if you're particularly slow at commutator X, my program will generate scrambles that contain commutator X on demand.
+3BLD = solving the 3x3x3 Rubik's Cube blindfolded.
 
-Started coding this on a whim.
-Program is severely incomplete as of now. Expect tons of improvement in the upcoming days, though.
+Currently, the program can generate scrambles with any combination of parity, flipped edges, and twisted corners, along with the choice of one forced edge or corner commutator.
 
-Currently can test/generate scrambles with parity, twisted corners, and flipped edges.
+Future features include:
+-generating scrambles of a certain metric (i.e. 13/7)
+-an implemented "Solve Stats" section
+-more sophisticated text exporting
+-memory training
+-a txt config file
+-the first timer with a built in Facebook chat?!
+-the first timer with a built in music playlist builder?!
+
 
 You may noticed I hard-encoded my own lettering scheme for now.
 This was just to simplify coding on my part, this is easily changeable later.
