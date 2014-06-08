@@ -21,9 +21,9 @@ I am a BLDer, inspired by the ideas of <href a="http://en.wikipedia.org/wiki/Pra
 
 <b>Here's how build/run/test/contribute:</b><br>
 
-<code>cd ./source</code>
-<code>javac -d ../classes *.java</code>
-<code> cd ../classes</code>
+<code>cd ./source</code><br>
+<code>javac -d ../classes *.java</code><br>
+<code> cd ../classes</code><br>
 <code>java GUI</code>
 
 
