@@ -11,8 +11,6 @@ Currently, the program can generate scrambles with any combination of parity, fl
 
 I am a BLDer, inspired by the ideas of <i>deliberative practice</i>, which lead me to create this.
 
-To see what it's looking like, download, extract, run <code>mem.zip</code>. However, this is simply the latest JAR file that I built, and I cannot guarantee it is the most up-to-date version. Instead, I recommend building the code yourself.
-
 <b>Here's how build/run/test/contribute:</b>
 
 <code>git clone https://github.com/limabeans/mem.git</code><br>
@@ -31,9 +29,11 @@ To see what it's looking like, download, extract, run <code>mem.zip</code>. Howe
 -the first timer with a built in music playlist builder?!<br>
 
 <b>Notes:</b>
-
 You may noticed I hard-encoded my own lettering scheme for now.
 This was just to simplify coding on my part, this is easily changeable later.
 In the meantime, obfuscation working as intended. :^)
+
+<b>Screenshot:</b>
+![screenshot](/../mem/screenshot.png?raw=true "screenshot")
 
 
