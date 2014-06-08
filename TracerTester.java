@@ -6,47 +6,36 @@ public class TracerTester
 	int solved =0;
 	int breaked=0;
 	Scrambler scrambler = new Scrambler();
-	String testScramble = scrambler.genDangerousScramble();
+	String testScramble = scrambler.genScramble();
 	Tracer tracer = new Tracer(testScramble);
 	CornerTracer cornerTracer = new CornerTracer(testScramble);
-	EdgeTracer edgeTracer = new EdgeTracer(testScramble);
 
-
-	for (int x=0;x<500;x++)
+	testScramble = scrambler.genScramble();
+	tracer = new Tracer(testScramble);
+	cornerTracer = new CornerTracer(testScramble);
+	while(!Tracer.hasParity(testScramble))
 	{
-	    testScramble = scrambler.genFriendlyScramble();
-	    //testScramble = "U R L B' D F D' R D2 L2 R2 U B' F L2 B2 R F' D2 F R2";
+	    testScramble = scrambler.genScramble();
 	    tracer = new Tracer(testScramble);
 	    cornerTracer = new CornerTracer(testScramble);
-	    try(PrintWriter out = new PrintWriter(new FileWriter("log.txt",true))){
-		    out.print(String.format("%s\n",testScramble));
-		    out.close();
-		}catch (IOException e){}
-	
-    
-	    System.out.println("SCRAMBLE: " + tracer.getScramble());
-	    if(cornerTracer.hasTwistedCorners())
-	    {
-		System.out.println("HAS TWISTED CORNERS");
-	    }
-	    cornerTracer.traceCorners();
+	}
+	System.out.println("SCRAMBLE: " + tracer.getScramble());
+	cornerTracer.traceCorners();
+	System.out.println(cornerTracer.getCornerMap());
 
-	    System.out.println(cornerTracer.toString());
-	    System.out.println(cornerTracer.getCornerMap());
-
-	}	 
+ 
     }   
 
 
 
 
 	//TESTING EDGE COMM SOLVER
-	/*String testScramble = scrambler.genDangerousScramble();
+	/*String testScramble = scrambler.genScramble();
 	Tracer tracer = new EdgeTracer(testScramble);
 	//will only generate easy scrambles
 	while(tracer.hasParity() || tracer.hasFlippedEdges() || tracer.hasTwistedCorners())
 	{
-	    testScramble = scrambler.genDangerousScramble();
+	    testScramble = scrambler.genScramble();
 	    tracer = new EdgeTracer(testScramble);
 	}
 	System.out.println("#"+x);

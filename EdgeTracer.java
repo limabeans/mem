@@ -33,13 +33,34 @@ public class EdgeTracer extends Tracer
 	while(!isEdgesSolved())
 	{
 	    solveNextEdgeComm();
+
 	}
 	return edgeLetterSequence;
     }
     private void solveNextEdgeComm()
     {
 	fixFlippedEdges();
-	if(!isEdgesSolved())
+	if(numEdgesNotSolved()==2) //PARITY CASE
+	{
+	    //determining final letter pairs
+	    if(edgeMap.get("E").equals("E")
+	       && edgeMap.get("U").equals("U")) //case of 1-2 punch
+	    {
+		String breaking  = findEdgeCycleBreak("");
+		edgeLetterSequence = edgeLetterSequence +
+		    breaking + edgeMap.get(breaking) + " " + breaking;
+	    }
+	    else //classic last target
+	    {
+		edgeLetterSequence = edgeLetterSequence + edgeMap.get("U");
+	    }
+	    //modifying the entire map to solved, huehue~
+	    for(Map.Entry temp : edgeMap.entrySet())
+	    {
+		edgeMap.put((String)temp.getKey(),(String)temp.getKey());
+	    }
+	} //END OF PARITY CASE
+	else if(!isEdgesSolved())
 	{
 	    String[][] afterBuffer = determineNextTarget("U","E");
 	    String[][] afterFirstTarget = determineNextTarget(afterBuffer[0][0],afterBuffer[1][0]);
@@ -54,9 +75,6 @@ public class EdgeTracer extends Tracer
 	    numEdgeIterations++;
 
 	}
-	//	System.out.println(getEdgeMap());
-	//System.out.println(edgeLetterSequence);
-
     }
 
     private String[][] determineNextTarget(String loc1, String loc2)
@@ -160,6 +178,35 @@ public class EdgeTracer extends Tracer
 	default:
 	    return "Invalid sticker";
 	}
+    }
+    private int numEdgesNotSolved()
+    {
+	int notSolved = 0;
+	if(checkAG()!=SOLVED)
+	    notSolved++;
+	if(checkBK()!=SOLVED)
+	    notSolved++;
+	if(checkCO()!=SOLVED)
+	    notSolved++;
+	if(checkDS()!=SOLVED)
+	    notSolved++;
+	if(checkEU()!=SOLVED)
+	    notSolved++;
+	if(checkIV()!=SOLVED)
+	    notSolved++;
+	if(checkMW()!=SOLVED)
+	    notSolved++;
+	if(checkQY()!=SOLVED)
+	    notSolved++;
+	if(checkFL()!=SOLVED)
+	    notSolved++;
+	if(checkJN()!=SOLVED)
+	    notSolved++;
+	if(checkPT()!=SOLVED)
+	    notSolved++;
+	if(checkHR()!=SOLVED)
+	    notSolved++;
+	return notSolved++;
     }
     private boolean isEdgesSolved()
     {

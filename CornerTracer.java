@@ -36,6 +36,28 @@ public class CornerTracer extends Tracer
     {
 
 	fixTwistedCorners();
+	if(numCornersNotSolved()==2) //PARITY CASE
+	{
+	    //determining final letter pairs
+	    if(cornerMap.get("C").equals("C")
+	       && cornerMap.get("O").equals("O")
+	       && cornerMap.get("S").equals("S")) //case of 1-2 punch
+	    {
+		String breaking = findCornerCycleBreak("");
+		cornerLetterSequence = cornerLetterSequence +
+		    breaking + cornerMap.get(breaking) + " " + breaking;
+	    }
+	    else //clasic last target
+	    {
+		cornerLetterSequence = cornerLetterSequence + cornerMap.get("C");
+	    }
+	    //modifying the entire map to solved, hoho~
+	    for(Map.Entry temp : cornerMap.entrySet())
+	    {
+		cornerMap.put((String)temp.getKey(),(String)temp.getKey());
+	    }
+	} //END OF PARITY CASE
+
 	if(!isCornersSolved())
 	{
 	    String[][] afterBuffer = determineNextTarget("C","O","S");
@@ -210,6 +232,28 @@ public class CornerTracer extends Tracer
 	    return "Invalid sticker";
 	}
     }
+    public int numCornersNotSolved()
+    {
+	int notSolved = 0;
+	if(checkAFK()!=SOLVED)
+	    notSolved++;
+	if(checkBJN()!=SOLVED)
+	    notSolved++;
+	if(checkCOS()!=SOLVED)
+	    notSolved++;
+	if(checkDGR()!=SOLVED)
+	    notSolved++;
+	if(checkELU()!=SOLVED)
+	    notSolved++;
+	if(checkIMV()!=SOLVED)
+	    notSolved++;
+	if(checkPTW()!=SOLVED)
+	    notSolved++;
+	if(checkHQY()!=SOLVED)
+	    notSolved++;
+	return notSolved++;
+    }    
+
     private boolean isCornersSolved()
     {
 	if(checkAFK()==SOLVED
@@ -254,11 +298,15 @@ public class CornerTracer extends Tracer
 	    cornerMap.put("J","J");
 	    cornerMap.put("N","N");
 	}
-	if(checkCOS() == CW || checkCOS() == CCW)
+	//the last target will be incorrect if there is a cycle break on a twisted corner during a parity case
+	if(!hasParity())
 	{
-	    cornerMap.put("C","C");
-	    cornerMap.put("O","O");
-	    cornerMap.put("S","S");
+	    if(checkCOS() == CW || checkCOS() == CCW)
+	    {
+		cornerMap.put("C","C");
+		cornerMap.put("O","O");
+		cornerMap.put("S","S");
+	    }
 	}
 	if(checkDGR() == CW || checkDGR() == CCW)
 	{

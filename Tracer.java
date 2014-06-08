@@ -14,6 +14,8 @@ public class Tracer
     protected static final int CCW = -1;
 
     protected String scramble;
+    
+    protected boolean hasParity;
 
     protected Map<String,String> edgeMap;
     protected Map<String,String> cornerMap;
@@ -26,6 +28,7 @@ public class Tracer
 	scramble = inputtedScramble;
 	genFreshCube();
 	scrambleToTurns(inputtedScramble);
+	hasParity = Tracer.hasParity(inputtedScramble);
     }
     public String getScramble()
     {
@@ -535,33 +538,7 @@ public class Tracer
     }
     public boolean hasParity()
     {
-        scramble = scramble.trim();
-        scramble = scramble + " ";
-        String currentTwist = "";
-        int loc = 0;
-        int parityCounter = 0;
-        while (loc < scramble.length())
-        {
-            while(scramble.charAt(loc)!=' ')
-            {
-                currentTwist = currentTwist + scramble.charAt(loc);
-                loc++;
-            }
-            if(parityContributor(currentTwist))
-            {
-                parityCounter++;
-            }
-            currentTwist = "";
-            if (scramble.charAt(loc)== ' ')
-            {
-                loc++;
-            }
-        }
-        if (parityCounter%2==1)
-        {
-            return true;
-        }
-        return false;        
+        return Tracer.hasParity(scramble);
     }
     //helper method for checkParity()
     public static boolean parityContributor(String input)

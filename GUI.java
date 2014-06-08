@@ -426,8 +426,7 @@ public class GUI extends JFrame
     //FIND A CUSTOM SCRAMBLE
     public void prepNewScramble()
     {
-	tempParityFix();
-	scramble = scrambler.genFriendlyScramble();
+	scramble = scrambler.genScramble();
 	currentSolve = new ASolve(scramble);
 	switch((String)parityComboBox.getSelectedItem()) 
 	{
@@ -438,15 +437,15 @@ public class GUI extends JFrame
 		switch((String)cornerTwistsComboBox.getSelectedItem()) 
 		{
 		case "No": //4 4 4
-		    while(currentSolve.hasFlippedEdges() || currentSolve.hasTwistedCorners())
+		    while(currentSolve.hasParity() || currentSolve.hasFlippedEdges() || currentSolve.hasTwistedCorners())
 			reloadSolverEngine();
 		    break;
 		case "Yes": //4 4 2
-		    while(currentSolve.hasFlippedEdges() || !currentSolve.hasTwistedCorners())
+		    while(currentSolve.hasParity() || currentSolve.hasFlippedEdges() || !currentSolve.hasTwistedCorners())
 			reloadSolverEngine();
 		    break;
 		case "Random": //4 4 1
-		    while(currentSolve.hasFlippedEdges())
+		    while(currentSolve.hasParity() || currentSolve.hasFlippedEdges())
 			reloadSolverEngine();
 		    break;
 		}
@@ -456,15 +455,15 @@ public class GUI extends JFrame
 	        switch((String)cornerTwistsComboBox.getSelectedItem())
 		{
 		case "No": //4 2 4
-		    while(!currentSolve.hasFlippedEdges() || currentSolve.hasTwistedCorners())
+		    while(currentSolve.hasParity() || !currentSolve.hasFlippedEdges() || currentSolve.hasTwistedCorners())
 			reloadSolverEngine();
 		    break;
 		case "Yes": //4 2 2
-		    while(!currentSolve.hasFlippedEdges() || !currentSolve.hasTwistedCorners())
+		    while(currentSolve.hasParity() || !currentSolve.hasFlippedEdges() || !currentSolve.hasTwistedCorners())
 			reloadSolverEngine();
 		    break;
 		case "Random": //4 2 1
-		    while(!currentSolve.hasFlippedEdges())
+		    while(currentSolve.hasParity() || !currentSolve.hasFlippedEdges())
 			reloadSolverEngine();
 		    break;
 		}
@@ -473,35 +472,137 @@ public class GUI extends JFrame
 	        switch((String)cornerTwistsComboBox.getSelectedItem())
 		{
 		case "No": //4 1 4
-		    while(currentSolve.hasTwistedCorners())
+		    while(currentSolve.hasParity() || currentSolve.hasTwistedCorners())
 			reloadSolverEngine();
 		    break;
 		case "Yes": //4 1 2
-		    while(!currentSolve.hasTwistedCorners())
+		    while(currentSolve.hasParity() || !currentSolve.hasTwistedCorners())
 			reloadSolverEngine();
 		    break;
 		case "Random": //4 1 1
-		    //while(parity)
+		    while(currentSolve.hasParity())
+			reloadSolverEngine();
+		    break;
+		}
+		break;
+	    }
+	    break;
+	    
+	case "Yes": //2 0 0 
+	    switch((String)edgeFlipsComboBox.getSelectedItem()) 
+	    {
+	    case "No": //2 4 0
+		switch((String)cornerTwistsComboBox.getSelectedItem()) 
+		{
+		case "No": //2 4 4
+		    while(!currentSolve.hasParity())// || currentSolve.hasFlippedEdges() || currentSolve.hasTwistedCorners())
+			reloadSolverEngine();
+		    break;
+		case "Yes": //2 4 2
+		    while(!currentSolve.hasParity() || currentSolve.hasFlippedEdges() || !currentSolve.hasTwistedCorners())
+			reloadSolverEngine();
+ 		    break;
+		case "Random": //2 4 1
+		    while(!currentSolve.hasParity() || currentSolve.hasFlippedEdges())
+			reloadSolverEngine();
+		    break;
+		}
+		break;
+	    case "Yes": //2 2 0
+	        switch((String)cornerTwistsComboBox.getSelectedItem())
+		{
+		    
+		case "No": //2 2 4
+		    while(!currentSolve.hasParity() || !currentSolve.hasFlippedEdges() || currentSolve.hasTwistedCorners())
+			reloadSolverEngine();
+		    break;
+		    
+		case "Yes": //2 2 2
+		    while(!currentSolve.hasParity() || !currentSolve.hasFlippedEdges() || !currentSolve.hasTwistedCorners())
+			reloadSolverEngine();
+		    break;
+		case "Random": //2 2 1
+		    while(!currentSolve.hasParity() || !currentSolve.hasFlippedEdges())
+			reloadSolverEngine();
+		    break;
+		}
+		break;
+	    case "Random": // 2 1 0
+	        switch((String)cornerTwistsComboBox.getSelectedItem())
+		{
+		case "No": //2 1 4
+		    while(!currentSolve.hasParity() || currentSolve.hasTwistedCorners())
+			reloadSolverEngine();
+		    break;
+		case "Yes": //2 1 2
+		    while(!currentSolve.hasParity() || !currentSolve.hasTwistedCorners())
+			reloadSolverEngine();
+		    break;
+		case "Random": //2 1 1
+		    while(!currentSolve.hasParity())
+			reloadSolverEngine();
+		    break;
+		}
+		break;
+	    }
+	    break;
+	
+	case "Random": //1 0 0 
+	    switch((String)edgeFlipsComboBox.getSelectedItem()) 
+	    {
+	    case "No": //1 4 0
+		switch((String)cornerTwistsComboBox.getSelectedItem()) 
+		{
+		case "No": //1 4 4
+		    while(currentSolve.hasFlippedEdges() || currentSolve.hasTwistedCorners())
+			reloadSolverEngine();
+		    break;
+		case "Yes": //1 4 2
+		    while(currentSolve.hasFlippedEdges() || !currentSolve.hasTwistedCorners())
+			reloadSolverEngine();
+		    break;
+		case "Random": //1 4 1
+		    while(currentSolve.hasFlippedEdges())
+			reloadSolverEngine();
+		    break;
+		}
+		break;
+	    
+	    case "Yes": //1 2 0
+	        switch((String)cornerTwistsComboBox.getSelectedItem())
+		{
+		case "No": //1 2 4
+		    while(!currentSolve.hasFlippedEdges() || currentSolve.hasTwistedCorners())
+			reloadSolverEngine();
+		    break;
+		case "Yes": //1 2 2
+		    while(!currentSolve.hasFlippedEdges() || !currentSolve.hasTwistedCorners())
+			reloadSolverEngine();
+		    break;
+		case "Random": //1 2 1
+		    while(!currentSolve.hasFlippedEdges())
+			reloadSolverEngine();
+		    break;
+		}
+		break;
+	    case "Random": // 1 1 0
+	        switch((String)cornerTwistsComboBox.getSelectedItem())
+		{
+		case "No": //1 1 4
+		    while(currentSolve.hasTwistedCorners())
+			reloadSolverEngine();
+		    break;
+		case "Yes": //1 1 2
+		    while(!currentSolve.hasTwistedCorners())
+			reloadSolverEngine();
+		    break;
+		case "Random": //1 1 1
 		    reloadSolverEngine();
 		    break;
 		}
 		break;
 	    }
 	    break;
-
-	default:
-	    scrambleAnalysisTextArea.setText("Scramble may have parity, \n scramble analysis and options broken for now :(");
-	    scramble = scrambler.genDangerousScramble();
-	    tempParityBreak();
-	    break;
-
-	    /*	case "Yes": //2 0 0
-	    break;
-	case "Random": //1 0 0 
-	    break;
-	default:
-	System.out.println("You really messed up");*/
-	
 	}
 
 	if(forceEdgeCommTextField.getText().length()>0)
@@ -531,26 +632,12 @@ public class GUI extends JFrame
 	}
 	forceCornerCommTextField.setText("");
     }
-    public void tempParityBreak()
-    {
-	edgeFlipsComboBox.setEnabled(false);
-	cornerTwistsComboBox.setEnabled(false);
-	forceEdgeCommTextField.setEnabled(false);
-	forceCornerCommTextField.setEnabled(false);
-    }
-    public void tempParityFix()
-    {
-	edgeFlipsComboBox.setEnabled(true);
-	cornerTwistsComboBox.setEnabled(true);
-	forceEdgeCommTextField.setEnabled(true);
-	forceCornerCommTextField.setEnabled(true);
-    }
 
 
     //UPDATE METHODS
     public void reloadSolverEngine()
     {
-	scramble = scrambler.genFriendlyScramble();
+	scramble = scrambler.genScramble();
 	currentSolve.refresh(scramble);
     }
     public void updateSolveTimesArrayList()
