@@ -34,6 +34,6 @@ This was just to simplify coding on my part, this is easily changeable later.
 In the meantime, obfuscation working as intended. :^)
 
 <b>Screenshot:</b>
-![screenshot](/../mem/screenshot.png?raw=true "screenshot")
+![ScreenShot](https://raw.github.com/limabeans/mem/master/screenshot.png)
 
 
