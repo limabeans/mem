@@ -686,7 +686,7 @@ public class GUI extends JFrame
 	
 	public String toString()
 	{
-	    return "BestTime\nWorstTime\nSuccessStreak\ndnfStreak\nbestmo3\ncurrentmo3\nbestavg5\ncurrentavg5\nbestavg12\ncurrentavg12";
+	    return "RIP \nWESTON NO IMPLEMENT YET\nBestTime\nWorstTime\nSuccessStreak\ndnfStreak\nbestmo3\ncurrentmo3\nbestavg5\ncurrentavg5\nbestavg12\ncurrentavg12";
 	}
     }
         
