@@ -1,4 +1,4 @@
-mem
+mem v0.5
 ===
 
 <b>3BLD = solving the 3x3x3 Rubik's Cube blindfolded.</b>
@@ -11,7 +11,7 @@ Currently, the program can generate scrambles with any combination of parity, fl
 
 I am a BLDer, inspired by the ideas of <i>deliberative practice</i>, which lead me to create this.
 
-<b>Here's how build/run/test/contribute:</b>
+<b>It's still a work in progress, so here's how build/run/test/contribute:</b>
 
 <code>git clone https://github.com/limabeans/mem.git</code><br>
 <code>cd mem/source</code><br>
