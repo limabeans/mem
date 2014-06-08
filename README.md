@@ -11,7 +11,7 @@ Currently, the program can generate scrambles with any combination of parity, fl
 
 I am a BLDer, inspired by the ideas of <i>deliberative practice</i>, which lead me to create this.
 
-To see what it's looking like, download and double-click <code>mem.jar</code>. <b>This is simply the latest JAR file that I built, and I cannot guarantee it is the most up-to-date version. Instead, I recommend building the app yourself.</b>
+To see what it's looking like, download and double-click <code>mem.jar</code>. This is simply the latest JAR file that I built, and I cannot guarantee it is the most up-to-date version. Instead, I recommend building the app yourself.
 
 <b>Here's how build/run/test/contribute:</b>
 
