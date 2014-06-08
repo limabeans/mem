@@ -24,7 +24,7 @@ I am a BLDer, inspired by the ideas of <i>deliberative practice</i>, which lead 
 -an implemented "Solve Stats" section<br>
 -more sophisticated text exporting<br>
 -memory training<br>
--generalization to include all buffers
+-generalization to include all buffers<br>
 -a txt config file, for custom letter schemes and misc. config stuff!<br>
 -the first timer with a built in Facebook chat?!<br>
 -the first timer with a built in music playlist builder?!<br>
