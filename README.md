@@ -11,10 +11,6 @@ Currently, the program can generate scrambles with any combination of parity, fl
 
 I am a BLDer, inspired by the ideas of <i>deliberative practice</i>, which lead me to create this.
 
-<u>My buffers:</u><br>
-<b>Edges: </b>DF
-<b>Corners: </b>UBL
-
 <b>It's still a work in progress, so here's how build/run/test/contribute:</b>
 
 <code>git clone https://github.com/limabeans/mem.git</code><br>
@@ -33,6 +29,8 @@ I am a BLDer, inspired by the ideas of <i>deliberative practice</i>, which lead 
 -the first timer with a built in music playlist builder?!<br>
 
 <b>Notes:</b>
+<b>My buffers, </b><b>Edges: </b>DF, <b>Corners: </b>UBL
+
 You may noticed I hard-encoded my own lettering scheme for now.
 This was just to simplify coding on my part, this is easily changeable later.
 
