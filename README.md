@@ -24,11 +24,13 @@ I am a BLDer, inspired by the ideas of <i>deliberative practice</i>, which lead 
 -an implemented "Solve Stats" section<br>
 -more sophisticated text exporting<br>
 -memory training<br>
+-generalization to include all buffers
 -a txt config file, for custom letter schemes and misc. config stuff!<br>
 -the first timer with a built in Facebook chat?!<br>
 -the first timer with a built in music playlist builder?!<br>
 
 <b>Notes:</b>
+
 <b>My buffers, </b><b>Edges: </b>DF, <b>Corners: </b>UBL
 
 You may noticed I hard-encoded my own lettering scheme for now.
