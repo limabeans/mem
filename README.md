@@ -33,8 +33,8 @@ You may noticed I hard-encoded my own lettering scheme for now.
 This was just to simplify coding on my part, this is easily changeable later.
 In the meantime, obfuscation working as intended. :^)
 
-<b>Screenshots:</b>
+<b>Screenshot:</b>
 ![ScreenShot](https://raw.github.com/limabeans/mem/master/screenshots_v0.5/screenshot2.png)
-![ScreenShot](https://raw.github.com/limabeans/mem/master/screenshots_v0.5/screenshot1.png)
+
 
 
