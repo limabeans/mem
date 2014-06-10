@@ -20,7 +20,7 @@ I am a BLDer, inspired by the ideas of <i>deliberative practice</i>, which lead 
 <code>java GUI</code>
 
 <b>Future features include:</b><br>
--generating scrambles of a certain metric (i.e. 13/7)<br>
+-generating scrambles of a certain metric (i.e. 13/7) <i>currently works, just no GUI implementation yet!</i><br>
 -an implemented "Solve Stats" section<br>
 -more sophisticated text exporting<br>
 -memory training<br>
