@@ -18,6 +18,16 @@ public class ASolve implements Comparable<ASolve>
 	isDNF = false;
 	comment = "";
     }
+
+    public int getEdgeMetric()
+    {
+	return solver.getEdgeMetric();
+    }
+    public int getCornerMetric()
+    {
+	return solver.getCornerMetric();
+    }    
+
     public void setComment(String newComment)
     {
 	comment = newComment;

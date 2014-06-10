@@ -16,9 +16,36 @@ public class CommSolver
     private boolean hasTwistedCorners;
     private boolean hasCornerCycleBreaks;
 
+
     public boolean getHasParity()
     {
 	return hasParity;
+    }
+
+    public int getEdgeMetric()
+    {
+	int edgeMetric = 0;
+	for(int x = 0; x<edgeCycles.length(); x++)
+	{
+	    if(Character.isLetter(edgeCycles.charAt(x)))
+	    {
+		edgeMetric++;
+	    }
+	}
+	return edgeMetric;
+    }
+
+    public int getCornerMetric()
+    {
+	int cornerMetric = 0;
+	for(int x = 0; x<cornerCycles.length(); x++)
+	{
+	    if(Character.isLetter(cornerCycles.charAt(x)))
+	    {
+		cornerMetric++;
+	    }
+	}
+	return cornerMetric;
     }
 
     public void refresh(String newScramble)
@@ -40,8 +67,10 @@ public class CommSolver
     {
 	String reported = scramble + "\n"
 	    + "parity: " + hasParity + "\n"
-	    + "edge cycle: " + edgeCycles + "\n"
-	    + "corner cycle: " + cornerCycles + "\n"
+	    + "edge cycle: " + edgeCycles + "(" + 
+	    getEdgeMetric() + ")\n"
+	    + "corner cycle: " + cornerCycles + "(" + 
+	    getCornerMetric() + ")\n"
 	    + "edge flips: " + hasEdgeFlips + " / edge cycle breaks: " + hasEdgeCycleBreaks + "\n"
  	    + "corner twists: " + hasTwistedCorners + " / corner cycle breaks: " + hasCornerCycleBreaks + "\n";
 	

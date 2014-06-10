@@ -31,7 +31,7 @@ public class GUI extends JFrame
     private JToggleButton timingMemoToggleButton;
     private JComboBox<String> selectPuzzleComboBox, cornerTwistsComboBox, edgeFlipsComboBox, parityComboBox;
     private String[] selectPuzzleArray = { "3x3 blindfolded", "3x3 speedsolve", "3x3 blindfolded memo practice" };
-    private String[] selectYesNoRandomArray = { "No", "Yes", "Random" };
+    private String[] selectYesNoRandomArray = { "Random", "No", "Yes" };
     private String[] onOffArray = {"On","Off"};
 
     //data instances
@@ -610,6 +610,14 @@ public class GUI extends JFrame
 	    break;
 	}
 
+	while(currentSolve.getEdgeMetric()!=15	      )
+	{
+	    prepNewScramble();
+	}
+	generatedScramble.setText(scramble);
+
+
+	/*
 	if(forceEdgeCommTextField.getText().length()>0)
 	{
 	    forceEdgeCommInScramble();
@@ -618,7 +626,7 @@ public class GUI extends JFrame
 	{
 	    forceCornerCommInScramble();
 	}
-	generatedScramble.setText(scramble);
+	*/
     }
 
     public void forceEdgeCommInScramble()
