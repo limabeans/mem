@@ -7,7 +7,7 @@ The first commutator and memory training application to exist, tailored to those
 
 <b>Written in Java by Angel Lim.</b>
 
-Currently, the program can generate scrambles with any combination of parity, flipped edges, and twisted corners, along with the choice of one forced edge or corner commutator.
+Currently, the program can generate scrambles with any combination of parity, flipped edges, and twisted corners, along with the choice of one forced edge or corner commutator. It also keeps track of edge and corner cycle breaks and their corresponding metrics.
 
 I am a BLDer, inspired by the ideas of <i>deliberative practice</i>, which lead me to create this.
 

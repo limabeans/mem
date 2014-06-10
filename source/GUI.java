@@ -610,11 +610,11 @@ public class GUI extends JFrame
 	    break;
 	}
 
-	while(currentSolve.getEdgeMetric()!=15	      )
+	/*	while(currentSolve.getEdgeMetric()!=15	      )
 	{
 	    prepNewScramble();
 	}
-	generatedScramble.setText(scramble);
+	generatedScramble.setText(scramble); */
 
 
 	/*
