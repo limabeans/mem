@@ -613,8 +613,8 @@ public class GUI extends JFrame
 	/*	while(currentSolve.getEdgeMetric()!=15	      )
 	{
 	    prepNewScramble();
-	}
-	generatedScramble.setText(scramble); */
+	    }*/
+	generatedScramble.setText(scramble); 
 
 
 	/*

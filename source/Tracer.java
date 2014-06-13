@@ -13,8 +13,7 @@ public class Tracer
     protected static final int CW = 1;
     protected static final int CCW = -1;
 
-    protected String scramble;
-    
+    protected String scramble;  
     protected boolean hasParity;
 
     protected Map<String,String> edgeMap;
