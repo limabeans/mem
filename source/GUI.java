@@ -102,6 +102,15 @@ public class GUI extends JFrame
 	timerTextField.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "doSpaceAction");
 	timerTextField.getActionMap().put("doSpaceAction", spaceAction);
 
+	//troll GJ function
+	GJAction gjAction = new GJAction();
+	timerTextField.getInputMap().put(KeyStroke.getKeyStroke("G"),"doGJAction");
+	timerTextField.getActionMap().put("doGJAction", gjAction);
+	//troll BJ function
+	BJAction bjAction = new BJAction();
+	timerTextField.getInputMap().put(KeyStroke.getKeyStroke("B"),"doBJAction");
+	timerTextField.getActionMap().put("doBJAction",bjAction);
+
 	//to shift focus to commentTextField with you hit enter
 	//KeyStroke.getKeyStroke('L',KeyEvent.CTRL_DOWN_MASK), "doCommentAction"
 	CommentAction commentAction = new CommentAction();
@@ -385,6 +394,7 @@ public class GUI extends JFrame
 		commentTextField.requestFocusInWindow();
 	}
     }
+
     class DAction extends AbstractAction
     {
 	public void actionPerformed(ActionEvent e)
@@ -401,6 +411,34 @@ public class GUI extends JFrame
 	}
     }
 
+    class GJAction extends AbstractAction
+    {
+	public void actionPerformed(ActionEvent e)
+	{
+	    if(!timer.isRunning() && firstSolveCompleted)
+	    {
+		timerTextField.setText("GJ");
+		database1.get(database1.size()-1).setComment("GJ");
+		updateSolveStatsTextArea();
+		updateSolveTimesTextArea();
+		updateScrambleAnalysisTextArea();
+	    }
+	}
+    }
+    class BJAction extends AbstractAction
+    {
+	public void actionPerformed(ActionEvent e)
+	{
+	    if(!timer.isRunning() && firstSolveCompleted)
+	    {
+		timerTextField.setText("BJ");
+		database1.get(database1.size()-1).setComment("BJ");
+		updateSolveStatsTextArea();
+		updateSolveTimesTextArea();
+		updateScrambleAnalysisTextArea();
+	    }
+	}
+    }
     class SpaceAction extends AbstractAction
     {
 	public void actionPerformed(ActionEvent e)
