@@ -38,7 +38,7 @@ public class GUI extends JFrame
     protected ArrayList<ASolve> database1;
     private ASolve currentSolve;
     File exportSolveTimesFile;
-    
+
     //variables that are constantly changing
     private long startTime;
     private boolean timeIsStarted;
@@ -57,7 +57,7 @@ public class GUI extends JFrame
 	super("mem -- my personal java prototype of (what will eventually become) limatime.");
 	this.setLayout(new GridLayout(3,2));
 	currentSolve = new ASolve(scramble);
-	
+
 	database1 = new ArrayList<ASolve>();
 
 	panel1 = new JPanel(new BorderLayout());
@@ -98,7 +98,7 @@ public class GUI extends JFrame
 	timerTextField.getActionMap().put("doDAction", dAction);
 
 	//set timerTextField Key Binding to SPACE
-	SpaceAction spaceAction = new SpaceAction();	
+	SpaceAction spaceAction = new SpaceAction();
 	timerTextField.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "doSpaceAction");
 	timerTextField.getActionMap().put("doSpaceAction", spaceAction);
 
@@ -292,7 +292,7 @@ public class GUI extends JFrame
 	    timerTextField.requestFocusInWindow();
 	}
     }
-    class ClockListener implements ActionListener 
+    class ClockListener implements ActionListener
     {
 	//this method is called repeatedly based on a certain delay, once start() is called.
 	public void actionPerformed(ActionEvent e)
@@ -325,7 +325,7 @@ public class GUI extends JFrame
 		timerTextField.requestFocusInWindow();
 		scrambleAnalysisTextArea.setText("Ready!");
 	    }
-	 	    
+
 	}
     }
 
@@ -378,11 +378,12 @@ public class GUI extends JFrame
 	public void export()
 	{
 	    try(PrintWriter out = new PrintWriter(new FileWriter(exportSolveTimesFile))) {
-		    out.print("Session Solve Times\n"); 
+		    out.print("Session Solve Times\n");
 		    out.print(solveTimesTextArea.getText());
 		    out.close();
-		} catch (IOException IOE) { JOptionPane.showMessageDialog(null, "Exporting failure");} 
-	    JOptionPane.showMessageDialog(null,"Exported");
+			//TMM. 2014.08.24. Saving a session file should issue a successful completion message only after a file has been successfully written.
+			JOptionPane.showMessageDialog(null,"Your session file has been exported.");
+		} catch (IOException IOE) { JOptionPane.showMessageDialog(null, "Exporting failure. Check the name of the session file you provided to ensure that it references a value folder and non-existing filename.");}
 	}
     }
     //KEYBINDING CLASSES
@@ -456,9 +457,9 @@ public class GUI extends JFrame
 		timer.stop();
 		updateTimer();//calcs solve time,updates currentSolve.setTime(), and edits timerTextField
 		updateSolveTimesArrayList();
-	        updateSolveStatsTextArea(); 
+	        updateSolveStatsTextArea();
 		updateScrambleAnalysisTextArea();//write to right
-		updateSolveTimesTextArea(); //write to bottom-left 
+		updateSolveTimesTextArea(); //write to bottom-left
 		prepNewScramble();
 	    }
 	}
@@ -471,13 +472,13 @@ public class GUI extends JFrame
     {
 	scramble = scrambler.genScramble();
 	currentSolve = new ASolve(scramble);
-	switch((String)parityComboBox.getSelectedItem()) 
+	switch((String)parityComboBox.getSelectedItem())
 	{
 	case "No": //4 0 0
-	    switch((String)edgeFlipsComboBox.getSelectedItem()) 
+	    switch((String)edgeFlipsComboBox.getSelectedItem())
 	    {
 	    case "No": //4 4 0
-		switch((String)cornerTwistsComboBox.getSelectedItem()) 
+		switch((String)cornerTwistsComboBox.getSelectedItem())
 		{
 		case "No": //4 4 4
 		    while(currentSolve.hasParity() || currentSolve.hasFlippedEdges() || currentSolve.hasTwistedCorners())
@@ -493,7 +494,7 @@ public class GUI extends JFrame
 		    break;
 		}
 		break;
-	    
+
 	    case "Yes": //4 2 0
 	        switch((String)cornerTwistsComboBox.getSelectedItem())
 		{
@@ -530,12 +531,12 @@ public class GUI extends JFrame
 		break;
 	    }
 	    break;
-	    
-	case "Yes": //2 0 0 
-	    switch((String)edgeFlipsComboBox.getSelectedItem()) 
+
+	case "Yes": //2 0 0
+	    switch((String)edgeFlipsComboBox.getSelectedItem())
 	    {
 	    case "No": //2 4 0
-		switch((String)cornerTwistsComboBox.getSelectedItem()) 
+		switch((String)cornerTwistsComboBox.getSelectedItem())
 		{
 		case "No": //2 4 4
 		    while(!currentSolve.hasParity())// || currentSolve.hasFlippedEdges() || currentSolve.hasTwistedCorners())
@@ -554,12 +555,12 @@ public class GUI extends JFrame
 	    case "Yes": //2 2 0
 	        switch((String)cornerTwistsComboBox.getSelectedItem())
 		{
-		    
+
 		case "No": //2 2 4
 		    while(!currentSolve.hasParity() || !currentSolve.hasFlippedEdges() || currentSolve.hasTwistedCorners())
 			reloadSolverEngine();
 		    break;
-		    
+
 		case "Yes": //2 2 2
 		    while(!currentSolve.hasParity() || !currentSolve.hasFlippedEdges() || !currentSolve.hasTwistedCorners())
 			reloadSolverEngine();
@@ -589,12 +590,12 @@ public class GUI extends JFrame
 		break;
 	    }
 	    break;
-	
-	case "Random": //1 0 0 
-	    switch((String)edgeFlipsComboBox.getSelectedItem()) 
+
+	case "Random": //1 0 0
+	    switch((String)edgeFlipsComboBox.getSelectedItem())
 	    {
 	    case "No": //1 4 0
-		switch((String)cornerTwistsComboBox.getSelectedItem()) 
+		switch((String)cornerTwistsComboBox.getSelectedItem())
 		{
 		case "No": //1 4 4
 		    while(currentSolve.hasFlippedEdges() || currentSolve.hasTwistedCorners())
@@ -610,7 +611,7 @@ public class GUI extends JFrame
 		    break;
 		}
 		break;
-	    
+
 	    case "Yes": //1 2 0
 	        switch((String)cornerTwistsComboBox.getSelectedItem())
 		{
@@ -652,7 +653,7 @@ public class GUI extends JFrame
 	{
 	    prepNewScramble();
 	    }*/
-	generatedScramble.setText(scramble); 
+	generatedScramble.setText(scramble);
 
 
 	/*
@@ -734,13 +735,13 @@ public class GUI extends JFrame
 	    bestAVG5 = "99:59.59";
 	    bestMO3 = "99:59.59";
 	}
-	
+
 	public String toString()
 	{
 	    return "BestTime\nWorstTime\nSuccessStreak\ndnfStreak\nbestmo3\ncurrentmo3\nbestavg5\ncurrentavg5\nbestavg12\ncurrentavg12";
 	}
     }
-        
+
 
 
 }
